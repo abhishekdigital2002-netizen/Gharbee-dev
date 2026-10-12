@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Professional Service App</title>
+    <title>Gharbee Professional</title>
     <style>
         * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; }
         .phone-screen { width: 100%; max-width: 412px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding-bottom: 70px; }
-        
-        /* लॉगिन स्क्रीन */
         .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 100vh; background: #ffffff; position: absolute; width: 100%; top: 0; left: 0; z-index: 200; }
         .auth-logo { font-size: 36px; font-weight: 800; color: #0D4C3A; margin-bottom: 10px; }
         .auth-tag { font-size: 14px; color: #64748b; margin-bottom: 40px; }
@@ -17,8 +15,6 @@
         .input-label { font-size: 13px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block; }
         .auth-input { width: 100%; padding: 16px; border: 1.5px solid #e2e8f0; border-radius: 14px; font-size: 16px; outline: none; width: 100%; }
         .auth-btn { width: 100%; background: #0D4C3A; color: white; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; }
-        
-        /* ऐप हेडर */
         .app-header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 30px 20px 25px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
         .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; }
@@ -29,25 +25,18 @@
         .search-container { position: relative; width: 100%; }
         .search-bar { width: 100%; background: #ffffff; border: none; padding: 14px 16px 14px 45px; border-radius: 16px; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); outline: none; }
         .search-icon { position: absolute; left: 16px; top: 14px; font-size: 16px; color: #94a3b8; }
-        
-        /* मेन बॉडी */
         .main-body { padding: 20px; flex: 1; }
         .section-heading { font-size: 17px; font-weight: 700; color: #0D4C3A; margin-bottom: 16px; }
         .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
         .service-box { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 24px; padding: 24px 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.02); cursor: pointer; }
         .img-icon-wrapper { width: 55px; height: 55px; background: #f0fdf4; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px auto; color: #0D4C3A; }
         .srv-title { font-size: 15px; font-weight: 700; color: #334155; }
-        
-        /* प्रोफेशनल सब-सर्विस सिलेक्शन पैनल */
         .options-panel { display: none; background: #ffffff; border: 1.5px solid #0D4C3A; border-radius: 24px; padding: 20px; margin-top: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
         .panel-title { font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px; }
         .sub-service-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-        .sub-service-row:last-child { border-bottom: none; }
         .sub-name { font-size: 14px; font-weight: 600; color: #475569; }
-        .sub-price { font-size: 14px; font-weight: 700; color: #F89A1C; }
+        .sub-price { font-size: 14px; font-weight: 700; color: #F89A1C; margin-right: 10px; }
         .book-sub-btn { background: #0D4C3A; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; }
-        
-        /* बुकिंग स्टेटस पॉप-अप */
         .status-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
         .popup-content { background: white; padding: 30px; border-radius: 24px; text-align: center; width: 85%; max-width: 350px; }
         .popup-btn { background: #0D4C3A; color: white; border: none; padding: 12px 25px; border-radius: 12px; margin-top: 20px; cursor: pointer; font-weight: 600; width: 100%; }
@@ -58,7 +47,6 @@
 </head>
 <body>
 <div class="phone-screen">
-    <!-- 1. लॉगिन स्क्रीन -->
     <div id="authScreen" class="auth-screen">
         <div class="auth-logo">Ghar<span style="color:#F89A1C;">bee</span></div>
         <div class="auth-tag">Click. Fix. Relax.</div>
@@ -73,8 +61,6 @@
             <button class="auth-btn" style="background:#F89A1C;" onclick="verifyOtpRequest()">Verify & Login</button>
         </div>
     </div>
-
-    <!-- 2. मेन ऐप स्क्रीन -->
     <div class="app-header">
         <div class="header-top">
             <div class="logo-wrap"><div class="logo-icon">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
@@ -82,92 +68,61 @@
         </div>
         <div class="search-container"><span class="search-icon">🔍</span><input type="text" class="search-bar" placeholder="Search home services..."></div>
     </div>
-
     <div class="main-body">
         <div class="section-heading">हमारी लोकप्रिय कैटेगरीज</div>
-        
-        <!-- मेन सर्विस ग्रिड -->
         <div class="grid-container">
-            <div class="service-box" onclick="showServiceOptions('Plumber')"><div class="img-icon-wrapper">🔧</div><div class="srv-title">Plumber</div></div>
-            <div class="service-box" onclick="showServiceOptions('Electrician')"><div class="img-icon-wrapper">💡</div><div class="srv-title">Electrician</div></div>
-            <div class="service-box" onclick="showServiceOptions('Cleaning')"><div class="img-icon-wrapper">🧹</div><div class="srv-title">Cleaning</div></div>
-            <div class="service-box" onclick="showServiceOptions('AC Repair')"><div class="img-icon-wrapper">❄️</div><div class="srv-title">AC Repair</div></div>
+            <div class="service-box" onclick="showOptions('Plumber')"><div class="img-icon-wrapper">🔧</div><div class="srv-title">Plumber</div></div>
+            <div class="service-box" onclick="showOptions('Electrician')"><div class="img-icon-wrapper">💡</div><div class="srv-title">Electrician</div></div>
+            <div class="service-box" onclick="showOptions('Cleaning')"><div class="img-icon-wrapper">🧹</div><div class="srv-title">Cleaning</div></div>
+            <div class="service-box" onclick="showOptions('AC Repair')"><div class="img-icon-wrapper">❄️</div><div class="srv-title">AC Repair</div></div>
         </div>
-
-        <!-- चॉइस / सब-सर्विस सिलेक्शन पैनल -->
         <div id="optionsPanel" class="options-panel">
             <div id="panelTitle" class="panel-title">Service Options</div>
-            <div id="subServicesContainer"></div>
+            <div id="subContainer"></div>
         </div>
     </div>
-
     <div id="statusPopup" class="status-popup"><div class="popup-content"><div style="font-size:50px; margin-bottom:15px;">🎉</div><h3>बुकिंग सफल!</h3><p id="bookingMessage"></p><button class="popup-btn" onclick="closePopup()">ठीक है</button></div></div>
     <div class="bottom-nav"><div class="nav-tab active">🏠<div>Home</div></div><div class="nav-tab">📋<div>Bookings</div></div><div class="nav-tab">👛<div>Wallet</div></div><div class="nav-tab">👤<div>Profile</div></div></div>
 </div>
-
 <script>
     let globalMobile = "";
-    
-    // हर कैटेगरी के अंदर अलग-अलग चॉइस (Sub-services data)
-    const subServicesData = {
-        'Plumber': [
-            { name: 'Tap Repair (नल सुधार)', price: '₹149' },
-            { name: 'Water Tank Leakage (टंकी लीकेज)', price: '₹349' },
-            { name: 'Wash Basin Setup (बेसिन इंस्टॉलेशन)', price: '₹499' }
-        ],
-        'Electrician': [
-            { name: 'Fan Repair (पंखा सुधार)', price: '₹199' },
-            { name: 'Switchboard Fixing (बोर्ड वायरिंग)', price: '₹249' },
-            { name: 'LED Light Installation (लाइट फिटिंग)', price: '₹99' }
-        ],
-        'Cleaning': [
-            { name: 'Bathroom Cleaning (बाथरूम सफाई)', price: '₹299' },
-            { name: 'Full House Deep Cleaning (पूरे घर की सफाई)', price: '₹1499' },
-            { name: 'Sofa Cleaning (सोफा ड्राई क्लीनिंग)', price: '₹499' }
-        ],
-        'AC Repair': [
-            { name: 'AC Jet Servicing (जेट सर्विस)', price: '₹399' },
-            { name: 'Gas Refilling (गैस चार्जिंग)', price: '₹1800' },
-            { name: 'AC Installation (एसी इंस्टॉलेशन)', price: '₹999' }
-        ]
+    const subData = {
+        'Plumber': [{n:'Tap Repair (नल सुधार)', p:'₹149'}, {n:'Leakage Fixing (लीकेज मरम्मत)', p:'₹349'}, {n:'Basin Install (बेसिन फिटिंग)', p:'₹499'}],
+        'Electrician': [{n:'Fan Repair (पंखा मरम्मत)', p:'₹199'}, {n:'Board Wiring (बोर्ड सुधार)', p:'₹249'}, {n:'Light Fitting (लाइट लगाना)', p:'₹99'}],
+        'Cleaning': [{n:'Bathroom Cleaning (बाथरूम सफाई)', p:'₹299'}, {n:'Full House Cleaning (घर की सफाई)', p:'₹1499'}, {n:'Sofa Cleaning (सोफा ड्राईक्लीन)', p:'₹499'}],
+        'AC Repair': [{n:'AC Jet Service (एसी सर्विस)', p:'₹399'}, {n:'Gas Refilling (गैस चार्जिंग)', p:'₹1800'}, {n:'AC Installation (एसी फिटिंग)', p:'₹999'}]
     };
-
     function sendOtpRequest() {
         const num = document.getElementById('mobileNumber').value;
-        if(!num || num.length < 10) return alert("कृपया सही 10 अंकों का नंबर डालें");
+        if(!num || num.length < 10) return alert("कृपया सही नंबर डालें");
         globalMobile = num;
         document.getElementById('phoneGroup').style.display = 'none';
         document.getElementById('otpGroup').style.display = 'block';
-        alert("टेस्टिंग मोड OTP: 1234");
+        alert("ओटीपी: 1234");
     }
-
     function verifyOtpRequest() {
         const otp = document.getElementById('otpCode').value;
-if(otp === '1234') {
-document.getElementById('authScreen').style.display = 'none';
-} else {
-alert("गलत OTP!");
-}
-}
-// कैटेगरी पर क्लिक करने पर सब-सर्विसेज की चॉइस दिखाना
-function showServiceOptions(category) {
-const panel = document.getElementById('optionsPanel');
-const title = document.getElementById('panelTitle');
-const container = document.getElementById('subServicesContainer');
-title.innerText = ${category} - Select Specific Service;
-container.innerHTML = "";
-subServicesData[category].forEach(sub => {
-const row = document.createElement('div');
-row.className = 'sub-service-row';
-row.innerHTML = <div class="sub-name">${sub.name}</div> <div> <span class="sub-price">${sub.price}</span> <button class="book-sub-btn" onclick="processSubBooking('${sub.name}', '${sub.price}')">Book</button> </div>;
-container.appendChild(row);
-});
-panel.style.display = 'block';
-panel.scrollIntoView({ behavior: 'smooth' });
-}
-function processSubBooking(name, price) {
-const randId = Math.floor(100000 + Math.random() * 900000);
-document.getElementById('bookingMessage').innerHTML = आपकी <b>${name}</b> की बुकिंग स्वीकार कर ली गई है।<br><br><b>Total Cost:</b> ${price}<br><b>Booking ID:</b> GB-${randId};
-document.getElementById('statusPopup').style.display = 'flex';
-}
-function closePopup() { document.getElementById('statusPopup').style.display = 'none'; }
+        if(otp === '1234') { document.getElementById('authScreen').style.display = 'none'; alert("लॉगिन सफल!"); }
+        else { alert("गलत OTP!"); }
+    }
+    function showOptions(cat) {
+        document.getElementById('panelTitle').innerText = cat + " - Select Option";
+        const con = document.getElementById('subContainer');
+        con.innerHTML = "";
+        subData[cat].forEach(sub => {
+            const row = document.createElement('div');
+            row.className = 'sub-service-row';
+            row.innerHTML = `<div class="sub-name">${sub.n}</div><div><span class="sub-price">${sub.p}</span><button class="book-sub-btn" onclick="bookSub('${sub.n}', '${sub.p}')">Book</button></div>`;
+            con.appendChild(row);
+        });
+        document.getElementById('optionsPanel').style.display = 'block';
+    }
+    function bookSub(name, price) {
+        const id = Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('bookingMessage').innerHTML = `आपका <b>${name}</b> बुक हो गया है।<br><br><b>Cost:</b> ${price}<br><b>ID:</b> GB-${id}`;
+        document.getElementById('statusPopup').style.display = 'flex';
+    }
+    function closePopup() { document.getElementById('statusPopup').style.display = 'none'; }
+</script>
+</body>
+</html>
