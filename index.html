@@ -86,14 +86,9 @@
         const num = document.getElementById('mobileNumber').value;
         if(!num || num.length < 10) return alert("कृपया सही 10 अंकों का नंबर डालें");
         globalMobile = num;
-        fetch(`${SERVER_URL}/api/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mobileNumber: num }) })
-        .then(res => res.json()).then(data => {
-            if(data.success) {
-                document.getElementById('phoneGroup').style.display = 'none';
-                document.getElementById('otpGroup').style.display = 'block';
-                alert(`टेस्टिंग मोड OTP: ${data.demoOtp}`);
-            } else { alert(data.message); }
-        }).catch(err => alert("10 सेकंड बाद दोबारा दबाएं।"));
+        document.getElementById('phoneGroup').style.display = 'none';
+document.getElementById('otpGroup').style.display = 'block';
+alert("टेस्टिंग मोड OTP: 1234");
     }
     function verifyOtpRequest() {
         const otp = document.getElementById('otpCode').value;
