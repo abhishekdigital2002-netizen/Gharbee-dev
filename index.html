@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Live App</title>
+    <title>Gharbee Live Final App</title>
     <style>
         * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #f8fafc; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; }
@@ -41,21 +41,22 @@
         .popup-btn { background: #0D4C3A; color: white; border: none; padding: 12px 25px; border-radius: 12px; margin-top: 20px; cursor: pointer; font-weight: 600; width: 100%; }
         .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 412px; height: 65px; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; }
         .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 600; }
+        .nav-tab.active { color: #0D4C3A; }
     </style>
 </head>
-  <body>
+<body>
 <div class="phone-screen">
     <div id="authScreen" class="auth-screen">
         <div class="auth-logo">Ghar<span style="color:#F89A1C;">bee</span></div>
         <div class="auth-tag">Click. Fix. Relax.</div>
         <div id="phoneGroup" class="input-group">
-            <label class="input-label">अपना mobile नंबर दर्ज करें</label>
+            <label class="input-label">अपना मोबाइल नंबर दर्ज करें</label>
             <input type="tel" id="mobileNumber" class="auth-input" placeholder="Enter 10 digit number">
             <button class="auth-btn" onclick="sendOtpRequest()">OTP भेजें</button>
         </div>
         <div id="otpGroup" class="input-group" style="display:none;">
-            <label class="input-label">4-अंकीय OTP डालें</label>
-            <input type="number" id="otpCode" class="auth-input" placeholder="Enter OTP">
+            <label class="input-label">मैसेज में आया 4-अंकीय OTP डालें</label>
+            <input type="number" id="otpCode" class="auth-input" placeholder="Enter 4-digit OTP">
             <button class="auth-btn" style="background:#F89A1C;" onclick="verifyOtpRequest()">Verify & Login</button>
         </div>
     </div>
@@ -87,19 +88,17 @@
         if(!num || num.length < 10) return alert("कृपया सही 10 अंकों का नंबर डालें");
         globalMobile = num;
         document.getElementById('phoneGroup').style.display = 'none';
-document.getElementById('otpGroup').style.display = 'block';
-alert("टेस्टिंग मोड OTP: 1234");
+        document.getElementById('otpGroup').style.display = 'block';
+        alert("टेस्टिंग मोड OTP: 1234");
     }
     function verifyOtpRequest() {
         const otp = document.getElementById('otpCode').value;
-        if(!otp) return alert("कृपया OTP दर्ज करें");
-        fetch(`${SERVER_URL}/api/verify-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mobileNumber: globalMobile, otp: otp }) })
-        .then(res => res.json()).then(data => {
-            if(data.success) {
-                document.getElementById('authScreen').style.display = 'none';
-                alert("लॉगिन सफल!");
-            } else { alert(data.message); }
-        });
+        if(otp === '1234') {
+            document.getElementById('authScreen').style.display = 'none';
+            alert("लॉगिन सफल!");
+        } else {
+            alert("गलत OTP दर्ज किया गया है!");
+        }
     }
     function makeLiveBooking(serviceId, serviceName) {
         fetch(`${SERVER_URL}/api/book`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: 1, serviceId, address: "Lucknow", bookingDate: new Date() }) })
@@ -114,4 +113,3 @@ alert("टेस्टिंग मोड OTP: 1234");
 </script>
 </body>
 </html>
-
