@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gharbee Partner Portal</title>
+    <style>
+        * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f1f5f9; display: flex; justify-content: center; min-height: 100vh; color: #0D4C3A; }
+        .partner-screen { width: 100%; max-width: 412px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding-bottom: 30px; }
+        .header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; text-align: center; }
+        .brand { font-size: 24px; font-weight: 800; }
+        .orange-text { color: #F89A1C; }
+        .form-container { padding: 20px; flex: 1; }
+        .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 90vh; background: #ffffff; }
+        .input-group { width: 100%; margin-bottom: 20px; }
+        .input-label { font-size: 14px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block; }
+        .form-input, select { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 14px; font-size: 15px; outline: none; background: white; }
+        .file-input-wrapper { border: 2px dashed #0D4C3A; padding: 15px; text-align: center; border-radius: 14px; background: #f8fafc; cursor: pointer; position: relative; margin-top: 5px; }
+        .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .btn { width: 100%; background: #0D4C3A; color: white; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 15px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="partner-screen">
+    <div class="header">
+        <div class="brand">Ghar<span class="orange-text">bee</span> Partner</div>
+        <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">कमाई और सुरक्षा का नया भरोसा</div>
+    </div>
+
+    <!-- 1. पार्टनर लॉगिन -->
+    <div id="partnerAuth" class="auth-screen">
+        <h3 style="margin-bottom: 20px; font-size:18px;">पार्टनर लॉगिन / रजिस्ट्रेशन</h3>
+        <div id="phoneStep" style="width: 100%;">
+            <div class="input-group">
+                <label class="input-label">अपना मोबाइल नंबर दर्ज करें</label>
+                <input type="tel" id="partnerPhone" class="form-input" placeholder="Enter Mobile Number">
+            </div>
+            <button class="btn" onclick="sendPartnerOtp()">OTP भेजें</button>
+        </div>
+        <div id="otpStep" style="width: 100%; display: none;">
+            <div class="input-group">
+                <label class="input-label">ओटीपी (OTP) दर्ज करें</label>
+                <input type="number" id="partnerOtp" class="form-input" placeholder="Enter 1234">
+            </div>
+            <button class="btn" style="background: #F89A1C;" onclick="verifyPartnerOtp()">Verify & Continue</button>
+        </div>
+    </div>
+
+    <!-- 2. ऑनबोर्डिंग प्रोफाइल और फोटो अपलोड फॉर्म -->
+    <div id="partnerForm" class="form-container" style="display: none;">
+        <h3 style="margin-bottom: 20px; font-size: 16px; font-weight: bold;">ऑनबोर्डिंग प्रोफाइल और केवाईसी</h3>
+        
+        <div class="input-group">
+            <label class="input-label">पूरा नाम (आधार के अनुसार)</label>
+            <input type="text" id="partnerName" class="form-input" placeholder="अपना नाम लिखें">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">अपनी सर्विस (Skill) चुनें</label>
+            <select id="partnerSkill">
+                <option value="AC Repair">AC Repair & Service</option>
+                <option value="Plumber">Plumber (नलसाज)</option>
+                <option value="Electrician">Electrician (बिजली मिस्त्री)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">1. आपकी साफ़ प्रोफाइल फोटो (Onboarding Photo)</label>
+            <div class="file-input-wrapper">
+                <span>📸</span>
+                <p id="photoStatus" style="font-size: 12px; color: #64748b;">अपनी प्रोफाइल फोटो चुनें</p>
+                <input type="file" id="partnerPhoto" accept="image/*" onchange="updateStatus('partnerPhoto', 'photoStatus')">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">2. डॉक्यूमेंट अपलोड (आधार कार्ड)</label>
+            <div class="file-input-wrapper">
+                <span>📁</span>
+                <p id="fileStatus" style="font-size: 12px; color: #64748b;">आधार कार्ड की फोटो अपलोड करें</p>
+                <input type="file" id="idProof" accept="image/*" onchange="updateStatus('idProof', 'fileStatus')">
+            </div>
+        </div>
+
+        <button class="btn" style="background: #22c55e;" onclick="submitPartnerDocs()">ऑनबोर्डिंग के लिए भेजें</button>
+    </div>
+
+    <!-- 3. एक्टिव ड्यूटी स्क्रीन (Start Work & Mask Check) -->
+    <div id="partnerDuty" class="form-container" style="display: none;">
+        <div class="card" style="border-left: 5px solid #F89A1C;">
+            <h4 style="color:#0D4C3A;">📍 नया ऑर्डर: अलकांज, लखनऊ</h4>
+            <p style="font-size:13px; color:#64748b; margin-top:5px;">सर्विस: AC Repair & Gas Refill</p>
+        </div>
+
+        <div class="card" style="background: #fff7ed; border-color: #ffedd5; margin-top:20px;">
+            <h4 style="color: #c2410c; font-size:15px;">😷 सुरक्षा नियम: Mask Selfie Required</h4>
+            <p style="font-size:12px; color: #7c2d12; margin-top:4px;">ग्राहक के घर में प्रवेश करने से पहले चेहरे पर मास्क लगाकर लाइव फोटो अपलोड करना अनिवार्य है।</p>
+            
+            <div class="file-input-wrapper" style="border-color:#F89A1C; margin-top:15px;">
+                <span>😷</span>
+                <p id="maskStatus" style="font-size: 12px; color: #c2410c; font-weight:bold;">मास्क के साथ सेल्फी लें</p>
+                <input type="file" id="maskPhoto" accept="image/*" onchange="updateStatus('maskPhoto', 'maskStatus')">
+            </div>
+        </div>
+
+        <button id="startJobBtn" class="btn" style="background: #94a3b8; cursor: not-allowed;" disabled onclick="startLiveJob()">Job शुरू करें (Start Work)</button>
+    </div>
+</div>
+
+<script>
+    function sendPartnerOtp() {
+        if(document.getElementById('partnerPhone').value.length < 10) return alert("नंबर सही नहीं है");
+        document.getElementById('phoneStep').style.display = "none";
+        document.getElementById('otpStep').style.display = "block";
+    }
+
+    function verifyPartnerOtp() {
+        if(document.getElementById('partnerOtp').value === '1234') {
+            document.getElementById('partnerAuth').style.display = "none";
+            document.getElementById('partnerForm').style.display = "block";
+        } else { alert("गलत OTP"); }
+    }
+
+    function updateStatus(inputId, statusId) {
+        const file = document.getElementById(inputId).files[0];
+        if(file) {
+            document.getElementById(statusId).innerText = `✅ ${file.name} रेडी है!`;
+            document.getElementById(statusId).style.color = "#22c55e";
+            
+            // अगर मास्क फोटो अपलोड हुई तो जॉब बटन एक्टिवेट करें
+            if(inputId === 'maskPhoto') {
+                const btn = document.getElementById('startJobBtn');
+                btn.style.background = "#22c55e";
+                btn.style.cursor = "pointer";
+                btn.disabled = false;
+            }
+        }
+    }
+
+    function submitPartnerDocs() {
+        const name = document.getElementById('partnerName').value;
+        if(!name || !document.getElementById('partnerPhoto').files[0]) return alert("कृपया नाम और प्रोफाइल फोटो दोनों दें!");
+        alert("ऑनबोर्डिंग डाक्यूमेंट्स और फोटो सब-एडमिन के पास भेज दी गई है। टेस्टिंग के लिए अब हम आपको 'ड्यूटी स्क्रीन' पर ले जा रहे हैं जहाँ मास्क वेरिफिकेशन टेस्ट होगा।");
+        document.getElementById('partnerForm').style.display = "none";
+        document.getElementById('partnerDuty').style.display = "block";
+    }
+
+    function startLiveJob() {
+        alert("🎉 मास्क वेरिफिकेशन सफल! कस्टमर के ऐप पर 'Job Started' का स्टेटस चला गया है और लाइव जॉब कार्ड ओपन हो गया है।");
+    }
+</script>
+</body>
+</html>
