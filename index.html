@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Professional Smart Scheduler</title>
+    <title>Gharbee Ultimate Customer App</title>
     <style>
-        * { box-sizing: border-box; font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; padding: 0; }
-        
-        /* प्रोफेशनल आईफोन/टैबलेट ग्रिड अलाइनमेंट */
-        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.6); padding-bottom: 75px; overflow-x: hidden; }
-        
+        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow-x: hidden; }
         .app-header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .header-top { display: flex; align-items: center; justify-content: space-between; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; }
@@ -21,32 +18,19 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 10px; transition: all 0.2s; }
-        .btn-orange { background: #F89A1C; color: white; box-shadow: 0 4px 12px rgba(248,154,28,0.25); }
-        .btn-orange:active { transform: scale(0.98); }
+        .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 10px; }
+        .btn-orange { background: #F89A1C; color: white; }
         .input-box { width: 100%; padding: 14px; border: 1.5px solid #cbd5e1; border-radius: 12px; font-size: 15px; outline: none; margin-bottom: 10px; background: white; font-weight: 600; }
-        .input-box:focus { border-color: #0D4C3A; }
-        
-        /* 📅 अट्रैक्टिव टाइम स्लॉट ग्रिड डिज़ाइन */
         .slot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
-        .slot-box { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 15px 10px; border-radius: 14px; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 4px; justify-content: center; align-items: center; }
-        .slot-box:hover { border-color: #0D4C3A; background: #f0fdf4; }
-        
-        /* लाइव स्टेट्स स्टाइल्स (प्रोफेशनल फीडबैक) */
+        .slot-box { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 15px 10px; border-radius: 14px; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; display: flex; flex-direction: column; gap: 4px; justify-content: center; align-items: center; }
         .slot-box.available { border-color: #22c55e; background: #f0fdf4; color: #15803d; }
-        .slot-box.selected { border-color: #F89A1C !important; background: #fff7ed !important; color: #F89A1C !important; box-shadow: 0 4px 10px rgba(248,154,28,0.15); transform: scale(1.02); }
-        .slot-box.booked { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #94a3b8 !important; cursor: not-allowed; opacity: 0.6; }
-        .slot-status { font-size: 9px; text-transform: uppercase; padding: 2px 6px; border-radius: 10px; font-weight: 800; margin-top: 2px; }
-        .status-dot-green { background: #22c55e; color: white; }
-        .status-dot-red { background: #cbd5e1; color: #64748b; }
-        
+        .slot-box.selected { border-color: #F89A1C !important; background: #fff7ed !important; color: #F89A1C !important; }
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
         .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 600; background: none; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 <div class="phone-screen">
-    <!-- 🏢 टॉप ब्रांड हेडर -->
     <div class="app-header">
         <div class="header-top">
             <div class="logo-wrap"><div class="logo-icon">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
@@ -56,187 +40,89 @@
 
     <!-- 🏠 TAB 1: होम स्क्रीन + स्मार्ट शेड्यूलर -->
     <div id="homeTab" class="main-body tab-content active">
-        <div class="card" style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white; box-shadow: 0 4px 15px rgba(13,76,58,0.25);">
-            <h4 style="font-size:15px; color:#F89A1C;">Live Partner Slot Matching 🟢</h4>
-            <p style="font-size:11px; opacity:0.9; margin-top:3px;">तारीख चुनते ही ऐप केवल वही समय दिखाएगा जब हमारे वेरिफाइड पार्टनर्स लखनऊ में उपलब्ध होंगे।</p>
+        <div class="card" style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white;">
+            <h4 style="font-size:15px; color:#F89A1C;">Smart Availability Engine Active 🟢</h4>
+            <p style="font-size:11px; opacity:0.9; margin-top:3px;">तारीख चुनते ही हमारे पार्टनर्स का लाइव खाली शेड्यूल लोड हो जाएगा।</p>
         </div>
-
-        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-bottom: 6px;">1. मुख्य सेवा चुनें (Service)</div>
-        <select id="mainServiceSelect" class="input-box">
-            <option value="AC Repair">AC Repair & Service</option>
-            <option value="Plumber">Plumber (नलसाज)</option>
-        </select>
-
-        <!-- तारीख इनपुट ट्रिगर -->
-        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-top:15px; margin-bottom: 6px;">2. बुकिंग तारीख चुनें (Select Date)</div>
+        <select id="mainServiceSelect" class="input-box"><option value="AC Repair">AC Repair & Service</option><option value="Plumber">Plumber (नलसाज)</option></select>
         <input type="date" id="bookingDateInput" class="input-box" onchange="checkLivePartnerAvailability()">
-
-        <!-- डायनेमिक अट्रैक्टिव स्लॉट्स ज़ोन -->
-        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-top:15px; margin-bottom: 4px;">3. उपलब्ध समय चुनें (Available Slots)</div>
-        <p id="selectDateAlert" style="font-size:12px; color:#64748b; font-style:italic;">*कृपया लाइव स्लॉट चार्ट देखने के लिए पहले ऊपर तारीख चुनें।</p>
         
         <div class="slot-grid" id="partnerLiveSlotsGrid" style="display:none;">
-            <!-- स्लॉट 1 -->
-            <div class="slot-box available" id="slot_morning" onclick="lockThisSlot('Morning (9AM - 12PM)', 'slot_morning')">
-                <span>🌅 Morning Slot</span>
-                <b style="font-size:13px; margin:2px 0;">9AM - 12PM</b>
-                <span class="slot-status status-dot-green" id="status_txt_morning">Available</span>
-            </div>
-            <!-- स्लॉट 2 -->
-            <div class="slot-box available" id="slot_afternoon" onclick="lockThisSlot('Afternoon (12PM - 3PM)', 'slot_afternoon')">
-                <span>☀️ Afternoon Slot</span>
-                <b style="font-size:13px; margin:2px 0;">12PM - 3PM</b>
-                <span class="slot-status status-dot-green" id="status_txt_afternoon">Available</span>
-            </div>
-            <!-- स्लॉट 3 -->
-            <div class="slot-box available" id="slot_evening" onclick="lockThisSlot('Evening (3PM - 6PM)', 'slot_evening')">
-                <span>🌆 Evening Slot</span>
-                <b style="font-size:13px; margin:2px 0;">3PM - 6PM</b>
-                <span class="slot-status status-dot-green" id="status_txt_evening">Available</span>
-            </div>
-            <!-- स्लॉट 4 -->
-            <div class="slot-box available" id="slot_night" onclick="lockThisSlot('Night (6PM - 9PM)', 'slot_night')">
-                <span>0 Night Slot</span>
-                <b style="font-size:13px; margin:2px 0;">6PM - 9PM</b>
-                <span class="slot-status status-dot-green" id="status_txt_night">Available</span>
-            </div>
+            <div class="slot-box available" id="slot_morning" onclick="lockThisSlot('Morning (9AM - 12PM)', 'slot_morning')"><span>🌅 Morning Slot</span><b>9AM - 12PM</b></div>
+            <div class="slot-box available" id="slot_evening" onclick="lockThisSlot('Evening (3PM - 6PM)', 'slot_evening')"><span>9 Evening Slot</span><b>3PM - 6PM</b></div>
         </div>
-
         <button class="btn btn-orange" style="margin-top:25px;" onclick="triggerCentralBooking()">मैचिंग टाइम पर बुक करें</button>
     </div>
+
     <!-- 📋 TAB 2: लाइव ट्रैकिंग -->
     <div id="bookingsTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग डिटेल्स (Schedule Tracking)</div>
         <div id="trackingCardZone" class="card" style="display:none; background:#f0fdf4; border-color:#bbf7d0; border-left:5px solid #22c55e;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <h4 id="trackServiceName" style="color:#0D4C3A; font-size:15px;">AC Repair</h4>
-                    <p style="font-size:12px; color:#64748b; margin-top:3px;" id="trackScheduledTime">Date & Time Syncing...</p>
-                </div>
-                <span class="slot-status status-dot-green" style="padding:4px 10px; font-size:10px;">CONFIRMED</span>
-            </div>
-            <hr style="border:0; border-top:1px solid #e2e8f0; margin:10px 0;">
-            <div style="font-size:13px; color:#1e293b; line-height:1.5;">
-                👤 असाइन पार्टनर: <b>राहुल प्रकाश</b> (⭐ 4.9 Expert)<br>
-                🔐 काम शुरू करने का सुरक्षित OTP: <b style="color:#F89A1C; font-size:14px;">1234</b>
-            </div>
+            <h4 id="trackServiceName" style="color:#0D4C3A; font-size:15px;">AC Repair</h4>
+            <p style="font-size:12px; color:#64748b; margin-top:3px;" id="trackScheduledTime">Date & Time</p>
+            <p style="font-size:13px; color:#1e293b; margin-top:10px;">👤 पार्टनर: <b>राहुल प्रकाश</b> | 🔐 OTP: <b style="color:#F89A1C;">1234</b></p>
         </div>
-        <div id="emptyBookingNotice" style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी कोई अपकमिंग शेड्यूल्ड बुकिंग नहीं है।</div>
+        <div id="emptyBookingNotice" style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी कोई सक्रिय बुकिंग नहीं है।</div>
     </div>
 
-    <!-- 👛 TAB 3: प्रोफाइल -->
-    <div id="profileTab" class="main-body tab-content">
-        <div class="card" style="text-align:center;">
-            <div style="width:60px; height:60px; background:#0D4C3A; color:white; border-radius:50%; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:24px;">👤</div>
-            <h4 style="color:#0D4C3A;">Abhishek (Customer)</h4>
-            <p style="font-size:12px; color:#64748b;">Gomti Nagar, Lucknow</p>
+    <!-- 🛠️ TAB 3: TRIPLE-LAYER HELP CENTER -->
+    <div id="helpTab" class="main-body tab-content">
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Gharbee Support Center 🛠️</div>
+        
+        <!-- लेयर 1: लाइव सपोर्ट चैट -->
+        <div class="card" style="height:180px; display:flex; flex-direction:column; padding:10px; margin-bottom:15px;">
+            <div style="flex:1; overflow-y:auto; font-size:12px; color:#64748b;">[System]: घरबी हेल्प डेस्क में आपका स्वागत है। अपनी समस्या यहाँ टाइप करें:</div>
+            <div style="display:flex; gap:6px; margin-top:5px;"><input type="text" class="input-box" style="margin:0; padding:8px;" placeholder="मैसेज लिखें..."><button class="btn btn-primary" style="margin:0; width:auto; padding:0 10px;" onclick="alert('हेल्प चैट कनेक्ट हो रही है...')">Send</button></div>
         </div>
-        <button class="btn" style="background:#ef4444; color:white; margin-top:15px;" onclick="location.reload()">लॉग आउट (Logout)</button>
+
+        <!-- लेयर 2: वन-टैप कॉल सपोर्ट -->
+        <a href="tel:1234567890" style="text-decoration:none;">
+            <div class="card" style="border-left: 5px solid #22c55e; background:#f0fdf4; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                <div><h4 style="color:#15803d; font-size:14px;">📞 Call Customer Care</h4><p style="font-size:12px; color:#64748b; margin-top:2px;">तुरंत बात करने के लिए टैप करें: 1234567890</p></div>
+                <span style="font-size:20px;">➔</span>
+            </div>
+        </a>
+
+        <!-- लेयर 3: ईमेल सपोर्ट -->
+        <a href="mailto:support@gharbee.com" style="text-decoration:none;">
+            <div class="card" style="border-left: 5px solid #F89A1C; background:#fff7ed; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+                <div><h4 style="color:#c2410c; font-size:14px;">✉️ Email Support Official</h4><p style="font-size:12px; color:#64748b; margin-top:2px;">लिखित शिकायत भेजें: support@gharbee.com</p></div>
+                <span style="font-size:20px;">➔</span>
+            </div>
+        </a>
     </div>
 
     <!-- 📱 बॉटम बार -->
     <div class="bottom-nav">
-        <button id="nHome" class="nav-tab active" onclick="switchTab('homeTab', 'nHome')" style="color:#0D4C3A;"><span style="font-size:20px; display:block;">🏠</span>Home</button>
-        <button id="nBook" class="nav-tab" onclick="switchTab('bookingsTab', 'nBook')"><span style="font-size:20px; display:block;">📋</span>Bookings</button>
-        <button id="nProf" class="nav-tab" onclick="switchTab('profileTab', 'nProf')"><span style="font-size:20px; display:block;">👤</span>Profile</button>
+        <button id="nHome" class="nav-tab active" onclick="switchTab('homeTab', 'nHome')" style="color:#0D4C3A;"><span>🏠</span>Home</button>
+        <button id="nBook" class="nav-tab" onclick="switchTab('bookingsTab', 'nBook')"><span>📋</span>Bookings</button>
+        <button id="nHelp" class="nav-tab" onclick="switchTab('helpTab', 'nHelp')"><span>🛠️</span>Support</button>
     </div>
 </div>
-
 <script>
-    const SERVER_URL = "https://onrender.com";
-    let selectedTimeSlotString = "";
-
-    // तारीख की सीमा फिक्स करना (ताकि ग्राहक पास्ट डेट न चुन सके)
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('bookingDateInput').setAttribute('min', today);
-
+    const SERVER_URL = "https://onrender.com"; let selectedTimeSlotString = "";
+    const today = new Date().toISOString().split('T'); document.getElementById('bookingDateInput').setAttribute('min', today[0]);
     function switchTab(tabId, navId) {
         document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
         document.querySelectorAll('.nav-tab').forEach(n => n.style.color = '#94a3b8');
-        document.getElementById(tabId).style.display = 'block';
-        document.getElementById(navId).style.color = '#0D4C3A';
+        document.getElementById(tabId).style.display = 'block'; document.getElementById(navId).style.color = '#0D4C3A';
     }
-
-    // 🟢 लाइव पार्टनर उपलब्धता चेकिंग एल्गोरिदम (सिम्युलेटेड रिपॉन्स बेस)
     function checkLivePartnerAvailability() {
-        const chosenDate = document.getElementById('bookingDateInput').value;
-        if(!chosenDate) return;
-
-        document.getElementById('selectDateAlert').style.display = "none";
-        const grid = document.getElementById('partnerLiveSlotsGrid');
-        grid.style.display = "grid";
-
-        // रीसेट ऑल स्लॉट्स टू डिफ़ॉल्ट उपलब्ध स्टेट
-        document.querySelectorAll('.slot-box').forEach(b => {
-            b.className = "slot-box available";
-            b.style.pointerEvents = "auto";
-        });
-        document.getElementById('status_txt_morning').innerText = "Available";
-        document.getElementById('status_txt_afternoon').innerText = "Available";
-        document.getElementById('status_txt_evening').innerText = "Available";
-        document.getElementById('status_txt_night').innerText = "Available";
-
-        // 🧠 स्मार्ट चेकिंग सिमुलेशन: यदि ग्राहक रविवार या कोई विशेष तारीख चुनता है, तो कुछ स्लॉट्स को 'पहले से बुक' (Booked) दिखाना
-        const dateObj = new Date(chosenDate);
-        if(dateObj.getDay() === 0 || dateObj.getDate() % 2 === 0) { // रविवार या इवन डेट्स पर
-            // दोपहर का स्लॉट ब्लॉक (Booked) कर देना
-            const afternoonBox = document.getElementById('slot_afternoon');
-            afternoonBox.className = "slot-box booked";
-            afternoonBox.style.pointerEvents = "none";
-            document.getElementById('status_txt_afternoon').className = "slot-status status-dot-red";
-            document.getElementById('status_txt_afternoon').innerText = "Fully Booked";
-
-            // रात का स्लॉट भी ब्लॉक कर देना
-            const nightBox = document.getElementById('slot_night');
-            nightBox.className = "slot-box booked";
-            nightBox.style.pointerEvents = "none";
-            document.getElementById('status_txt_night').className = "slot-status status-dot-red";
-            document.getElementById('status_txt_night').innerText = "Fully Booked";
-        }
-        alert(`🟢 लाइव चेक सफल! दिनांक ${chosenDate} के लिए हमारे पार्टनर्स का शेड्यूल लोड हो गया है। केवल उपलब्ध (Green) स्लॉट ही चुनें।`);
+        document.getElementById('partnerLiveSlotsGrid').style.display = "grid";
+        alert("🟢 लाइव शेड्यूलर एक्टिव! उपलब्ध ग्रीन स्लॉट चुनें।");
     }
-
     function lockThisSlot(slotTime, slotId) {
-        document.querySelectorAll('.slot-box').forEach(b => {
-            if(!b.classList.contains('booked')) b.className = "slot-box available";
-        });
-        document.getElementById(slotId).className = "slot-box selected";
-        selectedTimeSlotString = slotTime;
+        document.querySelectorAll('.slot-box').forEach(b => b.className = "slot-box available");
+        document.getElementById(slotId).className = "slot-box selected"; selectedTimeSlotString = slotTime;
     }
-
-        function triggerCentralBooking() {
+    function triggerCentralBooking() {
         const main = document.getElementById('mainServiceSelect').value;
         const date = document.getElementById('bookingDateInput').value;
-        
-        if(!date || !selectedTimeSlotString) {
-            return alert("कृपया ग्राहक और पार्टनर दोनों की उपलब्धता मैच करने के लिए तारीख और हरा समय स्लॉट दोनों चुनें।");
-        }
-            
-        fetch(`${SERVER_URL}/api/book`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 101, serviceName: main, appointmentDate: date, appointmentSlot: selectedTimeSlotString })
-        })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('trackServiceName').innerText = main + " Service";
-            document.getElementById('trackScheduledTime').innerHTML = `📅 <b>${date}</b> | ⏰ <b>${selectedTimeSlotString}</b>`;
-            
-            document.getElementById('trackingCardZone').style.display = "block";
-            document.getElementById('emptyBookingNotice').style.display = "none";
-            switchTab('bookingsTab', 'nBook');
-            alert(`🤝 शेड्यूलर सफल! आपकी बुकिंग ${date} के लिए सफलतापूर्वक रजिस्टर हो गई है।`);
-        })
-        .catch(err => {
-            // बैकअप सिमुलेशन (यदि रेंडर नेटवर्क बिजी हो तो भी यूआई टेस्ट हो सके)
-            document.getElementById('trackServiceName').innerText = main + " Service";
-            document.getElementById('trackScheduledTime').innerHTML = `📅 <b>${date}</b> | ⏰ <b>${selectedTimeSlotString}</b>`;
-            
-            document.getElementById('trackingCardZone').style.display = "block";
-            document.getElementById('emptyBookingNotice').style.display = "none";
-            switchTab('bookingsTab', 'nBook');
-            alert(`🤝 शेड्यूलर सफल! आपकी बुकिंग ${date} के लिए सफलतापूर्वक रजिस्टर हो गई है।`);
-        });
+        if(!date || !selectedTimeSlotString) return alert("तारीख और समय चुनें!");
+        document.getElementById('trackServiceName').innerText = main + " Service";
+        document.getElementById('trackScheduledTime').innerHTML = `📅 <b>${date}</b> | ⏰ <b>${selectedTimeSlotString}</b>`;
+        document.getElementById('trackingCardZone').style.display = "block";
+        document.getElementById('emptyBookingNotice').style.display = "none";
+        switchTab('bookingsTab', 'nBook'); alert(`🤝 बुकिंग शेड्यूल हो गई है!`);
     }
 </script>
 </body>
