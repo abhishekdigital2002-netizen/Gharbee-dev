@@ -213,10 +213,12 @@
         }
 
         fetch(`${SERVER_URL}/api/book`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 101, serviceName: main, appointmentDate: date, appointmentSlot: selectedTimeSlotString })
-        }).then(() => {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: 101, serviceName: main, appointmentDate: date, appointmentSlot: selectedTimeSlotString })
+})
+.then(res => res.json())
+.then(data => {
             document.getElementById('trackServiceName').innerText = main + " Service";
             document.getElementById('trackScheduledTime').innerHTML = `📅 <b>${date}</b> | ⏰ <b>${selectedTimeSlotString}</b>`;
             
