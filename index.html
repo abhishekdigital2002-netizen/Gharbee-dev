@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Customer App</title>
+    <title>Gharbee Ultimate Customer App</title>
     <style>
         * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; padding: 0; }
-        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow: hidden; }
+        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow-x: hidden; }
         .app-header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .header-top { display: flex; align-items: center; justify-content: space-between; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; }
-        .logo-icon { width: 35px; height: 35px; background: #ffffff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .brand-name { font-size: 24px; font-weight: 800; }
         .orange-txt { color: #F89A1C; }
         .loc-text { font-size: 13px; color: #e2e8f0; text-align: right; }
@@ -22,82 +21,185 @@
         .coupon-section { background: #f8fafc; border: 1.5px dashed #0D4C3A; padding: 12px; border-radius: 14px; margin-bottom: 25px; display: flex; gap: 10px; }
         .coupon-input { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; font-weight: 700; text-transform: uppercase; }
         .coupon-btn { background: #0D4C3A; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .service-box { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .img-icon-wrapper { width: 50px; height: 50px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px auto; color: #0D4C3A; }
+        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .service-card { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); cursor: pointer; }
+        .sub-work-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); z-index:100; }
+        .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 600; background: none; border: none; cursor: pointer; }
+        .nav-tab.active { color: #0D4C3A; font-weight: 700; }
+        .list-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 15px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 <div class="phone-screen">
+    <!-- टॉप हेडर -->
     <div class="app-header">
         <div class="header-top">
-            <div class="logo-wrap"><div class="logo-icon">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
-            <div class="loc-text">📍 Gomti Nagar,<br><span style="font-size:11px; opacity:0.8;">Lucknow</span></div>
+            <div class="logo-wrap"><div style="font-size:24px;">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
+            <div class="loc-text">📍 Gomti Nagar,<br><span style="font-size:11px; opacity:0.8;" id="liveCustomerLoc">Lucknow, UP</span></div>
         </div>
     </div>
 
-    <!-- 🏠 होम स्क्रीन -->
+    <!-- 🏠 1. होम स्क्रीन (सर्विस व सब-वर्क सिलेक्शन) -->
     <div id="homeTab" class="main-body tab-content active">
         <div class="offer-card">
-            <div style="font-size: 17px; font-weight: 700; margin-bottom:3px;">First Booking Offer!</div>
-            <div style="font-size: 12px; opacity: 0.95;">घर के किसी भी काम पर पाएं फ्लैट 20% की छूट।</div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom:3px;">First Booking Offer!</div>
+            <div style="font-size: 12px; opacity: 0.95;">कूपन कोड लागू करने पर फ्लैट 20% की बचत।</div>
         </div>
         <div class="coupon-section">
             <input type="text" id="couponInput" class="coupon-input" placeholder="कूपन कोड (GHARBEE20)">
             <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
         </div>
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Our Expert Services</div>
-        <div class="grid-container">
-            <div class="service-box" onclick="makeLiveBooking(1, 'Plumber')">
-                <div class="img-icon-wrapper">🔧</div><div style="font-size: 14px; font-weight: 700; color: #334155;">Plumber</div>
-                <div style="font-size: 11px; color: #F89A1C; font-weight: 700; margin-top: 5px; background: #fff7ed; padding: 3px 8px; border-radius: 20px; display: inline-block;">₹199 से</div>
+
+        <!-- मुख्य सर्विसेज -->
+        <div id="mainServicesView">
+            <div style="font-size: 15px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Our Expert Services</div>
+            <div class="service-grid">
+                <div class="service-card" onclick="showSubWork('Plumber', 199)">
+                    <div style="font-size:26px; margin-bottom:8px;">🔧</div><div style="font-size:14px; font-weight:700;">Plumber</div>
+                </div>
+                <div class="service-card" onclick="showSubWork('AC Repair', 399)">
+                    <div style="font-size:26px; margin-bottom:8px;">❄️</div><div style="font-size:14px; font-weight:700;">AC Repair</div>
+                </div>
             </div>
-            <div class="service-box" onclick="makeLiveBooking(5, 'AC Repair')">
-                <div class="img-icon-wrapper">❄️</div><div style="font-size: 14px; font-weight: 700; color: #334155;">AC Repair</div>
-                <div style="font-size: 11px; color: #F89A1C; font-weight: 700; margin-top: 5px; background: #fff7ed; padding: 3px 8px; border-radius: 20px; display: inline-block;">₹399 से</div>
-            </div>
+        </div>
+
+        <!-- 🛠️ सब-वर्क (Sub-Work Add Option) -->
+        <div id="subWorkView" style="display:none; margin-top:10px;">
+            <button style="border:none; background:none; color:#F89A1C; font-weight:bold; cursor:pointer; margin-bottom:15px;" onclick="backToMainServices()">← मुख्य मेनू पर जाएं</button>
+            <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;" id="subWorkTitle">Sub-Services</div>
+            <div id="subWorkListContainer"></div>
         </div>
     </div>
 
-    <!-- 📋 बुकिंग्स टैब -->
+    <!-- 📋 2. बुकिंग हिस्ट्री टैब (Booking History List) -->
     <div id="bookingsTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग्स</div>
-        <div id="liveBookingsContainer"><p style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी कोई बुकिंग नहीं है।</p></div>
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग हिस्ट्री (History)</div>
+        <div id="liveBookingsContainer">
+            <p style="text-align:center; color:#94a3b8; padding:30px; font-size:13px;">अभी तक कोई बुकिंग हिस्ट्री नहीं है।</p>
+        </div>
     </div>
-
-    <!-- 👛 वॉलेट टैब -->
+    <!-- 👛 3. डिजिटल वॉलेट टैब -->
     <div id="walletTab" class="main-body tab-content">
         <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Gharbee Wallet</div>
-        <div style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white; padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px;">
-            <p style="font-size:13px; opacity:0.8;">उपलब्ध बैलेंस</p><h2 style="font-size:32px; margin-top:5px;">₹0.00</h2>
+        <div style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white; padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(13,76,58,0.2);">
+            <p style="font-size:13px; opacity:0.8;">उपलब्ध बैलेंस (Wallet Balance)</p>
+            <h2 style="font-size:32px; margin-top:5px;" id="walletBalanceDisplay">₹500.00</h2>
+        </div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 15px;">
+            <h4 style="font-size:14px; margin-bottom:10px; color:#0D4C3A;">पैसे ऐड करें (Add Money)</h4>
+            <input type="number" id="walletAmountInput" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:10px; margin-bottom:12px; outline:none;" placeholder="अमाउंट भरें (₹)">
+            <button style="width:100%; background:#F89A1C; color:white; border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="addMoneyToWallet()">पैसे ऐड करें</button>
         </div>
     </div>
-    <!-- 📱 फिक्स्ड बॉटम नेविगेशन बार (UI इशू 100% सोल्व्ड) -->
-    <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); padding: 0 10px;">
-        <button id="navHome" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #0D4C3A; font-size: 12px; font-weight: 700; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('homeTab', 'navHome')"><span style="font-size:20px; margin-bottom:2px; display:block;">🏠</span>Home</button>
-        <button id="navBook" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('bookingsTab', 'navBook')"><span style="font-size:20px; margin-bottom:2px; display:block;">📋</span>Bookings</button>
-        <button id="navWallet" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('walletTab', 'navWallet')"><span style="font-size:20px; margin-bottom:2px; display:block;">👛</span>Wallet</button>
+
+    <!-- 👤 4. प्रोफाइल स्क्रीन टैब (Customer Photo & Logout) -->
+    <div id="profileTab" class="main-body tab-content">
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपका प्रोफाइल (My Profile)</div>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+            <!-- ग्राहक की फोटो सिमुलेशन -->
+            <div style="width:65px; height:65px; background:#cbd5e1; color:#0D4C3A; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; border:2px solid #0D4C3A; font-weight:bold;">👤</div>
+            <div>
+                <h4 style="font-size:16px; color:#0D4C3A;">अभिषेक कुमार</h4>
+                <p style="font-size:12px; color:#64748b; margin-top:2px;" id="profileLocDisplay">📍 गोमती नगर, लखनऊ</p>
+            </div>
+        </div>
+        <!-- 🚪 लॉगआउट ऑप्शन -->
+        <button style="width:100%; background:#ef4444; color:white; border:none; padding:14px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="location.reload(); alert('सफलतापूर्वक लॉग आउट कर दिया गया है।');">लॉग आउट (Logout)</button>
+    </div>
+
+    <!-- 📱 प्रीमियम बॉटम बार नेविगेशन -->
+    <div class="bottom-nav">
+        <button id="navHome" class="nav-tab active" onclick="switchTab('homeTab', 'navHome')"><span style="font-size:18px;">🏠</span>Home</button>
+        <button id="navBook" class="nav-tab" onclick="switchTab('bookingsTab', 'navBook')"><span style="font-size:18px;">📋</span>History</button>
+        <button id="navWallet" class="nav-tab" onclick="span style='font-size:18px;'>👛</span>Wallet</button>
+        <button id="navProfile" class="nav-tab" onclick="switchTab('profileTab', 'navProfile')"><span style="font-size:18px;">👤</span>Profile</button>
     </div>
 </div>
 
 <script>
     const SERVER_URL = "https://onrender.com";
-    let isDiscountApplied = false;
+    let isDiscountApplied = false; let customerBookings = []; let walletBalance = 500;
 
     function switchTab(tabId, navId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById('navHome').style.color = '#94a3b8';
-        document.getElementById('navBook').style.color = '#94a3b8';
-        document.getElementById('navWallet').style.color = '#94a3b8';
+        document.querySelectorAll('.nav-tab').forEach(n => { n.classList.remove('active'); });
         document.getElementById(tabId).classList.add('active');
-        document.getElementById(navId).style.color = '#0D4C3A';
+        document.getElementById(navId).classList.add('active');
     }
+
+    // कूपन रिस्पॉन्स
     function applyCoupon() {
         if(document.getElementById('couponInput').value.trim().toUpperCase() === "GHARBEE20") {
-            isDiscountApplied = true; alert("✅ कूपन कोड अप्लाई हो गया है!");
-        } else { alert("❌ गलत कूपन कोड!"); }
+            isDiscountApplied = true; alert("✅ GHARBEE20 कूपन कोड लागू हो गया है! 20% छूट मिलेगी।");
+        } else { alert("गलत कूपन कोड!"); }
     }
-    function makeLiveBooking(id, name) { alert(`सफल! आपका ${name} बुक हो गया है।`); }
+
+    // वॉलेट फंड ऐड
+    function addMoneyToWallet() {
+        const amt = parseInt(document.getElementById('walletAmountInput').value);
+        if(!amt || amt <= 0) return alert("कृपया अमाउंट भरें");
+        walletBalance += amt;
+        document.getElementById('walletBalanceDisplay').innerText = "₹" + walletBalance + ".00";
+        document.getElementById('walletAmountInput').value = "";
+        alert(`₹${amt} आपके वॉलेट में जोड़ दिए गए हैं।`);
+    }
+
+    // sub work logic add (सब-वर्क और कीमतें कंपनी वाइज)
+    const subWorkDatabase = {
+        'Plumber': [
+            { name: 'नया नल फिटिंग (Tap Installation)', price: 199 },
+            { name: 'वॉश बेसिन लीक फिक्स (Basin Repair)', price: 299 },
+            { name: 'फ्लश वाल्व बदलना (Flush Valve Fix)', price: 499 }
+        ],
+        'AC Repair': [
+            { name: 'एसी सर्विसिंग (Filter Cleaning)', price: 399 },
+            { name: 'गैस रिफिलिंग (Gas Top-up R32)', price: 1500 },
+            { name: 'कैपेसिटर बदलना (Havells Capacitor)', price: 450 }
+        ]
+    };
+
+    function showSubWork(categoryName) {
+        document.getElementById('mainServicesView').style.display = 'none';
+        document.getElementById('subWorkView').style.display = 'block';
+        document.getElementById('subWorkTitle').innerText = categoryName + " - Select Job Task";
+        
+        const container = document.getElementById('subWorkListContainer');
+        container.innerHTML = "";
+        
+        subWorkDatabase[categoryName].forEach(sub => {
+            let finalPrice = sub.price;
+            if(isDiscountApplied) finalPrice = (finalPrice * 0.8).toFixed(0);
+
+            const div = document.createElement('div');
+            div.className = 'sub-work-item';
+            div.innerHTML = `
+                <div>${sub.name}</div>
+                <button style="background:#F89A1C; color:white; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="triggerLiveBooking('${categoryName} - ${sub.name}', ${finalPrice})">₹${finalPrice} बुक करें</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function backToMainServices() {
+        document.getElementById('mainServicesView').style.display = 'block';
+        document.getElementById('subWorkView').style.display = 'none';
+    }
+
+    function triggerLiveBooking(fullName, price) {
+        const fakeId = `GB-${Math.floor(100000 + Math.random() * 900000)}`;
+        customerBookings.push({ id: fakeId, name: fullName, cost: price, status: "Assigned (मिस्त्री आ रहा है)" });
+        
+        // बुकिंग्स हिस्ट्री यूआई अपडेट करें
+        const container = document.getElementById('liveBookingsContainer');
+        container.innerHTML = "";
+        customerBookings.forEach(b => {
+            container.innerHTML += `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:15px; margin-bottom:12px;"><div style="display:flex; justify-content:space-between; font-weight:700;"><span>${b.name}</span><span style="color:#F89A1C;">₹${b.cost}</span></div><p style="font-size:11px; color:#64748b; margin-top:4px;">ID: ${b.id} | स्थान: गोमती नगर, लखनऊ</p><p style="font-size:12px; color:#0D4C3A; font-weight:bold; margin-top:2px;">Status: ${b.status}</p></div>`;
+        });
+
+        alert(`🎉 बुकिंग सफल! आपका ${fullName} दर्ज हो गया है। मिस्त्री जल्द ही आपसे संपर्क करेगा। Booking ID: ${fakeId}`);
+        switchTab('bookingsTab', 'navBook');
+    }
 </script>
 </body>
 </html>
