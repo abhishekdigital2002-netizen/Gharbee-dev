@@ -17,60 +17,74 @@
         .content-section { padding: 20px; flex: 1; display: none; }
         .content-section.active { display: block; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .btn { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 5px; }
-        .btn-orange { background: #F89A1C; color: white; }
-        .status-badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 700; }
-        .status-pending { background: #fef3c7; color: #d97706; }
-        .status-active { background: #dcfce7; color: #15803d; }
-        .photo-preview-box { width: 60px; height: 60px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 2px solid #0D4C3A; }
-        .partner-row { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 8px; }
     </style>
 </head>
 <body>
-
 <div class="dashboard-container">
     <div class="header">
         <div class="brand">Ghar<span class="orange-text">bee</span> Enterprise</div>
-        <div style="font-size:12px; opacity:0.8; margin-top:4px;">Super Admin Control Room</div>
+        <div style="font-size:12px; opacity:0.8; margin-top:4px;">Control Room Terminal</div>
     </div>
-
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('approval')">1. Onboarding Approval</button>
-        <button class="tab-btn" onclick="switchTab('crm')">2. Sub-Admin CRM</button>
+        <button class="tab-btn active" onclick="switchTab('approval')">1. Onboarding & Chat</button>
+        <button class="tab-btn" onclick="switchTab('analytics')">2. Performance Chart</button>
     </div>
 
-    <!-- 1. LIVE ONBOARDING APPROVAL PANEL -->
+    <!-- 1st Tab: Onboarding & Live Chat Loop -->
     <div id="approval" class="content-section active">
-        <h3 style="margin-bottom:15px; font-size:16px;">पार्टनर फोटो और डाक्यूमेंट्स अप्रूवल</h3>
-        <div id="liveApprovalList">
-            <!-- कैशे बायपास डेमो कार्ड्स जो तुरंत लोड होंगे -->
-            <div class="card" id="demoCard501">
-                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
-                    <div class="photo-preview-box">👨🏽‍🔧</div>
-                    <div>
-                        <h4 style="font-size:15px;">अमित शर्मा <span class="status-badge status-pending">PENDING</span></h4>
-                        <p style="font-size:12px; color:#64748b;">Skill: AC Repair | लखनऊ (अलीगंज)</p>
-                    </div>
-                </div>
-                <p style="font-size:12px; color:#64748b; margin-bottom:10px;">📄 आधार कार्ड: Verified by Supervisor</p>
-                <button class="btn btn-orange" onclick="approvePartnerLive(501, 'अमित शर्मा', 'AC Repair')">Final Verify & Onboard Partner</button>
+        <div class="card" style="background:#fff7ed; border-color:#ffedd5; border-left:5px solid #F89A1C;">
+            <h4 style="font-size:14px; color:#c2410c;">💬 लाइव चैट कंट्रोल मॉनिटर:</h4>
+            <div style="background:white; padding:10px; border-radius:8px; margin-top:8px; font-size:12px; max-height:80px; overflow-y:auto;">
+                <b>[Customer]:</b> ठीक है राहुल भाई, आप आ जाइए, मैं घर पर ही हूँ।
+            </div>
+        </div>
+        <div class="card">
+            <h4 style="font-size:14px; margin-bottom:10px;">पेंडिंग पार्टनर वेरिफिकेशन</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:10px; border-radius:8px; border:1px solid #e2e8f0;">
+                <div><b>Amit Sharma</b> (Plumber)</div>
+                <button style="background:#F89A1C; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="alert('पार्टनर अमित शर्मा को लाइव ऑनबोर्ड कर दिया गया है!')">Approve</button>
             </div>
         </div>
     </div>
-
-    <!-- 2. SUB-ADMIN CRM CONTROLS -->
-    <div id="crm" class="content-section">
-        <h3 style="margin-bottom:15px; font-size:16px;">एक्टिव स्टाफ व पार्टनर लिस्ट (Lucknow)</h3>
-        <div id="liveActiveList">
-            <div class="partner-row">
-                <div><b>Supervisor Aliganj</b> (Role: TL)</div>
-                <span class="status-badge status-active">Active</span>
+    <!-- 2nd Tab: ADVANCED PERFORMANCE RATING CHART -->
+    <div id="analytics" class="content-section">
+        <h3 style="margin-bottom:15px; font-size:15px; font-weight:bold;">Service Partner Performance Metrics</h3>
+        <div class="card" style="background:white;">
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px;">लखनऊ रीजन के टॉप मिस्त्रियों का लाइव रेटिंग स्कोरकार्ड:</p>
+            
+            <!-- बार ग्राफ 1: राहुल प्रकाश -->
+            <div style="margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:4px;">
+                    <span>🔧 राहुल प्रकाश (AC Expert)</span>
+                    <span style="color:#22c55e;">⭐ 4.9 / 5.0</span>
+                </div>
+                <div style="width:100%; background:#e2e8f0; height:12px; border-radius:10px; overflow:hidden;">
+                    <div style="width:98%; background:#22c55e; height:100%; border-radius:10px;"></div>
+                </div>
             </div>
-            <div class="partner-row">
-                <div><b>Ramesh Kumar</b> (Role: Plumber)</div>
-                <span class="status-badge status-active">Active</span>
+
+            <!-- बार ग्राफ 2: अमित शर्मा -->
+            <div style="margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:4px;">
+                    <span>🚰 अमित शर्मा (Plumber)</span>
+                    <span style="color:#eab308;">⭐ 4.2 / 5.0</span>
+                </div>
+                <div style="width:100%; background:#e2e8f0; height:12px; border-radius:10px; overflow:hidden;">
+                    <div style="width:84%; background:#eab308; height:100%; border-radius:10px;"></div>
+                </div>
+            </div>
+            <!-- बार ग्राफ 3: विकास यादव -->
+            <div style="margin-bottom:5px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:4px;">
+                    <span>💡 विकास यादव (Electrician)</span>
+                    <span style="color:#ef4444;">⭐ 3.5 / 5.0</span>
+                </div>
+                <div style="width:100%; background:#e2e8f0; height:12px; border-radius:10px; overflow:hidden;">
+                    <div style="width:70%; background:#ef4444; height:100%; border-radius:10px;"></div>
+                </div>
             </div>
         </div>
+        <p style="font-size:11px; color:#94a3b8; text-align:center; line-height:1.4;">*नोट: एल्गोरिदम 4-स्टार से कम रेटिंग वाले पार्टनर्स को ऑटो-सस्पेंड करने का अलर्ट सब-एडमिन पैनल पर भेजता है।</p>
     </div>
 </div>
 
@@ -80,18 +94,6 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
-    }
-
-    function approvePartnerLive(id, name, skill) {
-        document.getElementById('demoCard' + id).innerHTML = `<p style='color:#22c55e; font-weight:bold; font-size:13px; text-align:center; padding:15px;'>✅ ${name} को सफलतापूर्वक ऑनबोर्ड कर दिया गया है!</p>`;
-        
-        const list = document.getElementById('liveActiveList');
-        const row = document.createElement('div');
-        row.className = 'partner-row';
-        row.innerHTML = `<div><b>${name} (${skill})</b></div><span class='status-badge status-active'>Onboarded</span>`;
-        list.appendChild(row);
-        
-        alert(`सफल! सब-एडमिन ने ${name} को फाइनल अप्रूवल दे दिया है। यह पार्टनर अब काम करने के लिए एक्टिव है।`);
     }
 </script>
 </body>
