@@ -3,32 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Enterprise Management Portal</title>
+    <title>Gharbee Enterprise Dashboard</title>
     <style>
-        * { box-sizing: border-box; font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #f1f5f9; color: #0D4C3A; padding: 10px; }
         .dashboard-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; min-height: 90vh; display: flex; flex-direction: column; }
         .header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; text-align: center; }
         .brand { font-size: 26px; font-weight: 800; }
         .orange-text { color: #F89A1C; }
-        .tagline { font-size: 12px; opacity: 0.8; letter-spacing: 1px; margin-top: 4px; }
         .tabs { display: flex; background: #e2e8f0; padding: 5px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: none; font-weight: 600; font-size: 13px; color: #64748b; cursor: pointer; border-radius: 10px; text-align: center; }
-        .tab-btn.active { background: white; color: #0D4C3A; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; font-weight: 600; font-size: 13px; color: #64748b; cursor: pointer; border-radius: 10px; }
+        .tab-btn.active { background: white; color: #0D4C3A; }
         .content-section { padding: 20px; flex: 1; display: none; }
         .content-section.active { display: block; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
-        .card-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; }
-        .btn { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 14px; margin-top: 5px; }
+        .btn { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 5px; }
         .btn-primary { background: #0D4C3A; color: white; }
         .btn-orange { background: #F89A1C; color: white; }
-        .btn-success { background: #22c55e; color: white; }
         .status-badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 700; }
         .status-pending { background: #fef3c7; color: #d97706; }
-        .status-tl { background: #e0f2fe; color: #0369a1; }
         .status-active { background: #dcfce7; color: #15803d; }
-        .parts-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .part-item { display: flex; justify-content: space-between; background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; }
+        .photo-preview-box { width: 60px; height: 60px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 2px solid #0D4C3A; }
     </style>
 </head>
 <body>
@@ -36,70 +31,41 @@
 <div class="dashboard-container">
     <div class="header">
         <div class="brand">Ghar<span class="orange-text">bee</span> Enterprise</div>
-        <div class="tagline">Control Room & Live CRM Simulator</div>
+        <div style="font-size:12px; opacity:0.8; margin-top:4px;">Super Admin Control Room</div>
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('approval')">1. Approval Flow</button>
+        <button class="tab-btn active" onclick="switchTab('approval')">1. Onboarding Approval</button>
         <button class="tab-btn" onclick="switchTab('crm')">2. Sub-Admin CRM</button>
-        <button class="tab-btn" onclick="switchTab('jobcard')">3. Live Job Card</button>
     </div>
 
-    <!-- 1. APPROVAL FLOW PANEL -->
+    <!-- ONBOARDING FLOW WITH PHOTO -->
     <div id="approval" class="content-section active">
-        <h3 style="margin-bottom:15px; font-size:16px;">पार्टनर ऑनबोर्डिंग (4-Tier Verification)</h3>
+        <h3 style="margin-bottom:15px; font-size:16px;">पार्टनर फोटो और डाक्यूमेंट्स अप्रूवल</h3>
         <div class="card">
-            <div class="card-title">पार्टनर: राहुल प्रकाश (AC Technician) <span id="partnerStatus" class="status-badge status-pending">PENDING</span></div>
-            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">शहर: लखनऊ | डॉक्युमेंट्स: आधार कार्ड अपलोडेड</p>
-            
-            <div id="tlStep">
-                <button class="btn btn-primary" onclick="triggerTLApproval()">1st Approval (Supervisor / TL)</button>
-                <p style="font-size:11px; color:#94a3b8; margin-top:4px;">*सुपरवाइजर ग्राउंड पर जाकर डाक्यूमेंट्स और कैरेक्टर वेरिफाई करेगा।</p>
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
+                <div class="photo-preview-box">👤</div>
+                <div>
+                    <h4 style="font-size:15px;">राहुल प्रकाश <span id="pStatus" class="status-badge status-pending">PENDING</span></h4>
+                    <p style="font-size:12px; color:#64748b;">Skill: AC Repair | लखनऊ</p>
+                </div>
             </div>
+            <p style="font-size:12px; color:#64748b; margin-bottom:10px;">📄 आधार कार्ड: Verified by Supervisor</p>
             
-            <div id="subAdminStep" style="display:none;">
-                <button class="btn btn-orange" onclick="triggerSubAdminApproval()">2nd Final Approval (Sub-Admin)</button>
-                <p style="font-size:11px; color:#94a3b8; margin-top:4px;">*सब-एडमिन ऑफिस से फाइनल रिव्यू करके सिस्टम में एक्टिवेट करेगा।</p>
+            <div id="adminApprovalZone">
+                <button class="btn btn-orange" onclick="approvePartnerFinal()">Final Verify & Onboard Partner</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. SUB-ADMIN CRM CONTROLS -->
+    <!-- SUB-ADMIN CONTROLS -->
     <div id="crm" class="content-section">
-        <h3 style="margin-bottom:15px; font-size:16px;">सब-एडमिन ऑपरेशनल कंट्रोल्स</h3>
+        <h3 style="margin-bottom:15px; font-size:16px;">एक्टिव स्टाफ लिस्ट</h3>
         <div class="card">
-            <div class="card-title">स्टाफ और पार्टनर्स लिस्ट (Lucknow Region)</div>
-            <div style="font-size:14px; background:white; padding:10px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:10px; display:flex; justify-content:between; align-items:center;">
-                <div><b>Supervisor Aliganj</b> (Role: TL)</div>
-                <span class="status-badge status-active">Active</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:14px; background:white; padding:10px; border-radius:8px; border:1px solid #e2e8f0;">
+                <div><b>Rahul Prakash (AC Expert)</b></div>
+                <span class="status-badge status-active">Onboarded & Active</span>
             </div>
-            <div id="crmPartnerItem" style="font-size:14px; background:white; padding:10px; border-radius:8px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-                <div><b>Rahul Prakash</b> (Role: Partner)</div>
-                <button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="removePartnerFromCRM()">Remove</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. LIVE JOB CARD & PARTS LIST -->
-    <div id="jobcard" class="content-section">
-        <h3 style="margin-bottom:15px; font-size:16px;">लाइव जॉब कार्ड (पारदर्शी ग्राहक सेवा)</h3>
-        <div class="card" style="background:#fff7ed; border-color:#ffedd5;">
-            <div class="card-title" style="color:#c2410c;">Status: LIVE JOB CARD OPEN</div>
-            <p style="font-size:13px; color:#7c2d12;">कस्टमर आईडी: <b>Lucknow_GomtiNagar_101</b></p>
-            <p style="font-size:13px; color:#7c2d12; margin-top:4px;">बेस सर्विस चार्ज: <b>₹399</b></p>
-            <hr style="margin:10px 0; border:0; border-top:1px solid #ffedd5;">
-            <div style="font-size:14px; font-weight:bold; color:#c2410c;">बदले गए पार्ट्स (कस्टमर को लाइव दिख रहा है):</div>
-            <div id="customerPartsList" class="parts-list">
-                <div style="font-size:12px; color:#9a3412; font-style:italic;">अभी कोई पार्ट नहीं बदला गया है...</div>
-            </div>
-            <div style="font-size:16px; font-weight:800; color:#c2410c; margin-top:15px; text-align:right;">लाइव कुल बिल: <span id="liveTotalBill">₹399</span></div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">पार्टनर टूलबॉक्स (Add Spare Parts)</div>
-            <p style="font-size:12px; color:#64748b; margin-bottom:10px;">अगर काम के दौरान कोई पार्ट बदलना पड़े, तो यहाँ से सेलेक्ट करें:</p>
-            <button class="btn btn-primary" style="margin-bottom:8px; font-size:13px;" onclick="addPartToJobCard('AC Capacitor (Havells)', 450)">+ Add Havells AC Capacitor (₹450)</button>
-            <button class="btn btn-primary" style="font-size:13px;" onclick="addPartToJobCard('Copper Wire 1.5mm (Finolex)', 150)">+ Add Finolex Copper Wire (₹150)</button>
         </div>
     </div>
 </div>
@@ -112,41 +78,11 @@
         event.currentTarget.classList.add('active');
     }
 
-    function triggerTLApproval() {
-        document.getElementById('partnerStatus').innerText = "TL_APPROVED";
-        document.getElementById('partnerStatus').className = "status-badge status-tl";
-        document.getElementById('tlStep').style.display = "none";
-        document.getElementById('subAdminStep').style.display = "block";
-        alert("सफल! Supervisor (TL) ने ग्राउंड वेरिफिकेशन पूरा कर दिया है। अब सब-एडमिन के पास रिक्वेस्ट ट्रांसफर हो गई है।");
-    }
-
-    function triggerSubAdminApproval() {
-        document.getElementById('partnerStatus').innerText = "ONBOARDED";
-        document.getElementById('partnerStatus').className = "status-badge status-active";
-        document.getElementById('subAdminStep').style.display = "none";
-        alert("बधाई हो! Sub-Admin ने फाइनल अप्रूवल दे दिया है। पार्टनर अब सिस्टम में एक्टिव हो चुका है और ऑर्डर्स ले सकता है।");
-    }
-
-    function removePartnerFromCRM() {
-        document.getElementById('crmPartnerItem').style.opacity = "0.4";
-        document.getElementById('crmPartnerItem').innerHTML = "<div style='color:#ef4444; font-weight:bold;'>पार्टनर को सब-एडमिन द्वारा हटा दिया गया है।</div>";
-        alert("राइट्स कन्फर्मेशन: सब-एडमिन ने पार्टनर को डिलीट कर दिया है। सुपर एडमिन (आप) को इसकी रिपोर्ट डैशबोर्ड पर मिल जाएगी।");
-    }
-
-    let currentBill = 399;
-    let partsAdded = false;
-    function addPartToJobCard(name, price) {
-        const list = document.getElementById('customerPartsList');
-        if(!partsAdded) { list.innerHTML = ""; partsAdded = true; }
-        
-        const item = document.createElement('div');
-        item.className = 'part-item';
-        item.innerHTML = `<div><b>${name}</b></div><div style='color:#F89A1C; font-weight:bold;'>₹${price}</div>`;
-        list.appendChild(item);
-        
-        currentBill += price;
-        document.getElementById('liveTotalBill').innerText = `₹${currentBill}`;
-        alert(`लाइव अपडेट: टूलबॉक्स में ${name} जोड़ा गया। कस्टमर के फोन स्क्रीन पर बिल तुरंत लाइव अपडेट हो गया है!`);
+    function approvePartnerFinal() {
+        document.getElementById('pStatus').innerText = "ONBOARDED";
+        document.getElementById('pStatus').className = "status-badge status-active";
+        document.getElementById('adminApprovalZone').innerHTML = "<p style='color:#22c55e; font-weight:bold; font-size:13px; text-align:center;'>✅ पार्टनर पूरी तरह ऑनबोर्ड हो चुका है और काम पर जाने के लिए तैयार है।</p>";
+        alert("सफल! सब-एडमिन ने प्रोफाइल फोटो और डाक्यूमेंट्स को फाइनल अप्रूव कर दिया है।");
     }
 </script>
 </body>
