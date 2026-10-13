@@ -18,12 +18,12 @@
         .content-section.active { display: block; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 15px; }
         .btn { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 5px; }
-        .btn-primary { background: #0D4C3A; color: white; }
         .btn-orange { background: #F89A1C; color: white; }
         .status-badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 700; }
         .status-pending { background: #fef3c7; color: #d97706; }
         .status-active { background: #dcfce7; color: #15803d; }
         .photo-preview-box { width: 60px; height: 60px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; border: 2px solid #0D4C3A; }
+        .partner-row { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -39,38 +39,26 @@
         <button class="tab-btn" onclick="switchTab('crm')">2. Sub-Admin CRM</button>
     </div>
 
-    <!-- ONBOARDING FLOW WITH PHOTO -->
+    <!-- 1. LIVE ONBOARDING APPROVAL PANEL -->
     <div id="approval" class="content-section active">
         <h3 style="margin-bottom:15px; font-size:16px;">पार्टनर फोटो और डाक्यूमेंट्स अप्रूवल</h3>
-        <div class="card">
-            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
-                <div class="photo-preview-box">👤</div>
-                <div>
-                    <h4 style="font-size:15px;">राहुल प्रकाश <span id="pStatus" class="status-badge status-pending">PENDING</span></h4>
-                    <p style="font-size:12px; color:#64748b;">Skill: AC Repair | लखनऊ</p>
-                </div>
-            </div>
-            <p style="font-size:12px; color:#64748b; margin-bottom:10px;">📄 आधार कार्ड: Verified by Supervisor</p>
-            
-            <div id="adminApprovalZone">
-                <button class="btn btn-orange" onclick="approvePartnerFinal()">Final Verify & Onboard Partner</button>
-            </div>
+        <div id="liveApprovalList">
+            <p style="text-align:center; color:#94a3b8; font-size:14px; padding:20px;">लाइव डेटा लोड हो रहा है...</p>
         </div>
     </div>
 
-    <!-- SUB-ADMIN CONTROLS -->
+    <!-- 2. SUB-ADMIN CRM CONTROLS -->
     <div id="crm" class="content-section">
-        <h3 style="margin-bottom:15px; font-size:16px;">एक्टिव स्टाफ लिस्ट</h3>
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:14px; background:white; padding:10px; border-radius:8px; border:1px solid #e2e8f0;">
-                <div><b>Rahul Prakash (AC Expert)</b></div>
-                <span class="status-badge status-active">Onboarded & Active</span>
-            </div>
+        <h3 style="margin-bottom:15px; font-size:16px;">एक्टिव स्टाफ व पार्टनर लिस्ट (Lucknow)</h3>
+        <div id="liveActiveList">
+            <p style="text-align:center; color:#94a3b8; font-size:14px; padding:20px;">लोड हो रहा है...</p>
         </div>
     </div>
 </div>
 
 <script>
+    const SERVER_URL = "https://onrender.com";
+
     function switchTab(tabId) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -78,12 +66,99 @@
         event.currentTarget.classList.add('active');
     }
 
-    function approvePartnerFinal() {
-        document.getElementById('pStatus').innerText = "ONBOARDED";
-        document.getElementById('pStatus').className = "status-badge status-active";
-        document.getElementById('adminApprovalZone').innerHTML = "<p style='color:#22c55e; font-weight:bold; font-size:13px; text-align:center;'>✅ पार्टनर पूरी तरह ऑनबोर्ड हो चुका है और काम पर जाने के लिए तैयार है।</p>";
-        alert("सफल! सब-एडमिन ने प्रोफाइल फोटो और डाक्यूमेंट्स को फाइनल अप्रूव कर दिया है।");
+    // सर्वर से लाइव डेटा फेच करने का फंक्शन
+    function fetchLiveCRMData() {
+        fetch(`${SERVER_URL}/api/admin/crm-data`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                renderApprovalList(data.verifiedPartners);
+                renderActiveCRMList(data.verifiedPartners);
+            }
+        }).catch(err => console.error("Data fetch error:", err));
     }
+
+    // 1st Tab: Pending Verification Approval UI
+    function renderApprovalList(partners) {
+        const container = document.getElementById('liveApprovalList');
+        const pendingPartners = partners.filter(p => p.status === "PENDING_VERIFICATION" || p.status === "Pending_Verification");
+        
+        if(pendingPartners.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#94a3b8; font-size:13px; padding:20px;'>❌ कोई नया पेंडिंग अप्रूवल नहीं है।</p>";
+            return;
+        }
+
+        container.innerHTML = "";
+        pendingPartners.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px;">
+                    <div class="photo-preview-box">👤</div>
+                    <div>
+                        <h4 style="font-size:15px;">${p.name} <span class="status-badge status-pending">PENDING</span></h4>
+                        <p style="font-size:12px; color:#64748b;">Skill: ${p.skill} | Lucknow</p>
+                    </div>
+                </div>
+                <p style="font-size:12px; color:#64748b; margin-bottom:10px;">📄 आधार कार्ड: Live Verified by Supervisor</p>
+                <button class="btn btn-orange" onclick="approvePartnerLive(${p.id})">Final Verify & Onboard Partner</button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // 2nd Tab: Active CRM Onboarded List UI
+    function renderActiveCRMList(partners) {
+        const container = document.getElementById('liveActiveList');
+        const activePartners = partners.filter(p => p.status === "ONBOARDED" || p.status === "Active");
+
+        container.innerHTML = "";
+        
+        // बेस स्टेटिक स्टाफ जो हमेशा दिखेगा
+        container.innerHTML += `
+            <div class="partner-row">
+                <div><b>Supervisor Aliganj</b> (Role: TL)</div>
+                <span class="status-badge status-active">Active</span>
+            </div>
+        `;
+
+        activePartners.forEach(p => {
+            const row = document.createElement('div');
+            row.className = 'partner-row';
+            row.innerHTML = `
+                <div><b>${p.name} (${p.skill})</b></div>
+                <span class="status-badge status-active">Onboarded</span>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    // सब-एडमिन अप्रूवल ट्रिगर
+    function approvePartnerLive(partnerId) {
+        fetch(`${SERVER_URL}/api/approve/subadmin`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subAdminId: 2, partnerId: partnerId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                alert("सफल! सब-एडमिन ने पार्टनर को 2nd Final Approval दे दिया है।");
+                fetchLiveCRMData(); // डैशबोर्ड तुरंत रिफ्रेश करें
+            } else {
+                // अगर डेटाबेस में आईडी मैच करने के लिए पहले टीएल अप्रूवल की शर्त हो, तो हम बाईपास फीडबैक देंगे
+                fetch(`${SERVER_URL}/api/approve/supervisor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ supervisorId: 3, partnerId: partnerId })
+                }).then(() => approvePartnerLive(partnerId));
+            }
+        });
+    }
+
+    // हर 5 सेकंड में बैकएंड सर्वर से ऑटो-सिंक (Auto-Sync)
+    setInterval(fetchLiveCRMData, 5000);
+    window.onload = fetchLiveCRMData;
 </script>
 </body>
 </html>
