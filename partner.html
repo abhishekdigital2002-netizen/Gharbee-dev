@@ -21,10 +21,8 @@
         .btn-orange { background: #F89A1C; color: white; }
         .input-box { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; margin-top: 5px; }
         .id-card { background: linear-gradient(135deg, #0D4C3A 0%, #166534 100%); color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; border: 3px solid #F89A1C; margin-bottom: 20px; }
-        .id-badge { background: #F89A1C; color: white; font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
         .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; background: none; border: none; }
-        .nav-tab.active { color: #0D4C3A; }
     </style>
 </head>
 <body>
@@ -34,7 +32,7 @@
         <button id="statusToggle" class="toggle-btn btn-offline" onclick="toggleOnlineStatus()">OFFLINE</button>
     </div>
 
-    <!-- 🚪 पार्टनर ऐप लॉगिन स्क्रीन -->
+    <!-- 🚪 लॉगिन स्क्रीन -->
     <div id="partnerAuth" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 75vh; width: 100%;">
         <h3 style="margin-bottom: 20px; font-size:18px;">पार्टनर ऐप लॉगिन</h3>
         <div id="phoneStep" style="width: 100%;">
@@ -47,14 +45,7 @@
         </div>
     </div>
 
-    <!-- 🛠️ नया रजिस्ट्रेशन रिक्वेस्ट फॉर्म -->
-    <div id="partnerForm" class="container" style="display: none;">
-        <h3>Join as a Partner (नई अर्जी)</h3>
-        <input type="text" id="partnerName" class="input-box" placeholder="पूरा नाम लिखें">
-        <button class="btn btn-primary" style="background:#22c55e;" onclick="submitPartnerDocs()">अर्जी सबमिट करें</button>
-    </div>
-
-    <!-- 📲 मुख्य एक्टिव पार्टनर ऐप बोर्ड -->
+    <!-- 📲 मुख्य पार्टनर डैशबोर्ड -->
     <div id="partnerDuty" class="container" style="display: none;">
         
         <!-- 🏠 टैब 1: ड्यूटी और लाइव ऑपरेशन्स -->
@@ -72,105 +63,67 @@
             </div>
         </div>
 
-        <!-- 💰 टैब 2: इनकम, क्लोज्ड जॉब और विथड्रॉअल ट्रैकर -->
+        <!-- 💰 टैब 2: इनकम और विथड्रॉअल ट्रैकर -->
         <div id="incomeTabContent" class="tab-content" style="display: none;">
             <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;">कमाई का हिसाब (Earnings Summary)</div>
             <div class="card" style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; text-align:center; padding:20px;">
-                <p style="font-size:12px; opacity:0.8;">कुल वॉलेट बैलेंस (Wallet Balance)</p>
-                <h2 style="font-size:28px; color:#F89A1C; margin-top:5px;" id="partnerWalletBalance">₹350.00</h2>
-                <button class="btn btn-orange" style="margin-top:12px; font-size:12px; padding:10px;" onclick="requestWithdrawal()">Bank में ट्रांसफर करें (Withdraw)</button>
-            </div>
-            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px;">
-                <div class="card" style="text-align:center;"><h5>कुल क्लोज्ड जॉब</h5><h3 style="color:#0D4C3A; margin-top:5px;">24 Jobs</h3></div>
-                <div class="card" style="text-align:center;"><h5>इस महीने की कमाई</h5><h3 style="color:#22c55e; margin-top:5px;">₹8,450</h3></div>
-            </div>
-            <div class="card" style="text-align:center; background:#f0fdf4;">
-                <h5>इस साल की कुल कमाई (Yearly Income)</h5>
-                <h2 style="color:#16a34a; margin-top:5px;">₹96,200.00</h2>
+                <p style="font-size:12px; opacity:0.8;">कुल वॉलेट बैलेंस</p>
+                <h2 style="font-size:28px; color:#F89A1C; margin-top:5px;">₹350.00</h2>
+                <button class="btn btn-orange" style="margin-top:12px; font-size:12px; padding:10px;" onclick="alert('❌ विथड्रॉअल फेल! न्यूनतम ट्रांसफर राशि ₹500 है।')">Withdraw to Bank</button>
             </div>
         </div>
 
-        <!-- 🪪 टैब 3: डिजिटल आईडी कार्ड और प्रोफाइल -->
-        <div id="idCardTabContent" class="tab-content" style="display: none;">
-            <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;">आपका डिजिटल आईडी कार्ड</div>
+        <!-- 👤 टैब 3: पार्टनर प्रोफाइल व्यू और डिजिटल आईडी कार्ड -->
+        <div id="profileTabContent" class="tab-content" style="display: none;">
+            <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;">आपका प्रोफाइल (My Profile)</div>
+            
+            <!-- डिजिटल आईडी कार्ड -->
             <div class="id-card">
-                <div class="id-badge">Verified Partner</div>
-                <div style="font-size:20px; font-weight:800; margin-bottom:4px;">Gharbee India</div>
-                <p style="font-size:11px; opacity:0.7; margin-bottom:15px;">ID NO: GB-2026-501</p>
-                <div style="width:70px; height:70px; background:white; border-radius:50%; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:32px;">👤</div>
-                <h3 style="font-size:18px; font-weight:700;">राहुल प्रकाश</h3>
-                <p style="font-size:13px; color:#F89A1C; font-weight:bold; margin-top:2px;">AC Repair Expert</p>
-                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.15); margin:15px 0;">
-                <div style="width:65px; height:65px; background:white; margin:0 auto; padding:5px; border-radius:6px; display:flex; flex-direction:column; justify-content:space-between;">
-                    <div style="display:flex; justify-content:space-between;"><span style="width:12px; height:12px; background:black;"></span><span style="width:12px; height:12px; background:black;"></span></div>
-                    <div style="display:flex; justify-content:space-between;"><span style="width:12px; height:12px; background:black;"></span><span style="width:12px; height:12px; background:black;"></span></div>
-                </div>
-                <p style="font-size:10px; opacity:0.6; margin-top:8px;">Scan QR for Live Police Verification Status</p>
+                <div style="font-size:18px; font-weight:800; margin-bottom:4px;">Gharbee Official ID</div>
+                <div style="width:60px; height:60px; background:white; border-radius:50%; margin:10px auto; display:flex; align-items:center; justify-content:center; font-size:28px;">👤</div>
+                <h3 style="font-size:16px;">राहुल प्रकाश</h3>
+                <p style="font-size:12px; color:#F89A1C; font-weight:bold;">AC Repair Expert</p>
             </div>
+
+            <!-- प्रोफाइल डिटेल्स लिस्ट -->
+            <div class="card" style="font-size:14px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between;"><span>📍 कार्य क्षेत्र:</span> <b>Lucknow, UP</b></div>
+                <div style="display:flex; justify-content:space-between;"><span>📄 KYC स्टेटस:</span> <b style="color:#22c55e;">✅ ACTIVE (आधार वेरिफाइड)</b></div>
+                <div style="display:flex; justify-content:space-between;"><span>💼 कुल क्लोज्ड जॉब्स:</span> <b>24 Jobs Done</b></div>
+            </div>
+
+            <!-- 🚪 डायरेक्ट लॉगआउट बटन -->
+            <button class="btn" style="background:#ef4444; color:white; margin-top:15px;" onclick="location.reload(); alert('सफलतापूर्वक लॉग आउट कर दिया गया है।');">लॉग आउट (Logout)</button>
         </div>
     </div>
     <!-- 📱 असली ऐप जैसा बॉटम नेविगेशन बार -->
     <div id="partnerBottomNav" class="bottom-nav" style="display:none; z-index:100;">
-        <button id="navDuty" class="nav-tab active" onclick="switchPartnerTab('dutyTabContent', 'navDuty')" style="color:#0D4C3A;"><span style="font-size:20px; display:block;">💼</span>Duty</button>
+        <button id="navDuty" class="nav-tab" onclick="switchPartnerTab('dutyTabContent', 'navDuty')" style="color:#0D4C3A;"><span style="font-size:20px; display:block;">💼</span>Duty</button>
         <button id="navIncome" class="nav-tab" onclick="switchPartnerTab('incomeTabContent', 'navIncome')"><span style="font-size:20px; display:block;">💰</span>Earnings</button>
-        <button id="navId" class="nav-tab" onclick="switchPartnerTab('idCardTabContent', 'navId')"><span style="font-size:20px; display:block;">🪪</span>ID Card</button>
+        <button id="navProfile" class="nav-tab" onclick="switchPartnerTab('profileTabContent', 'navProfile')"><span style="font-size:20px; display:block;"> 👤</span>Profile</button>
     </div>
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const appMode = urlParams.get('mode');
-    let pWalletBalance = 350;
-
-    window.onload = function() {
-        if(appMode === 'apply') {
-            document.getElementById('partnerAuth').style.display = "none";
-            document.getElementById('partnerForm').style.display = "block";
-        } else {
-            document.getElementById('partnerAuth').style.display = "flex";
-            document.getElementById('partnerForm').style.display = "none";
-        }
-    };
-
     function sendPartnerOtp() {
         if(document.getElementById('partnerPhone').value.length < 10) return alert("नंबर सही नहीं है");
         document.getElementById('phoneStep').style.display = "none";
         document.getElementById('otpStep').style.display = "block";
         alert("टेस्ट मोड OTP: 1234");
     }
-
     function verifyPartnerOtp() {
         if(document.getElementById('partnerOtp').value === '1234') {
             document.getElementById('partnerAuth').style.display = "none";
             document.getElementById('partnerDuty').style.display = "block";
             document.getElementById('partnerBottomNav').style.display = "flex";
-            alert("लॉगिन सफल! अब आप नीचे से Earnings या ID Card टैब देख सकते हैं।");
         } else { alert("गलत OTP"); }
     }
-
     function switchPartnerTab(contentId, navId) {
         document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
         document.querySelectorAll('.nav-tab').forEach(n => n.style.color = '#94a3b8');
-        
         document.getElementById(contentId).style.display = 'block';
         document.getElementById(navId).style.color = '#0D4C3A';
     }
-
-    function requestWithdrawal() {
-        if(pWalletBalance < 500) {
-            alert(`❌ विथड्रॉअल फेल! न्यूनतम राशि ₹500.00 होनी अनिवार्य है। आपका वर्तमान बैलेंस ₹${pWalletBalance}.00 है।`);
-        } else {
-            alert(`✅ ट्रांसफर सफल! ₹${pWalletBalance} आपके बैंक अकाउंट में भेज दिए गए हैं।`);
-            pWalletBalance = 0;
-            document.getElementById('partnerWalletBalance').innerText = "₹0.00";
-        }
-    }
-
-    function submitPartnerDocs() {
-        alert("अर्जी सबमिट हो गई है!");
-        window.location.href = 'index.html';
-    }
-
     let isOnline = false;
     function toggleOnlineStatus() {
         isOnline = !isOnline;
