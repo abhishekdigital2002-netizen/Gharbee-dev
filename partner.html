@@ -15,18 +15,13 @@
         .btn-online { background: #22c55e; color: white; }
         .container { padding: 15px; flex: 1; overflow-y: auto; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
         .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 10px; }
         .btn-primary { background: #0D4C3A; color: white; }
         .btn-orange { background: #F89A1C; color: white; }
         .input-box { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; margin-top: 5px; }
-        
-        /* 🪪 डिजिटल आईडी कार्ड लग्जरी स्टाइल */
         .id-card { background: linear-gradient(135deg, #0D4C3A 0%, #166534 100%); color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.15); position: relative; border: 3px solid #F89A1C; margin-bottom: 20px; }
         .id-badge { background: #F89A1C; color: white; font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* बॉटम मेनू बार नेविगेशन */
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
         .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; background: none; border: none; }
         .nav-tab.active { color: #0D4C3A; }
@@ -34,17 +29,18 @@
 </head>
 <body>
 <div class="partner-screen">
-    <!-- टॉप बार -->
     <div class="header">
         <div class="brand">Ghar<span style="color:#F89A1C;">bee</span> Partner</div>
         <button id="statusToggle" class="toggle-btn btn-offline" onclick="toggleOnlineStatus()">OFFLINE</button>
     </div>
 
-    <!-- 🚪 लॉगिन स्क्रीन (कन्फिग्रेशन मोड के अनुसार) -->
-    <div id="partnerAuth" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 75vh;">
+    <!-- 🚪 पार्टनर ऐप लॉगिन स्क्रीन -->
+    <div id="partnerAuth" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 75vh; width: 100%;">
         <h3 style="margin-bottom: 20px; font-size:18px;">पार्टनर ऐप लॉगिन</h3>
-        <input type="tel" id="partnerPhone" class="input-box" placeholder="रजिस्टर्ड मोबाइल नंबर डालें">
-        <button class="btn btn-primary" onclick="sendPartnerOtp()">OTP भेजें</button>
+        <div id="phoneStep" style="width: 100%;">
+            <input type="tel" id="partnerPhone" class="input-box" placeholder="रजिस्टर्ड मोबाइल नंबर डालें">
+            <button class="btn btn-primary" onclick="sendPartnerOtp()">OTP भेजें</button>
+        </div>
         <div id="otpStep" style="width: 100%; display: none; margin-top:15px;">
             <input type="number" id="partnerOtp" class="input-box" placeholder="OTP दर्ज करें (1234)">
             <button class="btn btn-orange" onclick="verifyPartnerOtp()">Verify & App खोलें</button>
@@ -62,7 +58,7 @@
     <div id="partnerDuty" class="container" style="display: none;">
         
         <!-- 🏠 टैब 1: ड्यूटी और लाइव ऑपरेशन्स -->
-        <div id="dutyTabContent" class="tab-content active">
+        <div id="dutyTabContent" class="tab-content" style="display: block;">
             <div class="card" style="background:#0D4C3A; color:white; display:flex; justify-content:space-between; align-items:center;">
                 <div><p style="font-size:11px; opacity:0.8;">ड्यूटी स्टेटस</p><h4 id="dutyHours">0 Hours (Offline)</h4></div>
                 <div style="text-align:right;"><p style="font-size:11px; opacity:0.8;">रेटिंग</p><h4>⭐ 5.0</h4></div>
@@ -77,15 +73,13 @@
         </div>
 
         <!-- 💰 टैब 2: इनकम, क्लोज्ड जॉब और विथड्रॉअल ट्रैकर -->
-        <div id="incomeTabContent" class="tab-content">
+        <div id="incomeTabContent" class="tab-content" style="display: none;">
             <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;">कमाई का हिसाब (Earnings Summary)</div>
-            
             <div class="card" style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; text-align:center; padding:20px;">
                 <p style="font-size:12px; opacity:0.8;">कुल वॉलेट बैलेंस (Wallet Balance)</p>
                 <h2 style="font-size:28px; color:#F89A1C; margin-top:5px;" id="partnerWalletBalance">₹350.00</h2>
                 <button class="btn btn-orange" style="margin-top:12px; font-size:12px; padding:10px;" onclick="requestWithdrawal()">Bank में ट्रांसफर करें (Withdraw)</button>
             </div>
-
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px;">
                 <div class="card" style="text-align:center;"><h5>कुल क्लोज्ड जॉब</h5><h3 style="color:#0D4C3A; margin-top:5px;">24 Jobs</h3></div>
                 <div class="card" style="text-align:center;"><h5>इस महीने की कमाई</h5><h3 style="color:#22c55e; margin-top:5px;">₹8,450</h3></div>
@@ -97,21 +91,16 @@
         </div>
 
         <!-- 🪪 टैब 3: डिजिटल आईडी कार्ड और प्रोफाइल -->
-        <div id="idCardTabContent" class="tab-content">
+        <div id="idCardTabContent" class="tab-content" style="display: none;">
             <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;">आपका डिजिटल आईडी कार्ड</div>
-            
             <div class="id-card">
                 <div class="id-badge">Verified Partner</div>
                 <div style="font-size:20px; font-weight:800; margin-bottom:4px;">Gharbee India</div>
                 <p style="font-size:11px; opacity:0.7; margin-bottom:15px;">ID NO: GB-2026-501</p>
-                
                 <div style="width:70px; height:70px; background:white; border-radius:50%; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:32px;">👤</div>
-                <h3 style="font-size:18px; font-weight:700;" id="idCardName">राहुल प्रकाश</h3>
+                <h3 style="font-size:18px; font-weight:700;">राहुल प्रकाश</h3>
                 <p style="font-size:13px; color:#F89A1C; font-weight:bold; margin-top:2px;">AC Repair Expert</p>
-                
                 <hr style="border:0; border-top:1px solid rgba(255,255,255,0.15); margin:15px 0;">
-                
-                <!-- क्यूआर कोड सिमुलेशन -->
                 <div style="width:65px; height:65px; background:white; margin:0 auto; padding:5px; border-radius:6px; display:flex; flex-direction:column; justify-content:space-between;">
                     <div style="display:flex; justify-content:space-between;"><span style="width:12px; height:12px; background:black;"></span><span style="width:12px; height:12px; background:black;"></span></div>
                     <div style="display:flex; justify-content:space-between;"><span style="width:12px; height:12px; background:black;"></span><span style="width:12px; height:12px; background:black;"></span></div>
@@ -120,18 +109,18 @@
             </div>
         </div>
     </div>
-    <!-- 📱 असली ऐप जैसा बॉटम नेविगेशन बार (ड्यूटी बोर्ड के अंदर रहने पर दिखेगा) -->
+    <!-- 📱 असली ऐप जैसा बॉटम नेविगेशन बार -->
     <div id="partnerBottomNav" class="bottom-nav" style="display:none; z-index:100;">
-        <button id="navDuty" class="nav-tab active" onclick="switchPartnerTab('dutyTabContent', 'navDuty')"><span style="font-size:20px;">💼</span>Duty</button>
-        <button id="navIncome" class="nav-tab" onclick="switchPartnerTab('incomeTabContent', 'navIncome')"><span style="font-size:20px;">💰</span>Earnings</button>
-        <button id="navId" class="nav-tab" onclick="switchPartnerTab('idCardTabContent', 'navId')"><span style="font-size:20px;">🪪</span>ID Card</button>
+        <button id="navDuty" class="nav-tab active" onclick="switchPartnerTab('dutyTabContent', 'navDuty')" style="color:#0D4C3A;"><span style="font-size:20px; display:block;">💼</span>Duty</button>
+        <button id="navIncome" class="nav-tab" onclick="switchPartnerTab('incomeTabContent', 'navIncome')"><span style="font-size:20px; display:block;">💰</span>Earnings</button>
+        <button id="navId" class="nav-tab" onclick="switchPartnerTab('idCardTabContent', 'navId')"><span style="font-size:20px; display:block;">🪪</span>ID Card</button>
     </div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const appMode = urlParams.get('mode');
-    let pWalletBalance = 350; // शुरुआती टेस्टिंग बैलेंस (₹500 न्यूनतम नियम जांच के लिए)
+    let pWalletBalance = 350;
 
     window.onload = function() {
         if(appMode === 'apply') {
@@ -145,6 +134,7 @@
 
     function sendPartnerOtp() {
         if(document.getElementById('partnerPhone').value.length < 10) return alert("नंबर सही नहीं है");
+        document.getElementById('phoneStep').style.display = "none";
         document.getElementById('otpStep').style.display = "block";
         alert("टेस्ट मोड OTP: 1234");
     }
@@ -154,11 +144,11 @@
             document.getElementById('partnerAuth').style.display = "none";
             document.getElementById('partnerDuty').style.display = "block";
             document.getElementById('partnerBottomNav').style.display = "flex";
+            alert("लॉगिन सफल! अब आप नीचे से Earnings या ID Card टैब देख सकते हैं।");
         } else { alert("गलत OTP"); }
     }
 
     function switchPartnerTab(contentId, navId) {
-        document.querySelectorAll('.tab-content').forEach(c => p.classList ? c.classList.remove('active') : c.style.display = 'none');
         document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
         document.querySelectorAll('.nav-tab').forEach(n => n.style.color = '#94a3b8');
         
@@ -166,20 +156,17 @@
         document.getElementById(navId).style.color = '#0D4C3A';
     }
 
-    // 💸 ₹500 न्यूनतम विथड्रॉअल नियम अलर्ट लॉजिक
     function requestWithdrawal() {
         if(pWalletBalance < 500) {
-            alert(`❌ विथड्रॉअल फेल! घरबी कंपनी के नियमों के अनुसार वॉलेट से पैसे निकालने के लिए न्यूनतम राशि ₹500.00 होनी अनिवार्य है। आपका वर्तमान बैलेंस ₹${pWalletBalance}.00 है। कृपया कुछ और जॉब्स क्लोज़ करें!`);
+            alert(`❌ विथड्रॉअल फेल! न्यूनतम राशि ₹500.00 होनी अनिवार्य है। आपका वर्तमान बैलेंस ₹${pWalletBalance}.00 है।`);
         } else {
-            alert(`✅ ट्रांसफर सफल! ₹${pWalletBalance} आपके रजिस्टर्ड बैंक अकाउंट में सफलतापूर्वक भेज दिए गए हैं।`);
+            alert(`✅ ट्रांसफर सफल! ₹${pWalletBalance} आपके बैंक अकाउंट में भेज दिए गए हैं।`);
             pWalletBalance = 0;
             document.getElementById('partnerWalletBalance').innerText = "₹0.00";
         }
     }
 
     function submitPartnerDocs() {
-        const name = document.getElementById('partnerName').value;
-        if(!name) return alert("नाम लिखें");
         alert("अर्जी सबमिट हो गई है!");
         window.location.href = 'index.html';
     }
@@ -190,13 +177,13 @@
         const btn = document.getElementById('statusToggle');
         if(isOnline) {
             btn.innerText = "ONLINE"; btn.className = "toggle-btn btn-online";
-            if(document.getElementById('offlineNotice')) document.getElementById('offlineNotice').style.display = "none";
-            if(document.getElementById('operationsZone')) document.getElementById('operationsZone').style.display = "block";
+            document.getElementById('offlineNotice').style.display = "none";
+            document.getElementById('operationsZone').style.display = "block";
             document.getElementById('dutyHours').innerText = "8 Hours (Online)";
         } else {
             btn.innerText = "OFFLINE"; btn.className = "toggle-btn btn-offline";
-            if(document.getElementById('offlineNotice')) document.getElementById('offlineNotice').style.display = "block";
-            if(document.getElementById('operationsZone')) document.getElementById('operationsZone').style.display = "none";
+            document.getElementById('offlineNotice').style.display = "block";
+            document.getElementById('operationsZone').style.display = "none";
             document.getElementById('dutyHours').innerText = "0 Hours (Offline)";
         }
     }
