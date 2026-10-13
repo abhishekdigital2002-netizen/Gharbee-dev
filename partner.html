@@ -15,7 +15,7 @@
         .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 90vh; background: #ffffff; }
         .input-group { width: 100%; margin-bottom: 20px; }
         .input-label { font-size: 14px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block; }
-        .form-input, select { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 14px; font-size: 15px; outline: none; background: white; }
+        .form-input, select { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 14px; font-size: 15px; outline: none; background: white; width: 100%; }
         .file-input-wrapper { border: 2px dashed #0D4C3A; padding: 15px; text-align: center; border-radius: 14px; background: #f8fafc; cursor: pointer; position: relative; margin-top: 5px; }
         .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
         .btn { width: 100%; background: #0D4C3A; color: white; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 15px; }
@@ -91,7 +91,7 @@
     <!-- 3. एक्टिव ड्यूटी स्क्रीन (Start Work & Mask Check) -->
     <div id="partnerDuty" class="form-container" style="display: none;">
         <div class="card" style="border-left: 5px solid #F89A1C;">
-            <h4 style="color:#0D4C3A;">📍 नया ऑर्डर: अलकांज, लखनऊ</h4>
+            <h4 style="color:#0D4C3A;">📍 नया ऑर्डर: अलीगंज, लखनऊ</h4>
             <p style="font-size:13px; color:#64748b; margin-top:5px;">सर्विस: AC Repair & Gas Refill</p>
         </div>
 
@@ -111,26 +111,32 @@
 </div>
 
 <script>
+    let globalMobile = "";
+
     function sendPartnerOtp() {
-        if(document.getElementById('partnerPhone').value.length < 10) return alert("नंबर सही नहीं है");
+        const phone = document.getElementById('partnerPhone').value;
+        if(phone.length < 10) return alert("कृपया सही नंबर दर्ज करें");
+        globalMobile = phone;
         document.getElementById('phoneStep').style.display = "none";
         document.getElementById('otpStep').style.display = "block";
+        alert("टेस्टिंग मोड OTP: 1234");
     }
 
     function verifyPartnerOtp() {
-        if(document.getElementById('partnerOtp').value === '1234') {
+        const otp = document.getElementById('partnerOtp').value;
+        if(otp === '1234') {
             document.getElementById('partnerAuth').style.display = "none";
             document.getElementById('partnerForm').style.display = "block";
         } else { alert("गलत OTP"); }
     }
 
     function updateStatus(inputId, statusId) {
-        const file = document.getElementById(inputId).files[0];
-        if(file) {
-            document.getElementById(statusId).innerText = `✅ ${file.name} रेडी है!`;
+        const fileInput = document.getElementById(inputId);
+        if(fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            document.getElementById(statusId).innerText = "✅ " + fileName + " रेडी है!";
             document.getElementById(statusId).style.color = "#22c55e";
             
-            // अगर मास्क फोटो अपलोड हुई तो जॉब बटन एक्टिवेट करें
             if(inputId === 'maskPhoto') {
                 const btn = document.getElementById('startJobBtn');
                 btn.style.background = "#22c55e";
@@ -142,7 +148,7 @@
 
     function submitPartnerDocs() {
         const name = document.getElementById('partnerName').value;
-        if(!name || !document.getElementById('partnerPhoto').files[0]) return alert("कृपया नाम और प्रोफाइल फोटो दोनों दें!");
+        if(!name) return alert("कृपया अपना नाम भरें!");
         alert("ऑनबोर्डिंग डाक्यूमेंट्स और फोटो सब-एडमिन के पास भेज दी गई है। टेस्टिंग के लिए अब हम आपको 'ड्यूटी स्क्रीन' पर ले जा रहे हैं जहाँ मास्क वेरिफिकेशन टेस्ट होगा।");
         document.getElementById('partnerForm').style.display = "none";
         document.getElementById('partnerDuty').style.display = "block";
