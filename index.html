@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Ultimate Customer App</title>
+    <title>Gharbee Advanced Schedule Customer App</title>
     <style>
         * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; padding: 0; }
@@ -11,195 +11,168 @@
         .app-header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .header-top { display: flex; align-items: center; justify-content: space-between; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 35px; height: 35px; background: #ffffff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
         .brand-name { font-size: 24px; font-weight: 800; }
         .orange-txt { color: #F89A1C; }
-        .loc-text { font-size: 13px; color: #e2e8f0; text-align: right; }
         .main-body { padding: 20px; flex: 1; overflow-y: auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .offer-card { background: linear-gradient(135deg, #F89A1C 0%, #e68a0d 100%); color: white; padding: 18px; border-radius: 18px; margin-bottom: 20px; }
-        .coupon-section { background: #f8fafc; border: 1.5px dashed #0D4C3A; padding: 12px; border-radius: 14px; margin-bottom: 25px; display: flex; gap: 10px; }
-        .coupon-input { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; font-weight: 700; text-transform: uppercase; }
-        .coupon-btn { background: #0D4C3A; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .service-card { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); cursor: pointer; }
-        .sub-work-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); z-index:100; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 10px; }
+        .btn-primary { background: #0D4C3A; color: white; }
+        .btn-orange { background: #F89A1C; color: white; }
+        .input-box { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; margin-bottom: 10px; }
+        .sub-work-grid, .slot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+        .sub-box, .slot-box { background: white; border: 1px solid #e2e8f0; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: bold; text-align: center; cursor: pointer; }
+        .sub-box.selected, .slot-box.selected { border-color: #F89A1C; background: #fff7ed; color: #F89A1C; }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
         .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 600; background: none; border: none; cursor: pointer; }
-        .nav-tab.active { color: #0D4C3A; font-weight: 700; }
-        .list-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 15px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 <div class="phone-screen">
-    <!-- टॉप हेडर -->
     <div class="app-header">
         <div class="header-top">
-            <div class="logo-wrap"><div style="font-size:24px;">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
-            <div class="loc-text">📍 Gomti Nagar,<br><span style="font-size:11px; opacity:0.8;" id="liveCustomerLoc">Lucknow, UP</span></div>
+            <div class="logo-wrap"><div class="logo-icon">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
+            <div style="text-align:right; font-size:12px;">📍 Gomti Nagar,<br>Lucknow</div>
         </div>
     </div>
 
-    <!-- 🏠 1. होम स्क्रीन (सर्विस व सब-वर्क सिलेक्शन) -->
+    <!-- 🏠 TAB 1: होम स्क्रीन + लाइव शेड्यूलर -->
     <div id="homeTab" class="main-body tab-content active">
-        <div class="offer-card">
-            <div style="font-size: 16px; font-weight: 700; margin-bottom:3px;">First Booking Offer!</div>
-            <div style="font-size: 12px; opacity: 0.95;">कूपन कोड लागू करने पर फ्लैट 20% की बचत।</div>
-        </div>
-        <div class="coupon-section">
-            <input type="text" id="couponInput" class="coupon-input" placeholder="कूपन कोड (GHARBEE20)">
-            <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        <div class="card" style="background: linear-gradient(135deg, #F89A1C, #e68a0d); color: white;">
+            <h4 style="font-size:16px;">Dual Availability Match Enabled 🤝</h4>
+            <p style="font-size:11px; opacity:0.9; margin-top:2px;">Aapke aur Partner dono ke free time ke hisab se booking hogi.</p>
         </div>
 
-        <!-- मुख्य सर्विसेज -->
-        <div id="mainServicesView">
-            <div style="font-size: 15px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Our Expert Services</div>
-            <div class="service-grid">
-                <div class="service-card" onclick="showSubWork('Plumber', 199)">
-                    <div style="font-size:26px; margin-bottom:8px;">🔧</div><div style="font-size:14px; font-weight:700;">Plumber</div>
-                </div>
-                <div class="service-card" onclick="showSubWork('AC Repair', 399)">
-                    <div style="font-size:26px; margin-bottom:8px;">❄️</div><div style="font-size:14px; font-weight:700;">AC Repair</div>
-                </div>
-            </div>
+        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-bottom: 8px;">1. मुख्य काम चुनें (Main Service)</div>
+        <select id="mainServiceSelect" class="input-box" onchange="loadSubServices()" style="background:white; font-weight:bold;">
+            <option value="AC Repair">AC Repair & Service</option>
+            <option value="Plumber">Plumber (नलसाज)</option>
+        </select>
+
+        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-top:10px; margin-bottom: 6px;">2. सब-वर्क चुनें (Sub-Work)</div>
+        <div id="subWorkContainer" class="sub-work-grid"></div>
+
+        <!-- 📅 DATE & TIME AVAILABILITY SLOT SELECTOR -->
+        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-top:20px; margin-bottom: 8px;">3. बुकिंग तारीख चुनें (Select Date)</div>
+        <input type="date" id="bookingDateInput" class="input-box" style="background:white; font-weight:bold;">
+
+        <div style="font-size: 14px; font-weight: 700; color: #0D4C3A; margin-top:15px; margin-bottom: 6px;">4. पार्टनर की उपलब्धता के अनुसार समय चुनें (Available Slots)</div>
+        <div class="slot-grid">
+            <div class="slot-box" id="slot1" onclick="selectTimeSlot('09:00 AM - 12:00 PM', 'slot1')">🌅 Morning (9AM - 12PM)</div>
+            <div class="slot-box" id="slot2" onclick="selectTimeSlot('12:00 PM - 03:00 PM', 'slot2')">☀️ Afternoon (12PM - 3PM)</div>
+            <div class="slot-box" id="slot3" onclick="selectTimeSlot('03:00 PM - 06:00 PM', 'slot3')">🌆 Evening (3PM - 6PM)</div>
+            <div class="slot-box" id="slot4" onclick="selectTimeSlot('06:00 PM - 09:00 PM', 'slot4')">🌃 Night (6PM - 9PM)</div>
         </div>
 
-        <!-- 🛠️ सब-वर्क (Sub-Work Add Option) -->
-        <div id="subWorkView" style="display:none; margin-top:10px;">
-            <button style="border:none; background:none; color:#F89A1C; font-weight:bold; cursor:pointer; margin-bottom:15px;" onclick="backToMainServices()">← मुख्य मेनू पर जाएं</button>
-            <div style="font-size:16px; font-weight:700; color:#0D4C3A; margin-bottom:15px;" id="subWorkTitle">Sub-Services</div>
-            <div id="subWorkListContainer"></div>
-        </div>
+        <button class="btn btn-orange" style="margin-top:25px;" onclick="triggerCentralBooking()">मैचिंग टाइम पर मिस्त्री बुक करें</button>
     </div>
-
-    <!-- 📋 2. बुकिंग हिस्ट्री टैब (Booking History List) -->
+    <!-- 📋 TAB 2: लाइव ट्रैकिंग -->
     <div id="bookingsTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग हिस्ट्री (History)</div>
-        <div id="liveBookingsContainer">
-            <p style="text-align:center; color:#94a3b8; padding:30px; font-size:13px;">अभी तक कोई बुकिंग हिस्ट्री नहीं है।</p>
-        </div>
-    </div>
-    <!-- 👛 3. डिजिटल वॉलेट टैब -->
-    <div id="walletTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Gharbee Wallet</div>
-        <div style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white; padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(13,76,58,0.2);">
-            <p style="font-size:13px; opacity:0.8;">उपलब्ध बैलेंस (Wallet Balance)</p>
-            <h2 style="font-size:32px; margin-top:5px;" id="walletBalanceDisplay">₹500.00</h2>
-        </div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 15px;">
-            <h4 style="font-size:14px; margin-bottom:10px; color:#0D4C3A;">पैसे ऐड करें (Add Money)</h4>
-            <input type="number" id="walletAmountInput" style="width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:10px; margin-bottom:12px; outline:none;" placeholder="अमाउंट भरें (₹)">
-            <button style="width:100%; background:#F89A1C; color:white; border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="addMoneyToWallet()">पैसे ऐड करें</button>
-        </div>
-    </div>
-
-    <!-- 👤 4. प्रोफाइल स्क्रीन टैब (Customer Photo & Logout) -->
-    <div id="profileTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपका प्रोफाइल (My Profile)</div>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-            <!-- ग्राहक की फोटो सिमुलेशन -->
-            <div style="width:65px; height:65px; background:#cbd5e1; color:#0D4C3A; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; border:2px solid #0D4C3A; font-weight:bold;">👤</div>
-            <div>
-                <h4 style="font-size:16px; color:#0D4C3A;">अभिषेक कुमार</h4>
-                <p style="font-size:12px; color:#64748b; margin-top:2px;" id="profileLocDisplay">📍 गोमती नगर, लखनऊ</p>
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग डिटेल्स (Schedule Tracking)</div>
+        <div id="trackingCardZone" class="card" style="display:none; background:#f0fdf4; border-color:#bbf7d0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h4 id="trackServiceName" style="color:#0D4C3A;">AC Repair</h4>
+                    <p style="font-size:12px; color:#64748b;" id="trackScheduledTime">Date & Time Syncing...</p>
+                </div>
+                <span class="slot-box selected" style="font-size:10px; padding:3px 8px; pointer-events:none;">SCHEDULED</span>
+            </div>
+            <div style="margin-top:12px; font-size:13px; color:#1e293b;">
+                👤 असाइन पार्टनर: <b>राहुल प्रकाश</b> (AC Expert)<br>
+                🔐 काम शुरू करने का सुरक्षित OTP: <b style="color:#F89A1C; font-size:14px;" id="trackOtp">----</b>
             </div>
         </div>
-        <!-- 🚪 लॉगआउट ऑप्शन -->
-        <button style="width:100%; background:#ef4444; color:white; border:none; padding:14px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="location.reload(); alert('सफलतापूर्वक लॉग आउट कर दिया गया है।');">लॉग आउट (Logout)</button>
+        <div id="emptyBookingNotice" style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी कोई अपकमिंग शेड्यूल्ड बुकिंग नहीं है।</div>
     </div>
 
-    <!-- 📱 प्रीमियम बॉटम बार नेविगेशन -->
+    <!-- 👛 TAB 3: प्रोफाइल व वॉलेट -->
+    <div id="profileTab" class="main-body tab-content">
+        <div class="card" style="text-align:center;">
+            <div style="width:60px; height:60px; background:#0D4C3A; color:white; border-radius:50%; margin:0 auto 10px auto; display:flex; align-items:center; justify-content:center; font-size:24px;">👤</div>
+            <h4 style="color:#0D4C3A;">Abhishek (Customer)</h4>
+            <p style="font-size:12px; color:#64748b;">Lucknow, UP</p>
+        </div>
+        <div class="card" style="background:#0D4C3A; color:white; text-align:center;">
+            <p style="font-size:12px; opacity:0.8;">वॉलेट बैलेंस</p>
+            <h2 style="font-size:26px; margin-top:2px;">₹500.00</h2>
+        </div>
+        <button class="btn" style="background:#ef4444; color:white;" onclick="location.reload()">लॉग आउट (Logout)</button>
+    </div>
+
+    <!-- 📱 बॉटम बार -->
     <div class="bottom-nav">
-        <button id="navHome" class="nav-tab active" onclick="switchTab('homeTab', 'navHome')"><span style="font-size:18px;">🏠</span>Home</button>
-        <button id="navBook" class="nav-tab" onclick="switchTab('bookingsTab', 'navBook')"><span style="font-size:18px;">📋</span>History</button>
-        <button id="navWallet" class="nav-tab" onclick="span style='font-size:18px;'>👛</span>Wallet</button>
-        <button id="navProfile" class="nav-tab" onclick="switchTab('profileTab', 'navProfile')"><span style="font-size:18px;">👤</span>Profile</button>
+        <button id="nHome" class="nav-tab active" onclick="switchTab('homeTab', 'nHome')" style="color:#0D4C3A;"><span style="font-size:20px; display:block;">🏠</span>Home</button>
+        <button id="nBook" class="nav-tab" onclick="switchTab('bookingsTab', 'nBook')"><span style="font-size:20px; display:block;">📋</span>Bookings</button>
+        <button id="nProf" class="nav-tab" onclick="switchTab('profileTab', 'nProf')"><span style="font-size:20px; display:block;">👤</span>Profile</button>
     </div>
 </div>
 
 <script>
     const SERVER_URL = "https://onrender.com";
-    let isDiscountApplied = false; let customerBookings = []; let walletBalance = 500;
+    let selectedSubService = ""; let selectedTimeSlotString = "";
 
-    function switchTab(tabId, navId) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(n => { n.classList.remove('active'); });
-        document.getElementById(tabId).classList.add('active');
-        document.getElementById(navId).classList.add('active');
-    }
-
-    // कूपन रिस्पॉन्स
-    function applyCoupon() {
-        if(document.getElementById('couponInput').value.trim().toUpperCase() === "GHARBEE20") {
-            isDiscountApplied = true; alert("✅ GHARBEE20 कूपन कोड लागू हो गया है! 20% छूट मिलेगी।");
-        } else { alert("गलत कूपन कोड!"); }
-    }
-
-    // वॉलेट फंड ऐड
-    function addMoneyToWallet() {
-        const amt = parseInt(document.getElementById('walletAmountInput').value);
-        if(!amt || amt <= 0) return alert("कृपया अमाउंट भरें");
-        walletBalance += amt;
-        document.getElementById('walletBalanceDisplay').innerText = "₹" + walletBalance + ".00";
-        document.getElementById('walletAmountInput').value = "";
-        alert(`₹${amt} आपके वॉलेट में जोड़ दिए गए हैं।`);
-    }
-
-    // sub work logic add (सब-वर्क और कीमतें कंपनी वाइज)
-    const subWorkDatabase = {
-        'Plumber': [
-            { name: 'नया नल फिटिंग (Tap Installation)', price: 199 },
-            { name: 'वॉश बेसिन लीक फिक्स (Basin Repair)', price: 299 },
-            { name: 'फ्लश वाल्व बदलना (Flush Valve Fix)', price: 499 }
-        ],
-        'AC Repair': [
-            { name: 'एसी सर्विसिंग (Filter Cleaning)', price: 399 },
-            { name: 'गैस रिफिलिंग (Gas Top-up R32)', price: 1500 },
-            { name: 'कैपेसिटर बदलना (Havells Capacitor)', price: 450 }
-        ]
+    const subServicesData = {
+        "AC Repair": ["Gas Refill (₹1500)", "Filter Cleaning (₹299)", "Wiring Repair (₹450)"],
+        "Plumber": ["Tap Change (₹149)", "Flush Valve Fit (₹350)", "Pipe Leakage (₹249)"]
     };
 
-    function showSubWork(categoryName) {
-        document.getElementById('mainServicesView').style.display = 'none';
-        document.getElementById('subWorkView').style.display = 'block';
-        document.getElementById('subWorkTitle').innerText = categoryName + " - Select Job Task";
-        
-        const container = document.getElementById('subWorkListContainer');
-        container.innerHTML = "";
-        
-        subWorkDatabase[categoryName].forEach(sub => {
-            let finalPrice = sub.price;
-            if(isDiscountApplied) finalPrice = (finalPrice * 0.8).toFixed(0);
+    // आज की न्यूनतम तारीख सेट करना ताकी पास्ट डेट ब्लॉक रहे
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingDateInput').setAttribute('min', today);
 
-            const div = document.createElement('div');
-            div.className = 'sub-work-item';
-            div.innerHTML = `
-                <div>${sub.name}</div>
-                <button style="background:#F89A1C; color:white; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="triggerLiveBooking('${categoryName} - ${sub.name}', ${finalPrice})">₹${finalPrice} बुक करें</button>
-            `;
+    function switchTab(tabId, navId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.nav-tab').forEach(n => n.style.color = '#94a3b8');
+        document.getElementById(tabId).style.display = 'block';
+        document.getElementById(navId).style.color = '#0D4C3A';
+    }
+
+    function loadSubServices() {
+        const main = document.getElementById('mainServiceSelect').value;
+        const container = document.getElementById('subWorkContainer'); container.innerHTML = "";
+        subServicesData[main].forEach(sub => {
+            const div = document.createElement('div'); div.className = "sub-box"; div.innerText = sub;
+            div.onclick = function() {
+                document.querySelectorAll('.sub-box').forEach(b => b.classList.remove('selected'));
+                div.classList.add('selected'); selectedSubService = sub;
+            };
             container.appendChild(div);
         });
     }
 
-    function backToMainServices() {
-        document.getElementById('mainServicesView').style.display = 'block';
-        document.getElementById('subWorkView').style.display = 'none';
+    function selectTimeSlot(slotTime, slotId) {
+        document.querySelectorAll('.slot-box').forEach(b => b.classList.remove('selected'));
+        document.getElementById(slotId).classList.add('selected');
+        selectedTimeSlotString = slotTime;
     }
 
-    function triggerLiveBooking(fullName, price) {
-        const fakeId = `GB-${Math.floor(100000 + Math.random() * 900000)}`;
-        customerBookings.push({ id: fakeId, name: fullName, cost: price, status: "Assigned (मिस्त्री आ रहा है)" });
+    function triggerCentralBooking() {
+        const main = document.getElementById('mainServiceSelect').value;
+        const date = document.getElementById('bookingDateInput').value;
         
-        // बुकिंग्स हिस्ट्री यूआई अपडेट करें
-        const container = document.getElementById('liveBookingsContainer');
-        container.innerHTML = "";
-        customerBookings.forEach(b => {
-            container.innerHTML += `<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:15px; margin-bottom:12px;"><div style="display:flex; justify-content:space-between; font-weight:700;"><span>${b.name}</span><span style="color:#F89A1C;">₹${b.cost}</span></div><p style="font-size:11px; color:#64748b; margin-top:4px;">ID: ${b.id} | स्थान: गोमती नगर, लखनऊ</p><p style="font-size:12px; color:#0D4C3A; font-weight:bold; margin-top:2px;">Status: ${b.status}</p></div>`;
-        });
+        if(!date || !selectedTimeSlotString) {
+            return alert("कृपया दोनों (तारीख और समय स्लॉट) चुनें ताकी पार्टनर की उपलब्धता मैच की जा सके।");
+        }
 
-        alert(`🎉 बुकिंग सफल! आपका ${fullName} दर्ज हो गया है। मिस्त्री जल्द ही आपसे संपर्क करेगा। Booking ID: ${fakeId}`);
-        switchTab('bookingsTab', 'navBook');
+        fetch(`${SERVER_URL}/api/book`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: 101, serviceName: main, subService: selectedSubService, appointmentDate: date, appointmentSlot: selectedTimeSlotString })
+        }).then(res => res.json()).then(data => {
+            const fakeOtp = Math.floor(1000 + Math.random() * 9000).toString();
+            document.getElementById('trackServiceName').innerText = main + " (" + selectedSubService + ")";
+            document.getElementById('trackScheduledTime').innerHTML = `📅 <b>${date}</b> | ⏰ <b>${selectedTimeSlotString}</b>`;
+            document.getElementById('trackOtp').innerText = fakeOtp;
+            
+            document.getElementById('trackingCardZone').style.display = "block";
+            document.getElementById('emptyBookingNotice').style.display = "none";
+            switchTab('bookingsTab', 'nBook');
+            alert(`🤝 उपलब्धता मैच हो गई है! आपकी बुकिंग ${date} के ${selectedTimeSlotString} स्लॉट के लिए सफलतापूर्वक शेड्यूल कर दी गई है।`);
+        });
     }
+    window.onload = loadSubServices;
 </script>
 </body>
 </html>
