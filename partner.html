@@ -20,136 +20,138 @@
         .btn-primary { background: #0D4C3A; color: white; }
         .btn-orange { background: #F89A1C; color: white; }
         .input-box { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; margin-top: 5px; }
-        .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; float: right; }
+        .file-input-wrapper { border: 2px dashed #0D4C3A; padding: 15px; text-align: center; border-radius: 14px; background: #f8fafc; cursor: pointer; position: relative; margin-top: 5px; }
+        .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
-
 <div class="partner-screen">
-    <!-- टॉप बार विद ऑनलाइन/ऑफलाइन बटन -->
     <div class="header">
         <div class="brand">Ghar<span style="color:#F89A1C;">bee</span> Partner</div>
         <button id="statusToggle" class="toggle-btn btn-offline" onclick="toggleOnlineStatus()">OFFLINE</button>
     </div>
 
     <div class="container">
-        <!-- परफॉर्मेंस मीटर -->
-        <div class="card" style="display: flex; justify-content: space-between; align-items: center; background: #0D4C3A; color: white;">
-            <div><p style="font-size:11px; opacity:0.8;">आपका परफॉर्मेंस स्कोर</p><h3 style="font-size:22px;">⭐ 5.0 / 5.0</h3></div>
-            <div style="text-align: right;"><p style="font-size:11px; opacity:0.8;">आज ड्यूटी के घंटे</p><h3 id="dutyHours">0 Hours</h3></div>
+        <!-- 🔒 A. वेरिफाइड पार्टनर का ऐप लॉगिन पैनल -->
+        <div id="partnerAuth" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; height: 70vh;">
+            <h3 style="margin-bottom: 20px; font-size:18px;">रजिस्टर्ड पार्टनर लॉगिन</h3>
+            <div id="phoneStep" style="width: 100%;">
+                <div style="margin-bottom: 20px; width: 100%;">
+                    <label style="font-size: 14px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block;">अपना रजिस्टर्ड मोबाइल नंबर डालें</label>
+                    <input type="tel" id="partnerPhone" class="input-box" placeholder="Enter Mobile Number">
+                </div>
+                <button class="btn btn-primary" onclick="sendPartnerOtp()">OTP भेजें</button>
+            </div>
+            <div id="otpStep" style="width: 100%; display: none;">
+                <div style="margin-bottom: 20px; width: 100%;">
+                    <label style="font-size: 14px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block;">ओटीपी (OTP) दर्ज करें</label>
+                    <input type="number" id="partnerOtp" class="input-box" placeholder="Enter 1234">
+                </div>
+                <button class="btn btn-orange" onclick="verifyPartnerOtp()">Verify & App खोलें</button>
+            </div>
         </div>
 
-        <div id="offlineNotice" style="text-align:center; padding: 40px 20px; color:#94a3b8;">
-            <span style="font-size:50px;">😴</span>
-            <h4 style="margin-top:15px; color:#64748b;">आप अभी ऑफलाइन हैं</h4>
-            <p style="font-size:12px; margin-top:5px;">नए बुकिंग ऑर्डर्स प्राप्त करने और 8 घंटे की अनिवार्य ड्यूटी शुरू करने के लिए ऊपर दिए गए बटन से ऑनलाइन जाएँ।</p>
+        <!-- 🛠️ B. नए मिस्त्री के लिए अर्जी और डॉक्यूमेंट अपलोड फॉर्म (Request Mode) -->
+        <div id="partnerForm" style="display: none;">
+            <h3 style="margin-bottom: 20px; font-size: 16px; font-weight: bold;">Join as a Partner (नई अर्जी भेजें)</h3>
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: 600; color: #0D4C3A; display:block; margin-bottom:5px;">पूरा नाम (आधार के अनुसार)</label>
+                <input type="text" id="partnerName" class="input-box" placeholder="अपना नाम लिखें">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: 600; color: #0D4C3A; display:block; margin-bottom:5px;">अपनी सर्विस (Skill) चुनें</label>
+                <select id="partnerSkill" class="input-box" style="background:white;">
+                    <option value="AC Repair">AC Repair & Service</option>
+                    <option value="Plumber">Plumber (नलसाज)</option>
+                    <option value="Electrician">Electrician (बिजली मिस्त्री)</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: 600; color: #0D4C3A; display:block; margin-bottom:5px;">आपकी साफ़ प्रोफाइल फोटो</label>
+                <div class="file-input-wrapper"><span>📸</span><p id="photoStatus" style="font-size: 12px; color: #64748b;">Onboarding फोटो चुनें</p><input type="file" id="partnerPhoto" accept="image/*" onchange="updateStatus('partnerPhoto', 'photoStatus')"></div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: 600; color: #0D4C3A; display:block; margin-bottom:5px;">आधार कार्ड अपलोड करें</label>
+                <div class="file-input-wrapper"><span>📁</span><p id="fileStatus" style="font-size: 12px; color: #64748b;">आधार की फोटो अपलोड करें</p><input type="file" id="idProof" accept="image/*" onchange="updateStatus('idProof', 'fileStatus')"></div>
+            </div>
+            <button class="btn" style="background: #22c55e; color:white;" onclick="submitPartnerDocs()">अर्जी सबमिट करें</button>
         </div>
-
-        <!-- एक्टिव ऑपरेशन्स स्क्रीन (ऑनलाइन होने पर दिखेगा) -->
-        <div id="operationsZone" style="display: none;">
-            <!-- स्टेप 1: नया जॉब अलर्ट -->
-            <div id="stepAlert" class="card" style="border-left: 5px solid #F89A1C;">
-                <div class="card-title">🚨 नया ऑर्डर अलर्ट उपलब्ध है!</div>
-                <p style="font-size: 13px; color:#64748b;">सर्विस: AC Gas Refill & Service | लखनऊ</p>
-                <button class="btn btn-orange" onclick="acceptIncomingJob()">Order स्वीकार करें (Accept)</button>
+        <!-- 📲 C. एक्टिव ड्यूटी स्क्रीन (ऑनलाइन होने पर ऑटो-ओपन होगी) -->
+        <div id="partnerDuty" style="display: none;">
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center; background: #0D4C3A; color: white;">
+                <div><p style="font-size:11px; opacity:0.8;">आपका स्कोर</p><h3 style="font-size:20px;">⭐ 5.0</h3></div>
+                <div style="text-align: right;"><p style="font-size:11px; opacity:0.8;">ड्यूटी लॉग</p><h3 id="dutyHours">0 Hours</h3></div>
             </div>
-
-            <!-- स्टेप 2: लाइव लोकेशन और कस्टमर स्टार्ट OTP -->
-            <div id="stepRouting" class="card" style="display: none; border-left: 5px solid #0369a1;">
-                <div class="card-title">📍 कस्टमर लाइव नेविगेशन लोकेशन</div>
-                <div style="background: #e0f2fe; padding: 12px; border-radius: 10px; font-size: 13px; color: #0369a1; font-weight: bold; margin-bottom: 15px;">
-                    🗺️ Flat 402, Royal Apartments, Gomti Nagar, Lucknow
+            <div id="offlineNotice" style="text-align:center; padding: 30px 10px; color:#94a3b8;">
+                <span>😴</span><h4 style="margin-top:10px; color:#64748b;">आप अभी ऑफलाइन हैं</h4>
+                <p style="font-size:12px; margin-top:5px;">ऑर्डर्स प्राप्त करने और 8 घंटे की ड्यूटी शुरू करने के लिए ऊपर से ऑनलाइन जाएँ।</p>
+            </div>
+            <div id="operationsZone" style="display: none;">
+                <div class="card" style="border-left: 5px solid #F89A1C;">
+                    <div class="card-title">🚨 नया ऑर्डर उपलब्ध है!</div>
+                    <p style="font-size: 13px; color:#64748b;">स्थान: अलीगंज, लखनऊ</p>
+                    <button class="btn btn-orange" onclick="alert('ऑर्डर स्वीकार हो गया! ग्राहक की लोकेशन अनलॉक हो गई है।')">Order स्वीकार करें</button>
                 </div>
-                <hr style="border:0; border-top:1px solid #e2e8f0; margin-bottom:15px;">
-                <div class="card-title">🔐 काम शुरू करने के लिए वेरिफिकेशन</div>
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 5px;">ग्राहक के घर पहुँचने पर उनसे प्राप्त 4-अंकीय OTP यहाँ दर्ज करें:</p>
-                <input type="number" id="startOtpInput" class="input-box" placeholder="कस्टमर से मिला OTP डालें (उदा: 1234)">
-                <button class="btn btn-primary" onclick="verifyStartOtp()">OTP वेरिफाई करके Job शुरू करें</button>
-            </div>
-
-            <!-- स्टेप 3: काम पूरा करना और इनवॉइस जनरेट -->
-            <div id="stepWork" class="card" style="display: none; border-left: 5px solid #22c55e;">
-                <div class="card-title">🛠️ Job Progress: काम चल रहा है...</div>
-                <p style="font-size: 12px; color:#64748b;">अगर रिपेयरिंग के दौरान कोई स्पेयर पार्ट बदला है, तो उसकी कुल कीमत यहाँ लिखें (वैकल्पिक):</p>
-                <input type="number" id="partsCostInput" class="input-box" placeholder="स्पेयर पार्ट्स का कुल मूल्य (₹)">
-                <button class="btn btn-primary" style="background:#22c55e;" onclick="completeJobAndInvoice()">काम खत्म करें व ऑनलाइन इनवॉइस बनाएं</button>
-            </div>
-
-            <!-- स्टेप 4: ऑटो-इनवॉइस जनरेशन डिस्प्ले -->
-            <div id="stepInvoice" class="card" style="display: none; background: #fff7ed; border-color:#ffedd5;">
-                <div class="card-title" style="color:#c2410c;">📄 डिजिटल इनवॉइस जेनरेट हो गई है</div>
-                <div style="font-size:13px; color:#7c2d12; display:flex; flex-direction:column; gap:6px; margin-top:10px;">
-                    <div style="display:flex; justify-content:space-between;"><span>बेस सर्विस चार्ज:</span> <b>₹399.00</b></div>
-                    <div style="display:flex; justify-content:space-between;"><span>स्पेयर पार्ट्स बिल:</span> <b id="invParts">₹0.00</b></div>
-                    <div style="display:flex; justify-content:space-between;"><span>5% GST टैक्स:</span> <b id="invTax">₹19.95</b></div>
-                    <hr style="border-color:#ffedd5;">
-                    <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:800;"><span>कस्टमर से कुल नकद लें:</span> <span id="invTotal" style="color:#0D4C3A;">₹418.95</span></div>
-                </div>
-                <button class="btn btn-orange" onclick="collectFeedbackSimulation()">कस्टमर फीडबैक सिमुलेट करें</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let isOnline = false;
+    // 🌐 URL से ऑटो-मोड डिटेक्ट करने का मैजिक लॉजिक
+    const urlParams = new URLSearchParams(window.location.search);
+    const appMode = urlParams.get('mode');
 
+    window.onload = function() {
+        if(appMode === 'apply') {
+            document.getElementById('partnerAuth').style.display = "none";
+            document.getElementById('partnerForm').style.display = "block";
+            document.getElementById('partnerDuty').style.display = "none";
+        } else {
+            document.getElementById('partnerAuth').style.display = "flex";
+            document.getElementById('partnerForm').style.display = "none";
+            document.getElementById('partnerDuty').style.display = "none";
+        }
+    };
+
+    function sendPartnerOtp() {
+        if(document.getElementById('partnerPhone').value.length < 10) return alert("नंबर सही नहीं है");
+        document.getElementById('phoneStep').style.display = "none";
+        document.getElementById('otpStep').style.display = "block";
+        alert("टेस्टिंग मोड OTP: 1234");
+    }
+    function verifyPartnerOtp() {
+        if(document.getElementById('partnerOtp').value === '1234') {
+            document.getElementById('partnerAuth').style.display = "none";
+            document.getElementById('partnerDuty').style.display = "block";
+            alert("लॉगिन सफल! आप पार्टनर ऐप के अंदर आ चुके हैं।");
+        } else { alert("गलत OTP"); }
+    }
+    function updateStatus(inputId, statusId) {
+        document.getElementById(statusId).innerText = "✅ फ़ाइल रेडी है!";
+        document.getElementById(statusId).style.color = "#22c55e";
+    }
+    function submitPartnerDocs() {
+        const name = document.getElementById('partnerName').value;
+        if(!name) return alert("कृपया नाम दर्ज करें");
+        alert(`अर्जी सफल! ${name} आपकी रिक्वेस्ट एडमिन कंट्रोल रूम में भेज दी गई है। वेरिफिकेशन के बाद आप ऐप लॉगिन कर सकेंगे।`);
+        location.href='index.html'; // वापस मुख्य स्क्रीन पर भेजें
+    }
+    let isOnline = false;
     function toggleOnlineStatus() {
         isOnline = !isOnline;
         const btn = document.getElementById('statusToggle');
-        
         if(isOnline) {
-            btn.innerText = "ONLINE";
-            btn.className = "toggle-btn btn-online";
-            document.getElementById('offlineNotice').style.display = "none";
-            document.getElementById('operationsZone').style.display = "block";
-            document.getElementById('dutyHours').innerText = "8 Hours"; // 8 घंटे की अनिवार्य ड्यूटी शर्त अलर्ट टिक
-            alert("सफल! आप ऑनलाइन आ चुके हैं और आपका 8-घंटे का लॉग एक्टिव हो गया है।");
+            btn.innerText = "ONLINE"; btn.className = "toggle-btn btn-online";
+            if(document.getElementById('offlineNotice')) document.getElementById('offlineNotice').style.display = "none";
+            if(document.getElementById('operationsZone')) document.getElementById('operationsZone').style.display = "block";
+            document.getElementById('dutyHours').innerText = "8 Hours";
         } else {
-            btn.innerText = "OFFLINE";
-            btn.className = "toggle-btn btn-offline";
-            document.getElementById('offlineNotice').style.display = "block";
-            document.getElementById('operationsZone').style.display = "none";
+            btn.innerText = "OFFLINE"; btn.className = "toggle-btn btn-offline";
+            if(document.getElementById('offlineNotice')) document.getElementById('offlineNotice').style.display = "block";
+            if(document.getElementById('operationsZone')) document.getElementById('operationsZone').style.display = "none";
             document.getElementById('dutyHours').innerText = "0 Hours";
         }
-    }
-
-    function acceptIncomingJob() {
-        document.getElementById('stepAlert').style.display = "none";
-        document.getElementById('stepRouting').style.display = "block";
-        alert("ऑर्डर स्वीकार कर लिया गया है। मैप और कस्टमर की सही लोकेशन अनलॉक हो गई है!");
-    }
-
-    function verifyStartOtp() {
-        const otp = document.getElementById('startOtpInput').value;
-        if(!otp) return alert("कृपया ग्राहक से पूछकर OTP दर्ज करें");
-        
-        document.getElementById('stepRouting').style.display = "none";
-        document.getElementById('stepWork').style.display = "block";
-        alert("वेरिफिकेशन सफल! ग्राहक से सही OTP मिल चुका है। अब आप काम शुरू कर सकते हैं।");
-    }
-
-    function completeJobAndInvoice() {
-        const partsCost = parseInt(document.getElementById('partsCostInput').value) || 0;
-        const base = 399;
-        const total = base + partsCost;
-        const tax = (total * 0.05).toFixed(2);
-        const finalAmount = (total * 1.05).toFixed(2);
-
-        document.getElementById('invParts').innerText = "₹" + partsCost + ".00";
-        document.getElementById('invTax').innerText = "₹" + tax;
-        document.getElementById('invTotal').innerText = "₹" + finalAmount;
-
-        document.getElementById('stepWork').style.display = "none";
-        document.getElementById('stepInvoice').style.display = "block";
-        alert("🎉 बधाई हो! जॉब सफलतापूर्वक कंप्लीट हो गई है। ग्राहक के मोबाइल पर ऑटो-इनवॉइस की डिजिटल कॉपी भेज दी गई है।");
-    }
-
-    function collectFeedbackSimulation() {
-        alert("⭐ ग्राहक ने आपको 5-स्टार फीडबैक दिया है! बेहतरीन रेटिंग के कारण सिस्टम आपको अगली बार सबसे पहले काम (Job Dispatch Priority) अलॉट करेगा।");
-        // रीसेट टू ओरिजिनल स्टेट
-        document.getElementById('stepInvoice').style.display = "none";
-        document.getElementById('stepAlert').style.display = "block";
     }
 </script>
 </body>
