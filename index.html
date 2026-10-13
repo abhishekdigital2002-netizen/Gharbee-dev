@@ -3,19 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Ultimate Customer App</title>
+    <title>Gharbee Customer App</title>
     <style>
         * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
         body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; color: #1e293b; padding: 0; }
-        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow-x: hidden; }
-        .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 100vh; background: #ffffff; position: absolute; width: 100%; top: 0; left: 0; z-index: 200; }
-        .auth-logo { font-size: 36px; font-weight: 800; color: #0D4C3A; margin-bottom: 10px; }
-        .auth-tag { font-size: 14px; color: #64748b; margin-bottom: 40px; }
-        .input-group { width: 100%; margin-bottom: 20px; }
-        .input-label { font-size: 13px; font-weight: 600; color: #0D4C3A; margin-bottom: 8px; display: block; }
-        .auth-input { width: 100%; padding: 16px; border: 1.5px solid #e2e8f0; border-radius: 14px; font-size: 16px; outline: none; width: 100%; }
-        .auth-btn { width: 100%; background: #0D4C3A; color: white; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: center; text-decoration: none; display: block; }
-        .partner-btn { width: 100%; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; text-align: center; text-decoration: none; display: block; }
+        .phone-screen { width: 100%; max-width: 430px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow: hidden; }
         .app-header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 25px 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         .header-top { display: flex; align-items: center; justify-content: space-between; }
         .logo-wrap { display: flex; align-items: center; gap: 8px; }
@@ -26,39 +18,17 @@
         .main-body { padding: 20px; flex: 1; overflow-y: auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .offer-card { background: linear-gradient(135deg, #F89A1C 0%, #e68a0d 100%); color: white; padding: 18px; border-radius: 18px; margin-bottom: 20px; }
+        .coupon-section { background: #f8fafc; border: 1.5px dashed #0D4C3A; padding: 12px; border-radius: 14px; margin-bottom: 25px; display: flex; gap: 10px; }
+        .coupon-input { flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; outline: none; font-weight: 700; text-transform: uppercase; }
+        .coupon-btn { background: #0D4C3A; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .service-box { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .img-icon-wrapper { width: 50px; height: 50px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px auto; color: #0D4C3A; }
     </style>
 </head>
 <body>
 <div class="phone-screen">
-    <!-- 🚪 1. लॉगिन स्क्रीन (कस्टमर और पार्टनर दोनों के लिए एंट्री पॉइंट) -->
-    <div id="authScreen" class="auth-screen">
-        <div class="auth-logo">Ghar<span style="color:#F89A1C;">bee</span></div>
-        <div class="auth-tag">Click. Fix. Relax.</div>
-        
-        <div id="phoneGroup" class="input-group">
-            <label class="input-label">अपना मोबाइल नंबर दर्ज करें</label>
-            <input type="tel" id="mobileNumber" class="auth-input" placeholder="Enter 10 digit number">
-            
-            <button class="auth-btn" onclick="sendOtpRequest()">OTP भेजें</button>
-            
-            <!-- 🛠️ नए मिस्त्री के लिए अर्जी भेजने का बटन -->
-            <button class="partner-btn" style="background:#0D4C3A; color:white; border:none;" onclick="alert('नया पार्टनर रिक्वेस्ट फॉर्म खुल रहा है। कृपया अपनी जानकारी दर्ज करें।'); window.location.href='partner.html?mode=apply';">
-                🛠️ Join as a Partner (नई रिक्वेस्ट भेजें)
-            </button>
-            
-            <!-- 🐝 पुराने वेरिफाइड मिस्त्री के लिए पार्टनर ऐप खोलने का बटन -->
-            <a href="partner.html" class="partner-btn" style="background:white; color:#F89A1C; border:2px solid #F89A1C;">
-                🐝 Open Partner App (वेरिफाइड मिस्त्री लॉगिन)
-            </a>
-        </div>
-        
-        <div id="otpGroup" class="input-group" style="display:none;">
-            <label class="input-label">मैसेज में आया 4-अंकीय OTP डालें</label>
-            <input type="number" id="otpCode" class="auth-input" placeholder="Enter 4-digit OTP">
-            <button class="auth-btn" style="background:#F89A1C;" onclick="verifyOtpRequest()">Verify & Login</button>
-        </div>
-    </div>
-
     <div class="app-header">
         <div class="header-top">
             <div class="logo-wrap"><div class="logo-icon">🐝</div><div class="brand-name">Ghar<span class="orange-txt">bee</span></div></div>
@@ -66,69 +36,66 @@
         </div>
     </div>
 
+    <!-- 🏠 होम स्क्रीन -->
     <div id="homeTab" class="main-body tab-content active">
-        <div style="background: linear-gradient(135deg, #F89A1C 0%, #e68a0d 100%); color: white; padding: 18px; border-radius: 18px; margin-bottom: 20px;">
+        <div class="offer-card">
             <div style="font-size: 17px; font-weight: 700; margin-bottom:3px;">First Booking Offer!</div>
             <div style="font-size: 12px; opacity: 0.95;">घर के किसी भी काम पर पाएं फ्लैट 20% की छूट।</div>
         </div>
-        <div style="background: #f8fafc; border: 1px dashed #0D4C3A; padding: 12px; border-radius: 14px; margin-bottom: 25px; display: flex; gap: 10px;">
-            <input type="text" id="couponInput" style="flex:1; padding:12px; border:1px solid #cbd5e1; border-radius:10px; font-weight:700; text-transform:uppercase;" placeholder="कूपन कोड (GHARBEE20)">
-            <button style="background:#0D4C3A; color:white; border:none; padding:12px 20px; border-radius:10px; font-weight:700; cursor:pointer;" onclick="applyCoupon()">Apply</button>
+        <div class="coupon-section">
+            <input type="text" id="couponInput" class="coupon-input" placeholder="कूपन कोड (GHARBEE20)">
+            <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
         </div>
         <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Our Expert Services</div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-            <div style="background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); cursor: pointer;" onclick="makeLiveBooking(1, 'Plumber')">
-                <div style="width: 50px; height: 50px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px auto;">🔧</div>
-                <div style="font-size: 14px; font-weight: 700; color: #334155;">Plumber</div>
+        <div class="grid-container">
+            <div class="service-box" onclick="makeLiveBooking(1, 'Plumber')">
+                <div class="img-icon-wrapper">🔧</div><div style="font-size: 14px; font-weight: 700; color: #334155;">Plumber</div>
                 <div style="font-size: 11px; color: #F89A1C; font-weight: 700; margin-top: 5px; background: #fff7ed; padding: 3px 8px; border-radius: 20px; display: inline-block;">₹199 से</div>
             </div>
-            <div style="background: #ffffff; border: 1px solid #f1f5f9; border-radius: 20px; padding: 20px 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); cursor: pointer;" onclick="makeLiveBooking(5, 'AC Repair')">
-                <div style="width: 50px; height: 50px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px auto;">❄️</div>
-                <div style="font-size: 14px; font-weight: 700; color: #334155;">AC Repair</div>
+            <div class="service-box" onclick="makeLiveBooking(5, 'AC Repair')">
+                <div class="img-icon-wrapper">❄️</div><div style="font-size: 14px; font-weight: 700; color: #334155;">AC Repair</div>
                 <div style="font-size: 11px; color: #F89A1C; font-weight: 700; margin-top: 5px; background: #fff7ed; padding: 3px 8px; border-radius: 20px; display: inline-block;">₹399 से</div>
             </div>
         </div>
     </div>
+
+    <!-- 📋 बुकिंग्स टैब -->
     <div id="bookingsTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग्स (Booking Details)</div>
-        <div id="liveBookingsContainer"><p style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी तक कोई बुकिंग नहीं की गई है।</p></div>
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">आपकी बुकिंग्स</div>
+        <div id="liveBookingsContainer"><p style="text-align:center; color:#94a3b8; padding:30px; font-size:14px;">अभी कोई बुकिंग नहीं है।</p></div>
     </div>
+
+    <!-- 👛 वॉलेट टैब -->
     <div id="walletTab" class="main-body tab-content">
-        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Gharbee Digital Wallet</div>
+        <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">Gharbee Wallet</div>
         <div style="background: linear-gradient(135deg, #0D4C3A, #062c21); color: white; padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px;">
-            <p style="font-size:13px; opacity:0.8;">उपलब्ध बैलेंस (Wallet Balance)</p>
-            <h2 style="font-size:32px; margin-top:5px;" id="walletBalanceDisplay">₹0.00</h2>
+            <p style="font-size:13px; opacity:0.8;">उपलब्ध बैलेंस</p><h2 style="font-size:32px; margin-top:5px;">₹0.00</h2>
         </div>
     </div>
-    <div class="bottom-nav">
-        <button id="navHome" style="display: flex; flex-direction: column; align-items: center; color: #0D4C3A; font-size: 12px; font-weight: 700; background: none; border: none; cursor: pointer;" onclick="switchTab('homeTab', 'navHome')"><span style="font-size:20px; margin-bottom:2px;">🏠</span>Home</button>
-        <button id="navBook" style="display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer;" onclick="switchTab('bookingsTab', 'navBook')"><span style="font-size:20px; margin-bottom:2px;">📋</span>Bookings</button>
-        <button id="navWallet" style="display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer;" onclick="switchTab('walletTab', 'navWallet')"><span style="font-size:20px; margin-bottom:2px;">👛</span>Wallet</button>
+    <!-- 📱 फिक्स्ड बॉटम नेविगेशन बार (UI इशू 100% सोल्व्ड) -->
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #ffffff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); padding: 0 10px;">
+        <button id="navHome" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #0D4C3A; font-size: 12px; font-weight: 700; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('homeTab', 'navHome')"><span style="font-size:20px; margin-bottom:2px; display:block;">🏠</span>Home</button>
+        <button id="navBook" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('bookingsTab', 'navBook')"><span style="font-size:20px; margin-bottom:2px; display:block;">📋</span>Bookings</button>
+        <button id="navWallet" style="flex:1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; height:100%;" onclick="switchTab('walletTab', 'navWallet')"><span style="font-size:20px; margin-bottom:2px; display:block;">👛</span>Wallet</button>
     </div>
 </div>
+
 <script>
     const SERVER_URL = "https://onrender.com";
-    let isDiscountApplied = false; let customerBookings = []; let walletBalance = 0;
+    let isDiscountApplied = false;
+
     function switchTab(tabId, navId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.phone-screen button').forEach(n => { if(n.id && n.id.startsWith('nav')) n.style.color = '#94a3b8'; });
+        document.getElementById('navHome').style.color = '#94a3b8';
+        document.getElementById('navBook').style.color = '#94a3b8';
+        document.getElementById('navWallet').style.color = '#94a3b8';
         document.getElementById(tabId).classList.add('active');
         document.getElementById(navId).style.color = '#0D4C3A';
     }
-    function sendOtpRequest() {
-        const num = document.getElementById('mobileNumber').value;
-        if(!num || num.length < 10) return alert("कृपया सही 10 अंकों का नंबर डालें");
-        document.getElementById('phoneGroup').style.display = 'none';
-        document.getElementById('otpGroup').style.display = 'block';
-        alert("टेस्टिंग मोड OTP: 1234");
-    }
-    function verifyOtpRequest() {
-        const otp = document.getElementById('otpCode').value;
-        if(otp === '1234') { document.getElementById('authScreen').style.display = 'none'; alert("लॉगिन सफल!"); } 
-        else { alert("गलत OTP!"); }
-    }
     function applyCoupon() {
-        if(document.getElementById('couponInput').value.trim().toUpperCase() === "GHARBEE20") { isDiscountApplied = true; alert("✅ कूपन कोड अप्लाई हो गया है।"); }
+        if(document.getElementById('couponInput').value.trim().toUpperCase() === "GHARBEE20") {
+            isDiscountApplied = true; alert("✅ कूपन कोड अप्लाई हो गया है!");
+        } else { alert("❌ गलत कूपन कोड!"); }
     }
     function makeLiveBooking(id, name) { alert(`सफल! आपका ${name} बुक हो गया है।`); }
 </script>
