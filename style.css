@@ -1,0 +1,111 @@
+/* Gharbee Global Design Stylesheet */
+body { 
+    margin: 0; 
+    padding: 0; 
+    background-color: #042518; 
+    font-family: 'Inter', sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    min-height: 100vh; 
+}
+
+.app-container { 
+    max-width: 450px; 
+    width: 100%; 
+    background: #ffffff; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 0 30px rgba(0,0,0,0.3); 
+    position: relative; 
+}
+
+.app-screen { 
+    display: none; 
+    flex-direction: column; 
+    flex: 1; 
+    padding: 20px 16px; 
+}
+
+.app-screen.active { 
+    display: flex; 
+}
+
+.services-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px; 
+    margin-bottom: 20px; 
+}
+
+.service-card { 
+    background: #ffffff; 
+    border: 1px solid #EAEAEA; 
+    border-radius: 14px; 
+    padding: 12px 6px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    position: relative; 
+}
+
+.service-card.active { 
+    background: #FDF9F2; 
+    border: 2px solid #F5A623; 
+}
+
+.subservice-item { 
+    border: 1px solid #EAEAEA; 
+    border-radius: 12px; 
+    padding: 12px; 
+    margin-bottom: 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    cursor: pointer; 
+}
+
+.subservice-item.selected { 
+    border-color: #F5A623; 
+    background: #FFFDF9; 
+}
+
+.partner-row { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    background: #F9F9F9; 
+    padding: 12px; 
+    border-radius: 12px; 
+    margin-bottom: 8px; 
+    border-left: 4px solid #4CAF50; 
+}
+
+.date-pill { 
+    background: #F5F5F5; 
+    color: #333333; 
+    padding: 12px 14px; 
+    border-radius: 12px; 
+    text-align: center; 
+    font-size: 13px; 
+    font-weight: 600; 
+    min-width: 80px; 
+    cursor: pointer; 
+}
+
+.date-pill.active { 
+    background: #063A25; 
+    color: #ffffff; 
+}
+
+.history-card { 
+    border: 1px solid #EAEAEA; 
+    border-radius: 14px; 
+    padding: 14px; 
+    margin-bottom: 12px; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02); 
+}
+
+.scroll-clean::-webkit-scrollbar { 
+    display: none; 
+}
