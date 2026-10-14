@@ -3,68 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Partner Cloud Matrix</title>
+    <title>Gharbee Partner App</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
         .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 24px 20px; box-sizing: border-box; }
-        
-        /* Dropdown custom design styling */
-        .partner-selector {
-            background: #2A2A2A; 
-            color: #fff; 
-            padding: 10px 14px; 
-            border-radius: 10px; 
-            border: 1px solid #444; 
-            font-size: 14px; 
-            font-weight: 600; 
-            width: 100%; 
-            margin-top: 12px;
-            cursor: pointer;
-            outline: none;
-        }
-        
+        .partner-selector { background: #2A2A2A; color: #fff; padding: 12px; border-radius: 10px; border: 1px solid #444; font-size: 14px; font-weight: 600; width: 100%; margin-top: 12px; cursor: pointer; outline: none; }
         .wallet-box { margin-top: 24px; background: #222; padding: 20px; border-radius: 16px; border: 1px solid #2d2d2d; }
-        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; }
-        .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; font-family: 'Inter', sans-serif; }
+        .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 12px; }
         @keyframes flash { from { box-shadow: 0 0 5px #FF9800; } to { box-shadow: 0 0 25px #FF9800; } }
     </style>
 </head>
 <body>
 
 <div class="app-frame">
-    <!-- Header aur Dropdown Layout Alag-Alag Row Mein -->
+    <!-- Header Block -->
     <div style="border-bottom: 1px solid #333; padding-bottom: 20px;">
         <h2 style="margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
         
-        <!-- Dropdown Box Ab Poora Alag Aur Clean Dikhega -->
+        <!-- Correct Dropdown Menu Mapping -->
         
             <option value="P-101">👤 राहुल प्रकाश (AC Specialist)</option>
             <option value="P-102">👤 अमित वर्मा (AC Technician)</option>
         </select>
     </div>
 
-    <!-- Wallet Layout Block -->
+    <!-- Wallet Box -->
     <div class="wallet-box">
-        <h4 style="margin: 0; color: #888; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Your Wallet Balance</h4>
+        <h4 style="margin: 0; color: #888; font-weight: 500; font-size: 13px; text-transform: uppercase;">Your Wallet Balance</h4>
         <h1 style="margin: 8px 0 0; color: #4CAF50; font-size: 36px; font-weight: 800;" id="partner-wallet-view">₹1450</h1>
     </div>
-    
-    <!-- Live Job Alert Dispatcher Screen Container -->
+
+    <!-- Alarm Popup Panel -->
     <div id="job-alert-modal" class="alert-box">
         <h3 style="margin:0;">🚨 New Job Request Incoming!</h3>
-        <p style="margin:8px 0; font-size:14px;" id="alert-desc-zone">Loading layout routing data...</p>
+        <p style="margin:8px 0; font-size:14px; font-weight:600;" id="alert-desc-zone">Loading routing data...</p>
         <div style="font-weight:800; font-size:18px; margin-bottom:12px;" id="countdown-timer-zone">Time Left: 30s</div>
         <button class="action-btn" style="background:black; color:white;" onclick="acceptIncomingJob()">Accept & Lock Job</button>
     </div>
 
-    <div id="active-job-sheet" style="margin-top:20px; background:#222; padding:15px; border-radius:12px; display:none;">
+    <!-- Active Status Sheet -->
+    <div id="active-job-sheet" style="margin-top:24px; background:#222; padding:15px; border-radius:12px; display:none; border:1px solid #333;">
         <h3 style="color:#4CAF50; margin:0 0 10px;">🟢 Current Active Assignment</h3>
-        <p id="active-job-details" style="margin:0; font-size:14px;"></p>
+        <p id="active-job-details" style="margin:0; font-size:14px; line-height:1.4; color:#DDD;"></p>
     </div>
 </div>
+
 <script>
-    // Audio engine setup with loop parameters
     const alertAudio = new Audio('https://mixkit.co');
     alertAudio.loop = true;
     let countdownEngine;
