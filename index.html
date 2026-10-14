@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gharbee Ultimate Customer App</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    
-    <!-- External Files Link Karein -->
+    <!-- Humari external style.css design file ko link kiya -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app-container">
   
-  <!-- APP HEADER (Common Logo & Location) -->
+  <!-- APP COMMON HEADER PANEL -->
   <div style="background: #063A25; padding: 20px 16px; border-radius: 0 0 20px 20px; color: #ffffff;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div style="display: flex; align-items: center; gap: 8px;">
@@ -25,10 +24,10 @@
       </div>
     </div>
     
-    <!-- Geo Location Badge -->
+    <!-- Geo Live Location Tracker Integration Badge -->
     <div style="margin-top: 14px; display: flex; align-items: center; gap: 6px; font-size: 12px; background: rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 10px;">
       <span style="color: #F5A623;">📍</span>
-      <span id="user-current-location">Detecting live location...</span>
+      <span id="user-current-location" style="font-weight: 500; opacity: 0.95;">Detecting live location...</span>
     </div>
   </div>
 
@@ -51,7 +50,7 @@
       </div>
     </div>
 
-    <!-- Target Injection Zones (Where JS injects code dynamically) -->
+    <!-- Injection Target Areas (Where app.js injects real loops) -->
     <h3 style="margin: 0 0 12px; font-size: 15px; font-weight: 700;">Select Sub-Service Option</h3>
     <div id="subservices-target-area"></div>
 
@@ -67,22 +66,45 @@
     <button style="width: 100%; background: #F5A623; color:#fff; border:none; padding:16px; border-radius:14px; font-size:15px; font-weight:700; cursor:pointer;" onclick="processBooking()">मैचिंग टाइम पर बुक करें ➔</button>
   </div>
 
-  <!-- SCREEN 2: HISTORY ARCHIVE PANEL -->
-  <div id="bookings-screen" class="app-screen">
+  <!-- SCREEN 2: DYNAMIC REPAIR MATERIAL JOB CARD -->
+  <div id="jobcard-screen" class="app-screen" style="display:none;">
+    <h3 style="margin: 0 0 12px; font-size: 16px; font-weight: 800; color: #063A25;">Live Active Job Card 🛠️</h3>
+    <div style="background: #FAFBFB; border: 1px solid #EAEAEA; border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+        <div style="font-size: 14px; font-weight: 700; color:#333;" id="jc-order-id">Order ID: Loading...</div>
+        <div style="font-size: 13px; color:#666; margin-top:4px;" id="jc-service-title">Service: AC Performance Check</div>
+        <div style="font-size: 13px; color:#2E7D32; font-weight:700; margin-top:4px;" id="jc-assigned-partner">Expert: 👤 Rahul Prakash</div>
+    </div>
+    <h4 style="margin: 0 0 10px; font-size: 14px; font-weight: 700;">Required Material/Repair Parts</h4>
+    <div id="jc-parts-inventory-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+  </div>
+
+  <!-- SCREEN 3: HISTORY ARCHIVE PANEL -->
+  <div id="bookings-screen" class="app-screen" style="display:none;">
     <h3 style="margin: 0 0 16px; font-size: 18px; font-weight: 700;">Your Booking History</h3>
     <div id="history-records-pipeline"></div>
   </div>
 
+  <!-- SCREEN 4: SUPPORT DESK PANEL -->
+  <div id="support-screen" class="app-screen" style="display:none;">
+    <h3 style="margin: 0 0 16px; font-size: 18px; font-weight: 700;">Gharbee Support Center 🛠</h3>
+    <div style="background: #F9F9F9; padding: 20px; border-radius: 16px; border: 1px dashed #DDD; text-align: center;">
+        <div style="font-size: 40px; margin-bottom: 12px;">🐝</div>
+        <p style="font-size: 14px; color: #333; font-weight: 600; margin: 0 0 16px;">क्या आपको अपनी सर्विस या पार्टनर से जुड़ी कोई समस्या है?</p>
+        <button onclick="alert('Connecting to Help Center...')" style="width: 100%; background: #063A25; color: white; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; margin-bottom: 10px;">📞 Call Help Center</button>
+        <button onclick="alert('Opening Live Chat Portal...')" style="width: 100%; background: white; color: #063A25; padding: 12px; border: 2px solid #063A25; border-radius: 10px; font-weight: 700; cursor: pointer;">💬 Live WhatsApp Chat</button>
+    </div>
+  </div>
+
   <!-- FIXED FLOATING NAVIGATION NAVIGATION BAR -->
-  <div style="margin-top: auto; border-top: 1px solid #EAEAEA; background: #ffffff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; text-align: center;">
+  <div style="margin-top: auto; border-top: 1px solid #EAEAEA; background: #ffffff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; text-align: center; z-index: 100;">
     <div id="nav-home" style="color: #063A25; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="toggleAppView('home')">
-      <div style="font-size: 20px; margin-bottom: 2px;">🏠</div>Home
+      <div style="font-size: 20px; margin-bottom: 4px;">🏠</div>Home
     </div>
     <div id="nav-bookings" style="color: #8E8E93; font-size: 11px; font-weight: 500; cursor: pointer;" onclick="toggleAppView('bookings')">
-      <div style="font-size: 20px; margin-bottom: 2px;">📋</div>Bookings
+      <div style="font-size: 20px; margin-bottom: 4px;">📋</div>Bookings
     </div>
-    <div style="color: #8E8E93; font-size: 11px; font-weight: 500; cursor: pointer;">
-      <div style="font-size: 20px; margin-bottom: 2px;">🛠️</div>Support
+    <div id="nav-support" style="color: #8E8E93; font-size: 11px; font-weight: 500; cursor: pointer;" onclick="toggleAppView('support')">
+      <div style="font-size: 20px; margin-bottom: 4px;">🛠️</div>Support
     </div>
   </div>
 </div>
