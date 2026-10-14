@@ -3,100 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Partner App</title>
+    <title>Gharbee Partner Cloud Matrix</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
-        body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; color: #0D4C3A; padding: 0; }
-        .partner-screen { width: 100%; max-width: 412px; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding-bottom: 75px; overflow-x: hidden; }
-        .header { background: linear-gradient(135deg, #0D4C3A 0%, #062c21 100%); color: white; padding: 20px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
-        .brand { font-size: 20px; font-weight: 800; }
-        .container { padding: 15px; flex: 1; overflow-y: auto; }
-        .tab-content { display: none; }
-        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 10px; }
-        .btn-primary { background: #0D4C3A; color: white; }
-        .input-box { width: 100%; padding: 14px; border: 1.5px solid #cbd5e1; border-radius: 12px; outline: none; margin-top: 5px; }
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
-        .nav-tab { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; background: none; border: none; }
+        body { margin: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
+        .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 20px; display: none; animation: flash 1s infinite alternate; }
+        .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        @keyframes flash { from { box-shadow: 0 0 5px #FF9800; } to { box-shadow: 0 0 25px #FF9800; } }
     </style>
 </head>
 <body>
-<div class="partner-screen">
-    <div class="header">
-        <div class="brand">Gharbee Partner</div>
-        <button id="statusToggle" style="padding:6px 12px; border-radius:20px; font-weight:bold; border:none; background:#ef4444; color:white;" onclick="toggleOnlineStatus()">OFFLINE</button>
+
+<div class="app-frame">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:15px;">
+        <h2>Gharbee Partner App</h2>
+        
+            <option value="P-101">राहुल प्रकाश (AC)</option>
+            <option value="P-102">अमित वर्मा (AC)</option>
+        </select>
     </div>
 
-    <!-- 🚪 लॉगिन स्क्रीन -->
-    <div id="partnerAuth" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; height: 75vh; width: 100%;">
-        <h3>पार्टनर ऐप लॉगिन</h3>
-        <input type="tel" id="partnerPhone" class="input-box" placeholder="मोबाइल नंबर डालें">
-        <button class="btn btn-primary" onclick="document.getElementById('otpStep').style.display='block'">OTP भेजें</button>
-        <div id="otpStep" style="width: 100%; display: none; margin-top:15px;">
-            <input type="number" id="partnerOtp" class="input-box" placeholder="OTP दर्ज करें (1234)"><button class="btn" style="background:#F89A1C; color:white;" onclick="verifyPartnerLogin()">App खोलें</button>
-        </div>
+    <div style="margin-top:20px; background:#222; padding:15px; border-radius:12px;">
+        <h4 style="margin:0; color:#888;">Your Wallet Balance</h4>
+        <h1 style="margin:5px 0 0; color:#4CAF50;" id="partner-wallet-view">₹1450</h1>
+    </div>
+    <!-- Live Job Alert Dispatcher Screen Container -->
+    <div id="job-alert-modal" class="alert-box">
+        <h3 style="margin:0;">🚨 New Job Request Incoming!</h3>
+        <p style="margin:8px 0; font-size:14px;" id="alert-desc-zone">Loading layout routing data...</p>
+        <div style="font-weight:800; font-size:18px; margin-bottom:12px;" id="countdown-timer-zone">Time Left: 30s</div>
+        <button class="action-btn" style="background:black; color:white;" onclick="acceptIncomingJob()">Accept & Lock Job</button>
     </div>
 
-    <!-- 📲 मुख्य बोर्ड -->
-    <div id="partnerDuty" class="container" style="display: none;">
-        <!-- 🏠 TAB 1: ऑनलाइन ड्यूटी बोर्ड -->
-        <div id="dutyTabContent" class="tab-content" style="display: block;">
-            <div class="card" style="background:#0D4C3A; color:white; display:flex; justify-content:space-between; align-items:center;">
-                <div><p style="font-size:11px; opacity:0.8;">ड्यूटी मीटर</p><h4 id="dutyHours">0 Hours</h4></div>
-                <h4>⭐ 4.9</h4>
-            </div>
-            <div id="offlineNotice" style="text-align:center; padding: 30px 10px; color:#94a3b8;">😴 कृपया काम पाने के लिए ऊपर से ऑनलाइन जाएँ।</div>
-            <div id="operationsZone" style="display: none;" class="card"><h4>🚨 नया ऑर्डर उपलब्ध है!</h4><button class="btn" style="background:#F89A1C; color:white;">Order स्वीकार करें</button></div>
-        </div>
-
-        <!-- 🛠️ TAB 2: PARTNER TRIPLE SUPPORT LAYER -->
-        <div id="supportTabContent" class="tab-content" style="display: none;">
-            <div style="font-size: 16px; font-weight: 700; color: #0D4C3A; margin-bottom: 15px;">पार्टनर हेल्प डेस्क 🛠️</div>
-            
-            <div class="card" style="height:150px; display:flex; flex-direction:column; padding:10px; margin-bottom:15px;">
-                <div style="flex:1; overflow-y:auto; font-size:12px; color:#64748b;">[Support]: ऑन-ड्यूटी किसी भी सहायता या पेमेंट विवाद के लिए नीचे चैट या कॉल करें:</div>
-                <div style="display:flex; gap:6px; margin-top:5px;"><input type="text" class="input-box" style="margin:0; padding:8px;" placeholder="लिखें..."><button class="btn btn-primary" style="margin:0; width:auto; padding:0 10px;" onclick="alert('हेल्प डेस्क कनेक्ट हो रहा है...')">Send</button></div>
-            </div>
-
-            <a href="tel:1234567890" style="text-decoration:none;">
-                <div class="card" style="border-left:5px solid #22c55e; background:#f0fdf4;"><h4 style="color:#15803d; font-size:14px;">📞 Emergency Partner Line</h4><p style="font-size:12px; color:#64748b;">कॉल करें: 1234567890</p></div>
-            </a>
-            <a href="mailto:support@gharbee.com" style="text-decoration:none;">
-                <div class="card" style="border-left:5px solid #F89A1C; background:#fff7ed;"><h4 style="color:#c2410c; font-size:14px;">✉️ Official Partner Mail</h4><p style="font-size:12px; color:#64748b;">मेल करें: support@gharbee.com</p></div>
-            </a>
-        </div>
-    </div>
-
-    <div id="partnerBottomNav" class="bottom-nav" style="display:none;">
-        <button id="pNavDuty" class="nav-tab" onclick="switchPTab('dutyTabContent', 'pNavDuty')" style="color:#0D4C3A;"><span>💼</span>Duty</button>
-        <button id="pNavHelp" class="nav-tab" onclick="switchPTab('supportTabContent', 'pNavHelp')"><span>🛠️</span>Help</button>
-        <button id="pNavLogout" class="nav-tab" onclick="location.reload()"><span>🚪</span>Logout</button>
+    <div id="active-job-sheet" style="margin-top:20px; background:#222; padding:15px; border-radius:12px; display:none;">
+        <h3 style="color:#4CAF50; margin:0 0 10px;">🟢 Current Active Assignment</h3>
+        <p id="active-job-details" style="margin:0; font-size:14px;"></p>
     </div>
 </div>
 <script>
-    let isOnline = false;
-    function verifyPartnerLogin() {
-        document.getElementById('partnerAuth').style.display = "none";
-        document.getElementById('partnerDuty').style.display = "block";
-        document.getElementById('partnerBottomNav').style.display = "flex";
+    // Audio engine setup with loop parameters
+    const alertAudio = new Audio('https://mixkit.co');
+    alertAudio.loop = true;
+    let countdownEngine;
+
+    function syncPartnerProfile() {
+        const selectedId = document.getElementById('partner-identity').value;
+        const baseWallet = selectedId === 'P-101' ? 1450 : 890;
+        document.getElementById('partner-wallet-view').innerText = `₹${baseWallet}`;
+        evaluateRoutingState();
     }
-    function switchPTab(contentId, navId) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.nav-tab').forEach(n => n.style.color = '#94a3b8');
-        document.getElementById(contentId).style.display = 'block'; document.getElementById(navId).style.color = '#0D4C3A';
-    }
-    function toggleOnlineStatus() {
-        isOnline = !isOnline; const btn = document.getElementById('statusToggle');
-        if(isOnline) {
-            btn.innerText = "ONLINE"; btn.style.background = "#22c55e";
-            document.getElementById('offlineNotice').style.display = "none"; document.getElementById('operationsZone').style.display = "block";
-            document.getElementById('dutyHours').innerText = "8 Hours (Online)";
+
+    function evaluateRoutingState() {
+        const job = JSON.parse(localStorage.getItem('gharbee_active_routing'));
+        const activePartner = document.getElementById('partner-identity').value;
+        
+        if(!job) { resetAlertUI(); return; }
+
+        if (job.status === "Routing Alert Sent ⏳" && job.primaryPartnerId === activePartner) {
+            triggerVisualAlert(job, 30);
+        } else if (job.status === "Cascading Area Broadcast Active 📡" && activePartner === "P-102") {
+            triggerVisualAlert(job, 15);
         } else {
-            btn.innerText = "OFFLINE"; btn.style.background = "#ef4444";
-            document.getElementById('offlineNotice').style.display = "block"; document.getElementById('operationsZone').style.display = "none";
-            document.getElementById('dutyHours').innerText = "0 Hours";
+            resetAlertUI();
         }
     }
+
+    function triggerVisualAlert(job, duration) {
+        document.getElementById('alert-desc-zone').innerText = `${job.service}\nLocation: ${job.area}`;
+        document.getElementById('job-alert-modal').style.display = "block";
+        try { alertAudio.play(); } catch(e) {}
+
+        let clock = duration;
+        clearInterval(countdownEngine);
+        countdownEngine = setInterval(() => {
+            clock--;
+            document.getElementById('countdown-timer-zone').innerText = `Time Left: ${clock}s`;
+            if(clock  {
+        if(e.key === 'gharbee_global_signal') evaluateRoutingState();
+    });
+    
+    window.onload = syncPartnerProfile;
 </script>
 </body>
 </html>
