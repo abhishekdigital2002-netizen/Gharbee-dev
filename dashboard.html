@@ -3,54 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Supreme Command Center</title>
+    <title>Gharbee Operations Matrix Command</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: '-apple-system', sans-serif; margin: 0; padding: 0; }
-        body { background-color: #062c21; display: flex; justify-content: center; min-height: 100vh; padding: 20px; color: #0D4C3A; }
-        .dashboard-container { width: 100%; max-width: 500px; background: #ffffff; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; min-height: 90vh; }
-        .header { background: linear-gradient(135deg, #0D4C3A 0%, #03170f 100%); color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid #F89A1C; }
-        .brand { font-size: 26px; font-weight: 800; }
-        .orange-text { color: #F89A1C; }
-        .finance-grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; background: #f8fafc; }
-        .finance-box { background: white; padding: 12px 8px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
-        .finance-box h4 { font-size: 11px; color: #64748b; text-transform: uppercase; }
-        .finance-box p { font-size: 15px; font-weight: 800; }
-        .input-box { width: 100%; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 12px; margin-bottom: 10px; }
-        .btn { width: 100%; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 14px; }
-        .btn-primary { background: #0D4C3A; color: white; }
+        body { margin: 0; background: #F4F7F6; font-family: 'Inter', sans-serif; }
+        .header { background: #063A25; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 40px; }
+        .stat-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #EAEAEA; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .toast-silent-alert { position: fixed; bottom: 20px; right: 20px; background: #063A25; color: white; padding: 16px 24px; border-radius: 12px; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-weight: 600; border-left: 5px solid #F5A623; }
+        table { width: 95%; margin: 0 auto 40px; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; border: 1px solid #EAEAEA; }
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid #EEE; font-size: 14px; }
+        th { background: #FAFBFB; color: #666; font-weight: 700; }
     </style>
 </head>
 <body>
-<div class="dashboard-container">
-    <div class="header"><div class="brand">Ghar<span class="orange-text">bee</span> Corporate</div><div style="font-size:11px; opacity:0.8; margin-top:4px;">🔒 Master Security Active</div></div>
-    
-    <div class="finance-grid" id="financeMatrixZone"><div class="finance-box"><h4>Total Booking</h4><p>₹9,250</p></div><div class="finance-box"><h4>Partner Share</h4><p>₹7,400</p></div><div class="finance-box" style="background:#f0fdf4;"><h4>Net Profit</h4><p style="color:#16a34a;">₹1,850</p></div></div>
 
-    <div id="adminAuthScreen" style="padding: 30px 20px; flex:1; display: flex; flex-direction: column; justify-content: center;">
-        <h3 style="text-align:center; margin-bottom:20px;">कमांड सेंटर सुरक्षित लॉगिन</h3>
-        <input type="password" id="loginPass" class="input-box" placeholder="पासकोड '1234' दर्ज करें">
-        <button class="btn btn-primary" onclick="processSecureLogin()">Dashboard अनलॉक करें</button>
-    </div>
-
-    <div id="adminMainDashboard" style="display: none; padding:20px; flex:1; text-align:center;">
-        <h3 style="color:#0D4C3A;">🎉 वेलकम बैक, अभिषेक जी!</h3>
-        <p style="font-size:13px; color:#64748b; margin-top:5px;">सभी पोर्टल्स (Customer & Partner Support) रीयलटाइम सिंक हो चुके हैं।</p>
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:15px; border-radius:14px; margin-top:20px; font-size:12px; text-align:left;">
-            <b>🎧 हेल्प डेस्क मॉनिटर एक्टिव:</b><br>
-            • Customer care: 1234567890<br>
-            • Corporate Mail: support@gharbee.com
-        </div>
-        <button class="btn" style="background:#ef4444; color:white; margin-top:40px;" onclick="location.reload()">सुरक्षित लॉग आउट</button>
-    </div>
+<div class="header">
+    <h2>Gharbee Central Control Terminal</h2>
+    <div style="font-weight:600;" id="auth-node-indicator">Logged in as: Sub-Admin Core Node</div>
 </div>
+
+<!-- Dynamic Counter Cards Matrix Grid -->
+<div class="grid-stats">
+    <div class="stat-card"><h3>👥 Live Customers</h3><h1 style="color:#063A25;">1,240 <span style="font-size:14px; color:#4CAF50;">🟢 Online</span></h1></div>
+    <div class="stat-card"><h3>👷 Live Partners</h3><h1 style="color:#F5A623;">42 Active</h1></div>
+    <div class="stat-card"><h3>⚡ Current Active Jobs</h3><h1 id="live-jobs-counter">0 Active Runs</h1></div>
+    <div class="stat-card"><h3>💰 Ecosystem Revenue</h3><h1 style="color:#2E7D32;" id="platform-revenue-counter">₹4,890</h1></div>
+</div>
+
+<h3 style="margin-left:40px; font-weight:800;">Ecosystem Financial Ledger (Partner Wise Sales)</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Partner ID</th>
+            <th>Name Track</th>
+            <th>Service Vertical</th>
+            <th>Total Completed Jobs</th>
+            <th>Wallet Vault Balance</th>
+            <th>Platform Revenue Cut (15%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>P-101</td><td><b>राहुल प्रकाश</b></td><td>AC Repair & Service</td><td>12 Jobs</td><td>₹1,450</td><td>₹1,080</td></tr>
+        <tr><td>P-102</td><td><b>अमित वर्मा</b></td><td>AC Repair & Service</td><td>5 Jobs</td><td>₹890</td><td>₹450</td></tr>
+        <tr><td>P-103</td><td><b>विनोद कुमार</b></td><td>Plumbing</td><td>18 Jobs</td><td>₹2,100</td><td>₹1,620</td></tr>
+    </tbody>
+</table>
+
+<!-- SILENT FLOATING OPERATIONAL ALERT POPUP (NO AUDIO TRACKS ATTACHED) -->
+<div id="silent-toast-alert" class="toast-silent-alert">
+    ⚠️ System Alert: New Incoming Booking Request Dispatched into Routing Channel.
+</div>
+
 <script>
-    function processSecureLogin() {
-        if(document.getElementById('loginPass').value === "1234") {
-            document.getElementById('financeMatrixZone').style.display = "grid";
-            document.getElementById('adminAuthScreen').style.display = "none";
-            document.getElementById('adminMainDashboard').style.display = "block";
-        } else { alert("गलत पासकोड!"); }
+    function parseSystemStateUpdates() {
+        const sessionUser = localStorage.getItem('gharbee_login_role') || 'Sub-Admin';
+        document.getElementById('auth-node-indicator').innerText = `Logged in as: ${sessionUser}`;
+
+        const currentActiveJob = JSON.parse(localStorage.getItem('gharbee_active_routing'));
+        if(currentActiveJob) {
+            document.getElementById('live-jobs-counter').innerText = `1 Active Run (${currentActiveJob.id})`;
+            
+            // Trigger silent notification toast system layout
+            const toast = document.getElementById('silent-toast-alert');
+            toast.innerText = `⚠️ Order ${currentActiveJob.id}: Status Updated to [${currentActiveJob.status}]`;
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, 4000);
+
+            if(currentActiveJob.status === "Assigned & Active 🟢") {
+                document.getElementById('platform-revenue-counter').innerText = "₹5,389";
+            }
+        }
     }
+
+    window.addEventListener('storage', (e) => {
+        if(e.key === 'gharbee_global_signal') parseSystemStateUpdates();
+    });
+
+    window.onload = parseSystemStateUpdates;
 </script>
 </body>
 </html>
