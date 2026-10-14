@@ -65,16 +65,18 @@ function processBooking() {
     const targetPartnerObj = gharbeeEngine.partners.find(p => p.id === currentSelectedPartner);
     
     const bookingPayload = {
-        id: orderId,
-        service: `${currentSelectedService} (${currentSelectedSub})`,
-        primaryPartnerId: currentSelectedPartner,
-        partnerName: targetPartnerObj.name,
-        area: "Gomti Nagar",
-        date: currentSelectedDate,
-        total: 499,
-        timestamp: Date.now(),
-        status: "Routing Alert Sent ⏳"
-    };
+    id: orderId,
+    service: `${currentSelectedService} (${currentSelectedSub})`,
+    primaryPartnerId: currentSelectedPartner,
+    partnerName: targetPartnerObj.name,
+    partnerPhone: currentSelectedPartner === "P-101" ? "9876543210" : "8765432109", // ALARM DISPATCH SYNC LINE
+    area: "Gomti Nagar",
+    date: currentSelectedDate,
+    total: 499,
+    timestamp: Date.now(),
+    status: "Routing Alert Sent ⏳"
+};
+
 
     // Set transactional pipeline triggers
     localStorage.setItem('gharbee_active_routing', JSON.stringify(bookingPayload));
