@@ -246,13 +246,39 @@ function evaluateRoutingState() {
     if(!activeSessionPhone) return;
     const job = JSON.parse(localStorage.getItem('gharbee_active_routing'));
     const profile = phoneSystemDb[activeSessionPhone];
+    
     if(!job) { resetAlertUI(); return; }
-    if (job.status === "Routing Alert Sent ⏳" && job.primaryPartnerId === profile.id) {
-        triggerVisualAlert(job, 30);
-    } else if (job.status === "Cascading Area Broadcast Active 📡" && profile.id === "P-102") {
-        triggerVisualAlert(job, 15);
+
+    if ((job.status.includes("Routing Alert Sent") && job.primaryPartnerId === profile.id) || 
+        (job.status.includes("Cascading Area Broadcast") && profile.id === "P-102")) {
+        
+        document.getElementById('alert-desc-zone').innerText = `${job.service}\nLocation: ${job.area}`;
+        document.getElementById('job-alert-modal').style.display = "block";
+        
+        clearInterval(countdownEngine);
+        let clock = 30;
+        
+        countdownEngine = setInterval(() => {
+            clock--;
+            document.getElementById('countdown-timer-zone').innerText = `Time Left: ${clock}s`;
+            
+            // Continuous Siren audio loop track play matrix
+            try {
+                alertAudio.play().catch(e => console.log("Click screen once to unlock browser audio protection locks"));
+            } catch(audioErr) {}
+
+            if(clock <= 0) {
+                clearInterval(countdownEngine);
+                if(!job.status.includes("Cascading")) {
+                    job.status = "Cascading Area Broadcast Active 📡";
+                    localStorage.setItem('gharbee_active_routing', JSON.stringify(job));
+                    localStorage.setItem('gharbee_global_signal', 'CASCADE_' + Date.now());
+                } else { resetAlertUI(); }
+            }
+        }, 1000);
     } else { resetAlertUI(); }
 }
+
 
 function triggerVisualAlert(job, duration) {
     document.getElementById('alert-desc-zone').innerText = `${job.service}\nLocation: ${job.area}`;
