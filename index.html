@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gharbee Ultimate Customer App</title>
-    <!-- Premium Aesthetics Ke Liye Inter Font -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; background-color: #042518; font-family: 'Inter', sans-serif; display: flex; justify-content: center; min-height: 100vh; }
         .app-container { max-width: 450px; width: 100%; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.3); }
-        .service-card { background: #ffffff; border: 1px solid #EAEAEA; border-radius: 16px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; }
-        .service-card:hover { transform: translateY(-2px); border-color: #F5A623; box-shadow: 0 6px 12px rgba(0,0,0,0.04); }
+        
+        /* Grid Structure */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
+        
+        /* Card Styles */
+        .service-card { background: #ffffff; border: 1px solid #EAEAEA; border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .service-card:hover { transform: translateY(-2px); border-color: #F5A623; }
         .service-card.active { background: #FDF9F2; border: 2px solid #F5A623; }
+        
+        /* Premium Badges */
+        .badge { position: absolute; top: -6px; right: -2px; background: #E8F5E9; color: #2E7D32; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; border: 1px solid #C8E6C9; }
+        
+        /* Card Icons/Images */
+        .icon-wrapper { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 26px; }
+        
         .date-pill { background: #F5F5F5; color: #333333; padding: 12px 14px; border-radius: 12px; text-align: center; font-size: 13px; font-weight: 600; min-width: 80px; cursor: pointer; transition: all 0.2s; }
         .date-pill.active { background: #063A25; color: #ffffff; }
         .scroll-clean::-webkit-scrollbar { display: none; }
@@ -44,22 +55,53 @@
 
   <!-- Interaction Form Block -->
   <div style="padding: 24px 16px; flex: 1;">
-    <h3 style="margin: 0 0 14px; font-size: 16px; font-weight: 700; color: #111111;">Select Service</h3>
+    <h3 style="margin: 0 0 14px; font-size: 15px; font-weight: 700; color: #111111;">Explore Services</h3>
     
-    <!-- Grid System -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px;">
+    <!-- 3-Column Urban Company Style Grid -->
+    <div class="services-grid">
+      
+      <!-- Appliance: AC Repair -->
       <div class="service-card active" onclick="selectService(this, 'AC Repair & Service')">
-        <div style="font-size: 34px; margin-bottom: 8px;">❄️</div>
-        <div style="font-size: 13px; font-weight: 700; color: #063A25; line-height: 1.3;">AC Repair & Service</div>
+        <span class="badge">Live</span>
+        <div class="icon-wrapper" style="background: #E3F2FD;">❄️</div>
+        <div style="font-size: 11px; font-weight: 700; color: #063A25;">AC Repair</div>
       </div>
+
+      <!-- Plumbing -->
       <div class="service-card" onclick="selectService(this, 'Plumber')">
-        <div style="font-size: 34px; margin-bottom: 8px;">🚰</div>
-        <div style="font-size: 13px; font-weight: 600; color: #4A4A4A; line-height: 1.3;">Plumber (नलसाज)</div>
+        <div class="icon-wrapper" style="background: #E8F5E9;">🚰</div>
+        <div style="font-size: 11px; font-weight: 600; color: #4A4A4A;">Plumbing</div>
       </div>
+
+      <!-- Electrician -->
+      <div class="service-card" onclick="selectService(this, 'Electrician')">
+        <span class="badge">Fast</span>
+        <div class="icon-wrapper" style="background: #FFFDE7;">⚡</div>
+        <div style="font-size: 11px; font-weight: 600; color: #4A4A4A;">Electrician</div>
+      </div>
+
+      <!-- Cleaning -->
+      <div class="service-card" style="margin-top: 6px;" onclick="selectService(this, 'Full Home Cleaning')">
+        <div class="icon-wrapper" style="background: #F3E5F5;">🧹</div>
+        <div style="font-size: 11px; font-weight: 600; color: #4A4A4A;">Cleaning</div>
+      </div>
+
+      <!-- Salon / Men's Grooming -->
+      <div class="service-card" style="margin-top: 6px;" onclick="selectService(this, 'Salon & Grooming')">
+        <div class="icon-wrapper" style="background: #ECEFF1;">✂️</div>
+        <div style="font-size: 11px; font-weight: 600; color: #4A4A4A;">Salon Eco</div>
+      </div>
+
+      <!-- Home Painting -->
+      <div class="service-card" style="margin-top: 6px;" onclick="selectService(this, 'Wall Painting')">
+        <div class="icon-wrapper" style="background: #E8EAF6;">🎨</div>
+        <div style="font-size: 11px; font-weight: 600; color: #4A4A4A;">Painting</div>
+      </div>
+
     </div>
 
     <!-- Date Selection Pills -->
-    <h3 style="margin: 0 0 14px; font-size: 16px; font-weight: 700; color: #111111;">Choose Date</h3>
+    <h3 style="margin: 0 0 14px; font-size: 15px; font-weight: 700; color: #111111;">Choose Date</h3>
     <div class="scroll-clean" style="display: flex; gap: 10px; margin-bottom: 36px; overflow-x: auto; padding-bottom: 4px;">
       <div class="date-pill active" onclick="selectDate(this, 'Today')">Today<br><span style="font-size: 11px; opacity: 0.8;">Oct 14</span></div>
       <div class="date-pill" onclick="selectDate(this, 'Tomorrow')">Tomorrow<br><span style="font-size: 11px; opacity: 0.8;">Oct 15</span></div>
@@ -86,7 +128,6 @@
   </div>
 </div>
 
-<!-- Interactive Logic Scripts -->
 <script>
     let selectedService = "AC Repair & Service";
     let selectedDate = "Today";
@@ -104,8 +145,7 @@
     }
 
     function triggerBooking() {
-        alert("Gharbee Booking Engine: Processing " + selectedService + " for " + selectedDate + "!");
-        // Yahan aap apna server API ya fetch process map kar sakte hain.
+        alert("Gharbee Engine: Booking " + selectedService + " for " + selectedDate + " successfully executed!");
     }
 </script>
 </body>
