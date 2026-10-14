@@ -8,7 +8,8 @@
     <style>
         body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
         .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 24px 20px; box-sizing: border-box; }
-        .partner-selector { background: #2A2A2A; color: #fff; padding: 14px; border-radius: 12px; border: 1px solid #444; font-size: 14px; font-weight: 600; width: 100%; margin-top: 14px; cursor: pointer; outline: none; -webkit-appearance: none; }
+        /* Dropdown ki styling jo box banayegi */
+        .partner-selector { background: #2A2A2A; color: #fff; padding: 14px; border-radius: 12px; border: 1px solid #444; font-size: 14px; font-weight: 600; width: 100%; margin-top: 14px; cursor: pointer; outline: none; display: block !important; }
         .wallet-box { margin-top: 24px; background: #222; padding: 20px; border-radius: 16px; border: 1px solid #2d2d2d; }
         .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; }
         .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 12px; }
@@ -21,7 +22,7 @@
     <div style="border-bottom: 1px solid #333; padding-bottom: 20px;">
         <h2 style="margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
         
-        <!-- Standard Safe Select Dropdown Wrapper Menu -->
+        <!-- Dropdown Box jo box ki tarah dikhega -->
         
             <option value="P-101">👤 राहुल प्रकाश (AC Specialist)</option>
             <option value="P-102">👤 अमित वर्मा (AC Technician)</option>
@@ -45,6 +46,7 @@
         <p id="active-job-details" style="margin:0; font-size:14px; line-height:1.4; color:#DDD;"></p>
     </div>
 </div>
+
 <script>
     const alertAudio = new Audio('https://mixkit.co');
     alertAudio.loop = true;
