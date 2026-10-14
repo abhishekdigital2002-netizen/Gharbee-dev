@@ -6,9 +6,26 @@
     <title>Gharbee Partner Cloud Matrix</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { margin: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
-        .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 20px; display: none; animation: flash 1s infinite alternate; }
+        body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
+        .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 24px 20px; box-sizing: border-box; }
+        
+        /* Dropdown custom design styling */
+        .partner-selector {
+            background: #2A2A2A; 
+            color: #fff; 
+            padding: 10px 14px; 
+            border-radius: 10px; 
+            border: 1px solid #444; 
+            font-size: 14px; 
+            font-weight: 600; 
+            width: 100%; 
+            margin-top: 12px;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .wallet-box { margin-top: 24px; background: #222; padding: 20px; border-radius: 16px; border: 1px solid #2d2d2d; }
+        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; }
         .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; }
         @keyframes flash { from { box-shadow: 0 0 5px #FF9800; } to { box-shadow: 0 0 25px #FF9800; } }
     </style>
@@ -16,18 +33,23 @@
 <body>
 
 <div class="app-frame">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:15px;">
-        <h2>Gharbee Partner App</h2>
+    <!-- Header aur Dropdown Layout Alag-Alag Row Mein -->
+    <div style="border-bottom: 1px solid #333; padding-bottom: 20px;">
+        <h2 style="margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
         
-            <option value="P-101">राहुल प्रकाश (AC)</option>
-            <option value="P-102">अमित वर्मा (AC)</option>
+        <!-- Dropdown Box Ab Poora Alag Aur Clean Dikhega -->
+        
+            <option value="P-101">👤 राहुल प्रकाश (AC Specialist)</option>
+            <option value="P-102">👤 अमित वर्मा (AC Technician)</option>
         </select>
     </div>
 
-    <div style="margin-top:20px; background:#222; padding:15px; border-radius:12px;">
-        <h4 style="margin:0; color:#888;">Your Wallet Balance</h4>
-        <h1 style="margin:5px 0 0; color:#4CAF50;" id="partner-wallet-view">₹1450</h1>
+    <!-- Wallet Layout Block -->
+    <div class="wallet-box">
+        <h4 style="margin: 0; color: #888; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Your Wallet Balance</h4>
+        <h1 style="margin: 8px 0 0; color: #4CAF50; font-size: 36px; font-weight: 800;" id="partner-wallet-view">₹1450</h1>
     </div>
+    
     <!-- Live Job Alert Dispatcher Screen Container -->
     <div id="job-alert-modal" class="alert-box">
         <h3 style="margin:0;">🚨 New Job Request Incoming!</h3>
