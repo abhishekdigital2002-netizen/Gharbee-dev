@@ -339,7 +339,18 @@ function logoutPartnerSession() {
     document.getElementById('auth-screen-layer').style.display = "flex";
 }
 
-window.addEventListener('storage', (e) => { if(e.key === 'gharbee_global_signal') evaluateRoutingState(); });
+// Enhanced Broadcast Interceptor Loop across open browser tab boundaries
+window.addEventListener('storage', (e) => {
+    if (e.key === 'gharbee_global_signal') {
+        evaluateRoutingState();
+    }
+});
+
+// Force check on load loop in case alert is already active inside state memory
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(evaluateRoutingState, 500);
+});
+
 </script>
 </body>
 </html>
