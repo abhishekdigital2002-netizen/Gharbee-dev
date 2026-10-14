@@ -58,25 +58,43 @@ function setTargetPartner(id) {
 }
 
 // 🚀 Core Cascading Booking Engine Execution Link
+// Global Match Validation Architecture with Manual Window Storage Signal Dispatch
 function processBooking() {
-    if(!currentSelectedPartner) { alert("No active matching partner available!"); return; }
+    if(!currentSelectedPartner) { 
+        alert("कृपया बुकिंग से पहले एक Live Partner चुनें!"); 
+        return; 
+    }
     
     const orderId = "GB-" + Math.floor(1000 + Math.random() * 9000);
     const targetPartnerObj = gharbeeEngine.partners.find(p => p.id === currentSelectedPartner);
     
     const bookingPayload = {
-    id: orderId,
-    service: `${currentSelectedService} (${currentSelectedSub})`,
-    primaryPartnerId: currentSelectedPartner,
-    partnerName: targetPartnerObj.name,
-    partnerPhone: currentSelectedPartner === "P-101" ? "9876543210" : "8765432109", // ALARM DISPATCH SYNC LINE
-    area: "Gomti Nagar",
-    date: currentSelectedDate,
-    total: 499,
-    timestamp: Date.now(),
-    status: "Routing Alert Sent ⏳"
-};
+        id: orderId,
+        service: `${currentSelectedService} (${currentSelectedSub})`,
+        primaryPartnerId: currentSelectedPartner,
+        partnerName: targetPartnerObj.name,
+        partnerPhone: currentSelectedPartner === "P-101" ? "9876543210" : "8765432109", 
+        area: "Gomti Nagar",
+        date: currentSelectedDate,
+        total: 499,
+        timestamp: Date.now(),
+        status: "Routing Alert Sent ⏳"
+    };
 
+    // 1. Storage update network parameters
+    localStorage.setItem('gharbee_active_routing', JSON.stringify(bookingPayload));
+    localStorage.setItem('gharbee_global_signal', 'NEW_BOOKING_' + Date.now());
+
+    // 2. FIXED FORCE SYNC: Force dispatch storage signaling events to bind all current window threads
+    const syncEvent = new StorageEvent('storage', {
+        key: 'gharbee_global_signal',
+        newValue: 'NEW_BOOKING_' + Date.now(),
+        storageArea: localStorage
+    });
+    window.dispatchEvent(syncEvent);
+
+    alert(`बुकिंग सबमिट हो गई! पार्टनर को अलर्ट भेज दिया गया है। Order ID: ${orderId}`);
+}
 
     // Set transactional pipeline triggers
     localStorage.setItem('gharbee_active_routing', JSON.stringify(bookingPayload));
