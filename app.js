@@ -36,16 +36,52 @@ function switchMainService(serviceName) {
 }
 
 function renderDynamicContent() {
+    // A. Sub-services inject karne ka logic
+    const subContainer = document.getElementById('subservices-target-area');
+    if (subContainer) {
+        subContainer.innerHTML = "";
+        
+        // Dynamic subservices default array framework mapping
+        const subList = [
+            { id: "s1", name: "Deep Foam Cleaning AC", price: "₹499" },
+            { id: "s2", name: "Gas Leak Fix & Refill", price: "₹2499" }
+        ];
+        
+        subList.forEach((sub, idx) => {
+            if(idx === 0) currentSelectedSub = sub.name;
+            subContainer.innerHTML += `
+                <div class="subservice-item ${idx === 0 ? 'selected' : ''}" id="sub-${sub.id}" onclick="currentSelectedSub='${sub.name}'; document.querySelectorAll('.subservice-item').forEach(s=>s.style.borderColor='#EAEAEA'); this.style.borderColor='#F5A623';" style="border: 1px solid ${idx===0?'#F5A623':'#EAEAEA'}; padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background: ${idx===0?'#FFFDF9':'#fff'}">
+                    <div>
+                        <div style="font-size:14px; font-weight:700; color:#212121;">${sub.name}</div>
+                        <div style="font-size:13px; font-weight:600; color:#F5A623; margin-top:2px;">${sub.price}</div>
+                    </div>
+                </div>`;
+        });
+    }
+
+    // B. Live Mechanics/Partners inject karne ka updated safe logic
     const pContainer = document.getElementById('live-partners-target-area');
     if (!pContainer) return;
     pContainer.innerHTML = "";
     
+    // Exact mapping filtering logic connected to gharbeeEngine array data structural paths
     const targets = gharbeeEngine.partners.filter(p => p.service === currentSelectedService && p.area === "Gomti Nagar");
+    
+    if (targets.length === 0) {
+        pContainer.innerHTML = `<div style="font-size:13px; color:#999; padding:10px; text-align:center;">No live partners online currently.</div>`;
+        return;
+    }
+
     targets.forEach((p, idx) => {
+        if(idx === 0) currentSelectedPartner = p.id;
+        
         pContainer.innerHTML += `
-            <div class="partner-row" id="p-row-${p.id}" onclick="setTargetPartner('${p.id}')" style="cursor:pointer; padding:12px; margin-bottom:8px; border-radius:12px; border:1px solid ${idx===0?'#4CAF50':'#EAEAEA'}; background:${idx===0?'#F5FDF6':'#FFF'}">
-                <div style="font-size:13px; font-weight:700;">👤 ${p.name} (${p.rating})</div>
-                <div style="font-size:11px; color:#2E7D32; font-weight:600;">${p.status} • Area: ${p.area}</div>
+            <div class="partner-row" id="p-row-${p.id}" onclick="setTargetPartner('${p.id}')" style="cursor:pointer; padding:12px; margin-bottom:8px; border-radius:12px; border:1px solid ${idx===0?'#4CAF50':'#EAEAEA'}; background:${idx===0?'#F5FDF6':'#FFF'}; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-size:13px; font-weight:700; color:#212121;">👤 ${p.name} (${p.rating})</div>
+                    <div style="font-size:11px; color:#2E7D32; font-weight:600; margin-top:2px;">${p.status} • Area: ${p.area}</div>
+                </div>
+                <span class="select-badge" style="font-size:11px; font-weight:700; color: ${idx === 0 ? '#2E7D32' : '#8E8E93'}">${idx === 0 ? '✓ Selected' : 'Tap to Choose'}</span>
             </div>`;
     });
 }
