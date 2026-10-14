@@ -3,134 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Partner Console Engine</title>
+    <title>Gharbee Partner Dashboard Pro</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
-        .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 24px 20px; box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; min-height: 100vh; }
+        .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; }
         
-        /* Premium Urban Company style card selectors */
-        .partner-card-switch {
-            background: #222;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
-        }
-        .partner-card-switch.active {
-            border-color: #F5A623;
-            background: #2d2417;
-        }
-        .wallet-box { margin-top: 24px; background: #222; padding: 20px; border-radius: 16px; border: 1px solid #2d2d2d; }
-        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; }
-        .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 12px; }
+        /* Auth Screen Design */
+        .auth-container { display: flex; flex-direction: column; justify-content: center; flex: 1; text-align: center; }
+        .input-field { width: 100%; padding: 14px; margin: 12px 0; background: #2A2A2A; border: 1px solid #444; border-radius: 10px; color: white; font-size: 16px; box-sizing: border-box; outline: none; }
+        .prime-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.2s; }
+        
+        /* Core Dashboard Tabs Layout */
+        .main-portal { display: none; flex-direction: column; flex: 1; }
+        .tab-screen { display: none; flex-direction: column; margin-top: 15px; }
+        .tab-screen.active { display: flex; }
+        
+        /* Financial Grid Analytics Cards */
+        .income-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+        .stat-node { background: #222; border: 1px solid #2d2d2d; padding: 14px; border-radius: 12px; }
+        
+        /* Digital ID Card Premium UI Matrix */
+        .id-card-wrapper { background: linear-gradient(135deg, #063A25 0%, #0c5739 100%); border-radius: 20px; padding: 24px; margin: 20px auto; width: 85%; box-shadow: 0 10px 25px rgba(0,0,0,0.4); border: 2px solid #F5A623; position: relative; overflow: hidden; }
+        .id-card-wrapper::before { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(245, 166, 35, 0.08); border-radius: 50%; }
+        
+        .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 20px; display: none; animation: flash 1s infinite alternate; }
         @keyframes flash { from { box-shadow: 0 0 5px #FF9800; } to { box-shadow: 0 0 25px #FF9800; } }
+        
+        /* Bottom Tab Navigator Component */
+        .bottom-nav { margin-top: auto; border-top: 1px solid #2D2D2D; background: #1A1A1A; padding: 12px 10px 0; display: flex; justify-content: space-between; text-align: center; }
+        .nav-item { color: #888; font-size: 11px; font-weight: 600; cursor: pointer; flex: 1; }
     </style>
 </head>
 <body>
 
 <div class="app-frame">
-    <!-- Header Block -->
-    <div style="border-bottom: 1px solid #333; padding-bottom: 20px;">
-        <h2 style="margin: 0 0 14px; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
+
+    <!-- 🔐 SECTION 1: SECURE PARTNER AUTH GATEWAY -->
+    <div id="auth-screen-layer" class="auth-container">
+        <div style="font-size: 50px; margin-bottom: 10px;">🐝</div>
+        <h2 style="margin: 0 0 5px; font-weight: 800; font-size: 26px;">Gharbee Partner Pro</h2>
+        <p style="color: #aaa; margin: 0 0 24px; font-size: 14px;">Service Expert Login Console</p>
         
-        <!-- Interactive Switching Cards -->
-        <div class="partner-card-switch active" id="card-P-101" onclick="switchPartnerAccount('P-101', 1450)">
+        <select id="login-id-selector" class="input-field" style="cursor: pointer;">
+            <option value="P-101">👤 राहुल प्रकाश (AC Specialist)</option>
+            <option value="P-102">👤 अमित वर्मा (AC Technician)</option>
+        </select>
+        <input type="password" id="partner-pin-code" class="input-field" placeholder="Enter Secure 4-Digit PIN (1234)" maxlength="4" style="text-align: center; letter-spacing: 4px;">
+        <button class="prime-btn" style="background: #F5A623; color: white;" onclick="authenticatePartnerUser()">Verify Identity ➔</button>
+    </div>
+
+    <!-- ⚙️ SECTION 2: MASTER PORTAL INTERFACE COMPONENT -->
+    <div id="master-portal-layer" class="main-portal">
+        <!-- Dashboard Sub-Header Profile Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 12px;">
             <div>
-                <div style="font-size:14px; font-weight:700;">👤 राहुल प्रकाश</div>
-                <div style="font-size:12px; color:#aaa; margin-top:2px;">AC Specialist</div>
+                <h3 style="margin: 0; font-size: 18px;" id="welcome-title-zone">👤 Loading Profile...</h3>
+                <span style="font-size: 11px; color: #69F0AE; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <span style="width:6px; height:6px; background:#69F0AE; border-radius:50%;"></span> Live & Online System Node
+                </span>
             </div>
-            <span id="dot-P-101" style="color:#F5A623; font-weight:700;">● Active</span>
+            <button onclick="logoutPartnerSession()" style="background: #333; border: none; color: #ff5252; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">Logout</button>
         </div>
 
-        <div class="partner-card-switch" id="card-P-102" onclick="switchPartnerAccount('P-102', 890)">
-            <div>
-                <div style="font-size:14px; font-weight:700;">👤 अमित वर्मा</div>
-                <div style="font-size:12px; color:#aaa; margin-top:2px;">AC Technician</div>
-            </div>
-            <span id="dot-P-102" style="color:#666; font-weight:700;">● Offline</span>
+        <!-- Dynamic Incoming Alarm Banner Notice Block -->
+        <div id="job-alert-modal" class="alert-box">
+            <h3 style="margin:0;">🚨 New Job Dispatched!</h3>
+            <p style="margin:8px 0; font-size:14px; font-weight:700;" id="alert-desc-zone">Service target routing pending...</p>
+            <div style="font-weight:800; font-size:18px; margin-bottom:12px;" id="countdown-timer-zone">Time Left: 30s</div>
+            <button class="prime-btn" style="background:black; color:white; padding:12px;" onclick="acceptIncomingJob()">Accept & Initialize Job</button>
         </div>
-    </div>
 
-    <!-- Hidden Input tracking active ID state for script logic downstream -->
-    
+        <!-- TAB SCREEN A: FINANCIAL TRACKER & PAYOUT MODULE -->
+        <div id="tab-earnings" class="tab-screen active">
+            <div style="background: linear-gradient(135deg, #222 0%, #1c1c1c 100%); padding: 20px; border-radius: 16px; border: 1px solid #2D2D2D; margin-top: 10px; position: relative;">
+                <h5 style="margin:0; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Current Wallet Vault</h5>
+                <h1 style="margin:8px 0 0; color:#4CAF50; font-size:38px; font-weight:800;" id="wallet-balance-view">₹0</h1>
+                
+                <!-- Payout Button with Min 500 Lock Constraint Rule Logic -->
+                <button id="payout-action-trigger" class="prime-btn" style="margin-top:15px; padding:12px; font-size:14px; background:#4CAF50; color:white;" onclick="executeEcosystemPayout()">Withdraw Earnings (Min ₹500)</button>
+            </div>
 
-    <!-- Wallet Box -->
-    <div class="wallet-box">
-        <h4 style="margin: 0; color: #888; font-weight: 500; font-size: 13px; text-transform: uppercase;">Your Wallet Balance</h4>
-        <h1 style="margin: 8px 0 0; color: #4CAF50; font-size: 36px; font-weight: 800;" id="partner-wallet-view">₹1450</h1>
-    </div>
+            <!-- Complex Analytical Revenue Matrix Multi-Grid Block -->
+            <div class="income-grid">
+                <div class="stat-node">
+                    <span style="font-size:11px; color:#888; font-weight:500;">MONTHLY REVENUE</span>
+                    <h3 style="margin:5px 0 0; font-weight:800; font-size:20px; color:#fff;" id="month-income-zone">₹0</h3>
+                </div>
+                <div class="stat-node">
+                    <span style="font-size:11px; color:#888; font-weight:500;">YEARLY LEDGER</span>
+                    <h3 style="margin:5px 0 0; font-weight:800; font-size:20px; color:#fff;" id="year-income-zone">₹0</h3>
+                </div>
+            </div>
+            
+            <div id="active-job-sheet" style="margin-top:20px; background:#222; padding:15px; border-radius:12px; display:none; border:1px solid #333;">
+                <h4 style="color:#4CAF50; margin:0 0 8px;">🟢 Ongoing Target Assignment</h4>
+                <p id="active-job-details" style="margin:0; font-size:13px; line-height:1.4; color:#DDD;"></p>
+            </div>
+        </div>
 
-    <!-- Alert Dispatch Popups -->
-    <div id="job-alert-modal" class="alert-box">
-        <h3 style="margin:0;">🚨 New Job Request Incoming!</h3>
-        <p style="margin:8px 0; font-size:14px; font-weight:600;" id="alert-desc-zone">Loading layout routing data...</p>
-        <div style="font-weight:800; font-size:18px; margin-bottom:12px;" id="countdown-timer-zone">Time Left: 30s</div>
-        <button class="action-btn" style="background:black; color:white;" onclick="acceptIncomingJob()">Accept & Lock Job</button>
-    </div>
+        <!-- TAB SCREEN B: PREMIUM DIGITAL GRAPHICS IDENTITY CARD PANEL -->
+        <div id="tab-idcard" class="tab-screen">
+            <h3 style="margin: 15px 0 0; text-align: center; font-size: 16px; color: #aaa;">Digital Verification ID Card</h3>
+            
+            <div class="id-card-wrapper">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:12px; margin-bottom:16px;">
+                    <div style="font-weight:800; font-size:16px; color:#FFF; letter-spacing:0.5px;">Ghar<span style="color:#F5A623;">bee</span></div>
+                    <span style="background:rgba(255,255,255,0.15); font-size:9px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px;">Verified Expert</span>
+                </div>
+                
+                <div style="display:flex; gap:16px; align-items:center;">
+                    <!-- High-Fidelity Avatars Emulating Image Upload Layers Placeholder -->
+                    <div style="width: 75px; height: 75px; background: #2A2A2A; border-radius: 14px; border: 2px solid #F5A623; display:flex; align-items:center; justify-content:center; font-size:32px;" id="card-avatar-zone">👤</div>
+                    <div>
+                        <h2 style="margin:0; font-size:18px; font-weight:800;" id="card-name-zone">Loading...</h2>
+                        <p style="margin:4px 0 0; font-size:13px; color:#F5A623; font-weight:600;" id="card-service-zone">Vertical Sector</p>
+                        <p style="margin:2px 0 0; font-size:11px; opacity:0.7;" id="card-uid-zone">ID: P-000</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top:20px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; text-align:center; font-size:11px; border:1px solid rgba(255,255,255,0.05); font-weight:500;">
+                    Gharbee Home Services Platform • Lucknow Node
+                </div>
+            </div>
+        </div>
 
-    <div id="active-job-sheet" style="margin-top:24px; background:#222; padding:15px; border-radius:12px; display:none; border:1px solid #333;">
-        <h3 style="color:#4CAF50; margin:0 0 10px;">🟢 Current Active Assignment</h3>
-        <p id="active-job-details" style="margin:0; font-size:14px; line-height:1.4; color:#DDD;"></p>
-    </div>
-</div>
+        <!-- TAB NAVIGATOR FOOTER INTERFACE LINK MAPPING ARCHITECTURE -->
+        <div class="bottom-nav">
+            <div id="nav-earn-btn" class="nav-item" style="color:#F5A623;" onclick="switchInternalViewTab('earnings')">
+                <div style="font-size:22px; margin-bottom:4px;">💰</div>Earnings
+            </div>
+---
 
+### 🧠 Block 2: Audio Siren Loop & Account Matrix JavaScript (`partner.html` Part 2)
+Is Block 2 wale functional component script logic ko **Block 1 ke exact end termination wrapper tag (`</div>`) ke theek neeche paste kar dein** aur file ko save (Commit changes) kar dein:
+
+```html
 <script>
-    const alertAudio = new Audio('https://mixkit.co');
-    alertAudio.loop = true;
-    let countdownEngine;
+// Mock Core Production Database Matrix for Identity Validation Systems
+const partnerSystemDb = {
+    "P-101": { name: "राहुल प्रकाश", service: "AC Specialist", wallet: 1450, monthly: 18400, yearly: 214000, pin: "1234", avatar: "👨‍🔧" },
+    "P-102": { name: "अमित वर्मा", service: "AC Technician", wallet: 320, monthly: 9200, yearly: 110000, pin: "1234", avatar: "🧑‍🔧" }
+};
 
-    function switchPartnerAccount(partnerId, balance) {
-        // Toggle UI Active Visual Frames
-        document.querySelectorAll('.partner-card-switch').forEach(c => c.classList.remove('active'));
-        document.getElementById(`card-${partnerId}`).classList.add('active');
+let activeSessionId = "";
+let countdownEngine;
+// High Volume Alert frequencies to cut through background thread stacks
+const alertAudio = new Audio('https://mixkit.co');
+alertAudio.loop = true;
+
+function authenticatePartnerUser() {
+    const selectedId = document.getElementById('login-id-selector').value;
+    const inputPin = document.getElementById('partner-pin-code').value;
+    const profile = partnerSystemDb[selectedId];
+
+    if(inputPin === profile.pin) {
+        activeSessionId = selectedId;
+        document.getElementById('auth-screen-layer').style.display = "none";
+        document.getElementById('master-portal-layer').style.display = "flex";
         
-        document.getElementById('dot-P-101').style.color = "#666";
-        document.getElementById('dot-P-101').innerText = "● Offline";
-        document.getElementById('dot-P-102').style.color = "#666";
-        document.getElementById('dot-P-102').innerText = "● Offline";
+        // Initialize dynamic template render configurations
+        document.getElementById('welcome-title-zone').innerText = `👤 ${profile.name}`;
         
-        document.getElementById(`dot-${partnerId}`).style.color = "#F5A623";
-        document.getElementById(`dot-${partnerId}`).innerText = "● Active";
+        // Populate graphic ID elements structural layouts
+        document.getElementById('card-name-zone').innerText = profile.name;
+        document.getElementById('card-service-zone').innerText = profile.service;
+        document.getElementById('card-uid-zone').innerText = `ID: ${selectedId}`;
+        document.getElementById('card-avatar-zone').innerText = profile.avatar;
         
-        document.getElementById('partner-identity').value = partnerId;
-        document.getElementById('partner-wallet-view').innerText = `₹${balance}`;
+        renderAccountBalances();
         evaluateRoutingState();
+    } else {
+        alert("Security Token Error: Invalid identity PIN code entered.");
     }
+}
 
-    function evaluateRoutingState() {
-        const job = JSON.parse(localStorage.getItem('gharbee_active_routing'));
-        const activePartner = document.getElementById('partner-identity').value;
-        
-        if(!job) { resetAlertUI(); return; }
+function renderAccountBalances() {
+    if(!activeSessionId) return;
+    const profile = partnerSystemDb[activeSessionId];
+    
+    document.getElementById('wallet-balance-view').innerText = `₹${profile.wallet}`;
+    document.getElementById('month-income-zone').innerText = `₹${profile.monthly}`;
+    document.getElementById('year-income-zone').innerText = `₹${profile.yearly}`;
+    
+    // MIN 500 RULE ENFORCEMENT ENGINE CAPTURE
+    const btn = document.getElementById('payout-action-trigger');
+    if(profile.wallet < 500) {
+        btn.disabled = true;
+        btn.style.background = "#444";
+        btn.style.cursor = "not-allowed";
+        btn.innerText = `Withdraw Locked (Min ₹500 Req)`;
+    } else {
+        btn.disabled = false;
+        btn.style.background = "#4CAF50";
+        btn.style.cursor = "pointer";
+        btn.innerText = `Withdraw Earnings ➔`;
+    }
+}
 
-        if (job.status === "Routing Alert Sent ⏳" && job.primaryPartnerId === activePartner) {
-            triggerVisualAlert(job, 30);
-        } else if (job.status === "Cascading Area Broadcast Active 📡" && activePartner === "P-102") {
-            triggerVisualAlert(job, 15);
-        } else {
-            resetAlertUI();
+function executeEcosystemPayout() {
+    const profile = partnerSystemDb[activeSessionId];
+    alert(`Ecosystem Fund Transfer Successful! ₹${profile.wallet} successfully dispatched to your linked bank ledger.`);
+    profile.wallet = 0; // Empty balance vault post dispatch
+    renderAccountBalances();
+}
+
+function evaluateRoutingState() {
+    if(!activeSessionId) return;
+    const job = JSON.parse(localStorage.getItem('gharbee_active_routing'));
+    
+    if(!job) { resetAlertUI(); return; }
+
+    if (job.status === "Routing Alert Sent ⏳" && job.primaryPartnerId === activeSessionId) {
+        triggerVisualAlert(job, 30);
+    } else if (job.status === "Cascading Area Broadcast Active 📡" && activeSessionId === "P-102") {
+        triggerVisualAlert(job, 15);
+    } else {
+        resetAlertUI();
+    }
+}
+
+function triggerVisualAlert(job, duration) {
+    document.getElementById('alert-desc-zone').innerText = `${job.service}\nLocation: ${job.area}`;
+    document.getElementById('job-alert-modal').style.display = "block";
+    
+    // Play loud notification tracking frequencies loop
+    try { alertAudio.play(); } catch(e) {}
+
+    let clock = duration;
+    clearInterval(countdownEngine);
+    countdownEngine = setInterval(() => {
+        clock--;
+        document.getElementById('countdown-timer-zone').innerText = `Time Left: ${clock}s`;
+        if(clock <= 0) {
+            clearInterval(countdownEngine);
+            if(job.status === "Routing Alert Sent ⏳") {
+                job.status = "Cascading Area Broadcast Active 📡";
+                localStorage.setItem('gharbee_active_routing', JSON.stringify(job));
+                localStorage.setItem('gharbee_global_signal', 'CASCADE_' + Date.now());
+            } else {
+                resetAlertUI();
+            }
         }
-    }
+    }, 1000);
+}
 
-    function triggerVisualAlert(job, duration) {
-        document.getElementById('alert-desc-zone').innerText = `${job.service}\nLocation: ${job.area}`;
-        document.getElementById('job-alert-modal').style.display = "block";
-        try { alertAudio.play(); } catch(e) {}
+function acceptIncomingJob() {
+    clearInterval(countdownEngine);
+    alertAudio.pause();
+    
+    let job = JSON.parse(localStorage.getItem('gharbee_active_routing'));
+    job.status = "Assigned & Active 🟢";
+    job.partnerId = activeSessionId;
+    job.partnerName = partnerSystemDb[activeSessionId].name;
+    
+    localStorage.setItem('gharbee_active_routing', JSON.stringify(job));
+    localStorage.setItem('gharbee_global_signal', 'ACCEPTED_' + Date.now());
+    
+    // Increment specific matrix balance structures
+    partnerSystemDb[activeSessionId].wallet += 400; // Platform operational payout net adjustment
+    partnerSystemDb[activeSessionId].monthly += 400;
+    partnerSystemDb[activeSessionId].yearly += 400;
+    
+    renderAccountBalances();
+    
+    document.getElementById('job-alert-modal').style.display = "none";
+    document.getElementById('active-job-sheet').style.display = "block";
+    document.getElementById('active-job-details').innerText = `Order ID: ${job.id}\nService Category: ${job.service}`;
+}
 
-        let clock = duration;
-        clearInterval(countdownEngine);
-        countdownEngine = setInterval(() => {
-            clock--;
-            document.getElementById('countdown-timer-zone').innerText = `Time Left: ${clock}s`;
-            if(clock  {
-        if(e.key === 'gharbee_global_signal') evaluateRoutingState();
-    });
+function resetAlertUI() {
+    clearInterval(countdownEngine);
+    alertAudio.pause();
+    document.getElementById('job-alert-modal').style.display = "none";
+}
+
+function switchInternalViewTab(targetTab) {
+    document.querySelectorAll('.tab-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(`tab-${targetTab}`).classList.add('active');
+    
+    document.getElementById('nav-earn-btn').style.color = "#888";
+    document.getElementById('nav-id-btn').style.color = "#888";
+    
+    if(targetTab === 'earnings') document.getElementById('nav-earn-btn').style.color = "#F5A623";
+    if(targetTab === 'idcard') document.getElementById('nav-id-btn').style.color = "#F5A623";
+}
+
+function logoutPartnerSession() {
+    resetAlertUI();
+    activeSessionId = "";
+    document.getElementById('partner-pin-code').value = "";
+    document.getElementById('master-portal-layer').style.display = "none";
+    document.getElementById('auth-screen-layer').style.display = "flex";
+}
+
+window.addEventListener('storage', (e) => {
+    if(e.key === 'gharbee_global_signal') evaluateRoutingState();
+});
 </script>
 </body>
 </html>
