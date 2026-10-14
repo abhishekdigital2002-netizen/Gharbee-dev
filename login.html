@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gharbee Core Authentication Gate</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body { background: #042518; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 16px; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .input-box { width: 100%; padding: 12px; margin: 10px 0 20px; border: 1px solid #DDD; border-radius: 8px; box-sizing: border-box; }
+        .login-btn { width: 100%; background: #F5A623; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2 style="margin:0 0 20px; text-align:center;">Gharbee Admin Gate</h2>
+    <label>Select Workspace Role</label>
+    <select id="login-role" class="input-box">
+        <option value="Super-Admin (Root)">Super-Admin (Root)</option>
+        <option value="Sub-Admin (Operations)">Sub-Admin (Operations)</option>
+    </select>
+    <label>Access Password Code</label>
+    <input type="password" id="login-pass" class="input-box" placeholder="••••••••">
+    <button class="login-btn" onclick="executeSystemAuthLogin()">Authorize Access</button>
+</div>
+
+<script>
+    function executeSystemAuthLogin() {
+        const role = document.getElementById('login-role').value;
+        const pass = document.getElementById('login-pass').value;
+
+        if(pass === "admin123") {
+            localStorage.setItem('gharbee_login_role', role);
+            alert(`Access Granted: Redirecting to Admin Core Operations Hub...`);
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Security Error: Invalid system access token code.");
+        }
+    }
+</script>
+</body>
+</html>
