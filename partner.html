@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gharbee Partner App Console</title>
+    <title>Gharbee Partner Console Engine</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; background: #111; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
         .app-frame { max-width: 450px; width: 100%; background: #1A1A1A; min-height: 100vh; padding: 24px 20px; box-sizing: border-box; }
-        /* Dropdown ki styling jo box banayegi */
-        .partner-selector { background: #2A2A2A; color: #fff; padding: 14px; border-radius: 12px; border: 1px solid #444; font-size: 14px; font-weight: 600; width: 100%; margin-top: 14px; cursor: pointer; outline: none; display: block !important; }
+        
+        /* Premium Urban Company style card selectors */
+        .partner-card-switch {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .partner-card-switch.active {
+            border-color: #F5A623;
+            background: #2d2417;
+        }
         .wallet-box { margin-top: 24px; background: #222; padding: 20px; border-radius: 16px; border: 1px solid #2d2d2d; }
         .alert-box { background: #FF9800; color: black; border-radius: 16px; padding: 20px; margin-top: 24px; display: none; animation: flash 1s infinite alternate; }
         .action-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 12px; }
@@ -19,24 +35,41 @@
 <body>
 
 <div class="app-frame">
+    <!-- Header Block -->
     <div style="border-bottom: 1px solid #333; padding-bottom: 20px;">
-        <h2 style="margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
+        <h2 style="margin: 0 0 14px; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Gharbee Partner App</h2>
         
-        <!-- Dropdown Box jo box ki tarah dikhega -->
-        
-            <option value="P-101">👤 राहुल प्रकाश (AC Specialist)</option>
-            <option value="P-102">👤 अमित वर्मा (AC Technician)</option>
-        </select>
+        <!-- Interactive Switching Cards -->
+        <div class="partner-card-switch active" id="card-P-101" onclick="switchPartnerAccount('P-101', 1450)">
+            <div>
+                <div style="font-size:14px; font-weight:700;">👤 राहुल प्रकाश</div>
+                <div style="font-size:12px; color:#aaa; margin-top:2px;">AC Specialist</div>
+            </div>
+            <span id="dot-P-101" style="color:#F5A623; font-weight:700;">● Active</span>
+        </div>
+
+        <div class="partner-card-switch" id="card-P-102" onclick="switchPartnerAccount('P-102', 890)">
+            <div>
+                <div style="font-size:14px; font-weight:700;">👤 अमित वर्मा</div>
+                <div style="font-size:12px; color:#aaa; margin-top:2px;">AC Technician</div>
+            </div>
+            <span id="dot-P-102" style="color:#666; font-weight:700;">● Offline</span>
+        </div>
     </div>
 
+    <!-- Hidden Input tracking active ID state for script logic downstream -->
+    
+
+    <!-- Wallet Box -->
     <div class="wallet-box">
         <h4 style="margin: 0; color: #888; font-weight: 500; font-size: 13px; text-transform: uppercase;">Your Wallet Balance</h4>
         <h1 style="margin: 8px 0 0; color: #4CAF50; font-size: 36px; font-weight: 800;" id="partner-wallet-view">₹1450</h1>
     </div>
 
+    <!-- Alert Dispatch Popups -->
     <div id="job-alert-modal" class="alert-box">
         <h3 style="margin:0;">🚨 New Job Request Incoming!</h3>
-        <p style="margin:8px 0; font-size:14px; font-weight:600;" id="alert-desc-zone">Loading routing data...</p>
+        <p style="margin:8px 0; font-size:14px; font-weight:600;" id="alert-desc-zone">Loading layout routing data...</p>
         <div style="font-weight:800; font-size:18px; margin-bottom:12px;" id="countdown-timer-zone">Time Left: 30s</div>
         <button class="action-btn" style="background:black; color:white;" onclick="acceptIncomingJob()">Accept & Lock Job</button>
     </div>
@@ -52,10 +85,21 @@
     alertAudio.loop = true;
     let countdownEngine;
 
-    function syncPartnerProfile() {
-        const selectedId = document.getElementById('partner-identity').value;
-        const baseWallet = selectedId === 'P-101' ? 1450 : 890;
-        document.getElementById('partner-wallet-view').innerText = `₹${baseWallet}`;
+    function switchPartnerAccount(partnerId, balance) {
+        // Toggle UI Active Visual Frames
+        document.querySelectorAll('.partner-card-switch').forEach(c => c.classList.remove('active'));
+        document.getElementById(`card-${partnerId}`).classList.add('active');
+        
+        document.getElementById('dot-P-101').style.color = "#666";
+        document.getElementById('dot-P-101').innerText = "● Offline";
+        document.getElementById('dot-P-102').style.color = "#666";
+        document.getElementById('dot-P-102').innerText = "● Offline";
+        
+        document.getElementById(`dot-${partnerId}`).style.color = "#F5A623";
+        document.getElementById(`dot-${partnerId}`).innerText = "● Active";
+        
+        document.getElementById('partner-identity').value = partnerId;
+        document.getElementById('partner-wallet-view').innerText = `₹${balance}`;
         evaluateRoutingState();
     }
 
@@ -87,8 +131,6 @@
             if(clock  {
         if(e.key === 'gharbee_global_signal') evaluateRoutingState();
     });
-    
-    window.onload = syncPartnerProfile;
 </script>
 </body>
 </html>
